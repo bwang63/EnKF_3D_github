@@ -1,0 +1,6 @@
+[dattype,len,status]=mexcdf('attinq',ncid,-1,'TSCDF_VERSION');
+  if(status~=-1),
+    cdf_version=mexcdf('attget',ncid,-1,'TSCDF_VERSION');
+  else
+    cdf_version='1.0';
+  end

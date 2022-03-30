@@ -1,0 +1,155 @@
+   SCRUM - Various Tools Using Matlab
+   ==================================
+ 
+   HOST:       ahab.rutgers.edu [128.6.142.5]
+   DIRECTORY:  /ftp/pub/scrum/matlab/tools
+   VERSION:    3.0
+   ORIGIN:     Institute of Marine and Coastal Sciences
+               Rutgers University
+               New Brunswick, NJ, USA
+               Hernan G. Arango (arango@ahab.rutgers.edu)
+
+   This directory contains several Matlab scripts which can be used for
+   various purposes.  These script files are:
+
+     njb.m
+     scoord.m
+     xsection.m
+
+
+   In order to execute, in a Matlab session, any of the scripts documented
+   here, the USER needs to copy the script(s) and set the enviromental
+   MATHLABPATH in the ".cshrc" file.  This will allow the USER to execute
+   these scripts from any directory.
+
+   For instance, my ".cshrc" has:
+
+      setenv SCRUMHOME  /home/arango/scrum3.0
+      setenv MATLABPATH "$SCRUMHOME/matlab/NetCDF:$SCRUMHOME/matlab/Seawater:$SCRUMHOME/matlab/mask:$SCRUMHOME/matlab/tools"
+ 
+
+
+   **************
+   Script "njb.m"
+   **************
+
+   This script is used in conjunction with "scoord" to study the S-coordinate
+   parameters for the New Yersey Bight application.  It produces vertical
+   sections of temperature and salinity.  The temperature and salinity are
+   computed from a 7th order polynomial derived from LEO-15 summer 1996
+   data.  The thermocline is strong and tight.  These scripts are use to
+   explore the S-coordinate stretching parameters and the number of levels
+   needed to resolve this thermocline.  The bottom topography is read from
+   the grid NetCDF file generated for this application.
+
+   [T,S]=njb(z)
+
+   On Input:
+
+      z         Depths (m) of grid section at RHO-points (matrix).
+
+   On Output:
+
+      T         Temperature (C) section (matrix).
+      S         Salinity (PSU) section (matrix).
+
+   For example, the following command is used in a Matlab session, after
+   reading and loading the bathymetry into matrix "h":
+   
+   > figure(1); [z,sc,Cs]=scoord(h,3,0,10,20,0,145); figure(2); [T,S]=njb(z);
+
+   It only plots the cross-section of temperature.
+
+
+   *****************
+   Script "scoord.m"
+   *****************
+
+   This script can be used to examine the vertical S-coordinate formulation
+   and its parameters.  It can be used for both SPEM and SCRUM since the
+   free-surface is assumed to be zero.  It provides an interactive way to
+   study the various parameters associated with the S-coordinate system.
+   It will plot the requested grid section showing the location of the model
+   depth levels.
+
+   [z_r,sc_r,Cs_r]=scoord(h,theta_s,theta_b,Tcline,N,column,index)
+
+   On Input:
+
+      h         Bottom depth (m) of RHO-points (matrix).
+      theta_s   S-coordinate surface control parameter (scalar):
+                  [0 < theta_s < 20].
+      theta_b   S-coordinate bottom control parameter (scalar):
+                  [0 < theta_b < 1].
+      Tcline    Width (m) of surface or bottom layer in which
+                higher vertical resolution is required during
+                streching (scalar).
+      N         Number of vertical levels (scalar).
+      column    Grid direction logical switch:
+                  column = 1  ->  column section.
+                  column = 0  ->  row section.
+      index     Column or row to compute (scalar):
+                  if column = 1, then   1 <= index <= Lp
+                  if column = 0, then   1 <= index <= Mp
+
+   On Output:
+
+      z_r       Depths (m) of RHO-points (matrix).
+      sc_r      S-coordinate independent variable, [-1 < sc_r < 0] at
+                vertical RHO-points (vector).
+      Cs_r      Set of S-curves used to stretch the vertical coordinate
+                lines that follow the topography at vertical RHO-points
+                (vector).
+
+   To execute this script do the following steps:
+
+   (1) Create or read in the bottom topography "h".  If you have a history,
+       restart or grid NetCDF file, read "h" by just typing:
+
+         > h=getcdf_batch(fname,'h',[-1 -1],[-1 -1],[1 1],2,3,0);
+
+       or the interactive command:
+
+         > h=getcdf(fname);
+
+       where "fname" is your NetCDF file name without the ".nc" extension.
+       If using the interactive command "getcdf", select reading a matrix
+       with the following indices order:  h(eta_rho,xi_rho).
+
+   (2) Plot the desired grid section along columns (ETA-axis) or rows
+       (XI-axis).  Type the following command:
+
+         > [z_r,sc_r,Cs_r]=scoord(h,theta_s,theta_b,Tcline,N,column,index);
+
+   For Example, the following command is used in a Matlab session, after
+   reading and loading the bathymetry into matrix "h": 
+
+   > figure(1); [z,s,Cs]=scoord(h,3.0,0.0,50,12,0,145);
+      
+
+   *******************
+   Script "xsection.m"
+   *******************
+
+   This script can be used to read, extract and plot a vertical section
+   of a 3D field from a SCRUM history or restart NetCDF file.
+
+   [s,z,f]=xsection(fname,vname,time,orient,index)
+
+   On Input:
+
+      fname    NetCDF filename without the extension suffix (string).
+      vname    NetCDF variable name to read (string).
+      time     Time record index to read (integer greater than zero).
+      orient   Orientation for the extraction (string):
+                 orient='r'  row (west-east) extraction.
+                 orient='c'  column (south-north) extraction.
+      index    Row or column to extract (integer).
+                 if orient='r', then   1 <= index <= Mp
+                 if orient='c', then   1 <= index <= Lp
+
+   On Output:
+
+      s        Horizontal axis of extracted section (matrix).
+      z        Depths (m) of extracted section (matrix).
+      f        Extracted field section (matrix).

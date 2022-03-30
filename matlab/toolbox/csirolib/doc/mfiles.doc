@@ -1,0 +1,65 @@
+@(#)mfiles.doc   1.7   94/07/29
+
+There are currently 3 libraries installed:
+	csirolib
+	netcdf
+	public
+
+
+                ******************************************
+                * CSIROLIB MFILES FOR MATLAB Version 4.1 *
+                ******************************************
+
+For a more up to date list type "help csirolib"
+
+PLOTTING:
+========
+coastlines    - plot the coastline
+xcontour      - contour plots of matrices containing "bad" data
+quiver2       - quiver with mod to define coordinates of data
+
+
+NAN UTILITIES:
+==============
+change        - change a value in a matrix to a new value. 
+nanmax        - max  ignoring NaNs 
+nanmean       - mean ignoring NaNs 
+nanmin        - min  ignoring NaNs 
+nanrange      - [ min max ] ignoring NaNs
+nansum        - sum  ignoring NaNs 
+
+
+SEA WATER LIBRARY:  (Phil Morgan)
+==================
+sw_info       - full list of all functions in package.
+
+
+MISC:
+====
+diffc         - centred differences.
+findm         - like find but returns the row and column indices of a matrix
+flat_pcolor   - like pcolor but produces the "intuitively obvious" result
+mat2str       - like num2str but for a matrix
+xclabel       - like clabel but does not refresh screen & shows 4 sig. figs
+
+                ******************************************
+                * NETCDF MFILES FOR MATLAB Version 4.1 *
+                ******************************************
+
+For a more up to date list type "help netcdf".
+
+NETCDF INTERFACE: (Jim Mansbridge)
+=======
+inqcdf        - lists netCDF files in current directory 
+whatcdf       - interactive inquiry of netCDF file 
+getcdf        - interactive import of data from a netCDF file 
+getcdf_batch  - batch version of getcdf
+mexcdf        - direct calls to netcdf functions - for use by experts only
+
+
+
+                ******************************************
+                * PUBLIC MFILES FOR MATLAB Version 4.1   *  
+                ******************************************
+
+For a full list of mfiles type "help public".

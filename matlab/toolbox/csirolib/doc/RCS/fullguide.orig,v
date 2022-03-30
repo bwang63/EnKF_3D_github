@@ -1,0 +1,228 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	94.09.12.06.53.58;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@******************************************
+*  GUIDE TO USE OF CSIRO MATLAB LIBRARY  *  1.1  92/04/14
+******************************************
+
+WHO IS THIS FOR ?
+==================
+Anyone using MATLAB at the CSIRO Marine Labs, Hobart AUSTRALIA.  MATLAB is
+currently installed on the Silicon Graphics Inc. mainframe known as "aqueous".
+This guide is to help you become more productive by detailing how to use
+the site-wide library of MATLAB routines written by other CSIRO users.
+
+
+WHO IS THE MATGRP ANYWAY ?
+==========================
+The matgrp are experienced users who have decided to coordinate the development
+of a site-wide library of MATLAB routines and administer bug reports, upgrades
+and appropriate user documentation.  The driving force is the need to have
+a common set of reliable routines that everyone can use with confidence.
+This will increase productivity by users by avoiding "re-inventing the wheel" 
+and is a more professional approach to software development (often a 
+"software librarian" is employed to do this).  All contact with the matgrp 
+should be by email to matgrp@@ml.csiro.au.
+
+
+WHAT IS THE MATGRP LIBRARY
+==========================
+The matgrp library is the collection of MATLAB routines written in the MATLAB
+language.  These routines are generally called mfiles (pronounced "m files") 
+because the source files end in "*.m" just as FORTRAN code end in
+"*.f" and C code in *.c.  All the mfiles are in your MATLAB path (by default).
+Information on each routine is available via the usual "help commandname".
+
+
+WHAT IS IN THE LIBRARY
+======================
+To get a listing of mfiles in the matgrp library type "lib" in MATLAB.
+
+
+COPYRIGHT
+=========
+Routines in the matgrp library are donated by the authors for use ONLY at
+the CSIRO Marine Labs.   DO NOT redistribute these routines without the
+explicit permission of the author(s).  The author(s) name will always appear 
+in the help display for each routine.
+
+
+
+BUGS AND IMPROVEMENT
+====================
+Bug and improvement reports are always welcome.  These should be emailed to
+the matgrp at the address matgrp@@ml.csiro.au and we shall fix the problem or
+forward the info to the author(s).  Please do not send such reports to the
+author(s) as only the matgrp has permission to replace routines in the matgrp 
+library with updated versions. 
+
+The authors have graciously provided all routines on a use "as is" basis and 
+are not responsible for making updates at users requests.  However, many 
+authors shall try to fix bugs etc as time permits.  If you fix a bug, please
+notify the matgrp.
+
+A note on reports.  Please record an actual session where you found the bug
+in a particular routine so we know exactly what the problem is.
+
+
+SUBMITTING MFILES TO THE LIBRARY
+===============================
+Please write your mfiles according to the guide lines detailed below and
+email your submissions to the matgrp with appropriate data files or the 
+location of such files.  Your name will of course feature prominently in the
+submissions list.
+
+
+
+******************************************
+*  WRITING MFILES FOR THE MATGRP LIBARY  *
+******************************************
+
+
+COMMENTS
+========
+When writing mfiles comments are delineated by a "%" character.  Anything 
+following on such a line is treated as a comment.  The first block of
+comments will be displayed whenever a "help mfilename" command is given
+in MATLAB.  For example the mfile 'diff' (supplied with MATLAB) has an 
+initial comment block (help display) followed by other comments such as the
+authors name etc.  The comments concerning the author etc are not part of the 
+help display since there is a line separating the two blocks.
+
+
+-----------------------mfile diff.m-------------------------------------
+function x = diff(x,k)
+%DIFF   Difference function.  If X is a vector [x(1) x(2) ... x(n)],
+%       then DIFF(X) returns a vector of differences between adjacent
+%       elements [x(2)-x(1)  x(3)-x(2) ... x(n)-x(n-1)].  If X is a
+%       matrix, the differences are calculated down each column:
+%       DIFF(X) = X(2:n,:) - X(1:n-1,:).
+%       DIFF(X,n) is the n'th difference function.
+
+%       J.N. Little 8-30-85
+%       Copyright (c) 1985, 1986 by the MathWorks, Inc.
+
+if nargin == 1
+        k = 1;
+end
+for i=1:k
+        [m,n] = size(x);
+        if m == 1
+                x = x(2:n) - x(1:n-1);
+        else
+                x = x(2:m,:) - x(1:m-1,:);
+        end
+end
+-------------------end of mfile diff.m-------------------------------------
+
+
+REQUIRED INFO IN HELP DISPLAY
+=============================
+The help display of an mfile should include the following
+
+1.  Show name of mfile and current release.version number.
+       The notation used will be such that the first number indicates the
+       release number (a major modification) and the second number is the 
+       version number (a minor modification).  Thus MSDOS 3.2 and 3.3 are 
+       minor modications whereas MSDOS 4.1 is a major upgrade.
+
+2.  Description of mfile.
+
+3.  List and describe all input/output arguments for the mfile.
+
+4.  List of all routines that call each other.  I usually denote
+       CALLEE: file1 file2  - current file calls (tells) file1 & file2 to do
+                              some work for it (cf EMPLOYEE)
+       CALLER: file3        - current file is called by (ordered) file3to do
+                              some work for file3 (cf EMPLOYER)
+       Often a self contained mfile will have
+       CALLER: general purpose
+       CALLEE: none
+
+5.  Author and date of original version of mfile.
+
+6.  References if appropriate.
+
+7.  Examples of what to expect with some small demo data or how
+    to call it if there are complex options of calling.
+
+
+For very simple mfiles the comment style for 'diff' may be
+adequate but usually all the above points should be noted and a good
+example of style is shown in 'change.m' (a matgrp library mfile).
+This style is not rigid.  You can develop your own BUT it should include all
+the required info as listed above.
+
+
+
+INTERNAL DOCUMENTATION
+======================
+Should include references if possible.  Give variables meaningful names so
+future debugging/improvement is easier.  Please add generous comments.
+
+
+HINTS ON WRITING LIBRARY MFILES
+===============================
+The following may serve as some suggestions in writing your mfiles
+
+I/O argument order
+++++++++++++++++++
+Some thought should be given to the input/output argument lists.  The order
+should NOT be changed in updated versions so that users can still run the
+mfiles with the same manner (upwardly compatible).  You can of course add 
+OPTIONAL arguments in an updated version and clearly describe the argument
+list in the help display.  If you have complex call options, list them
+explicitly in the help display.  See "help contour" and "help xcontour" for 
+goood examples.
+
+Test I/O arguments
+++++++++++++++++++
+The routines should test that the correct number and order of arguments
+are being passed to/from the mfile.   Also check the shape of arguments.
+There is a big difference between matrices, row vectors and columns vectors.
+In general I check vectors for validity, convert to column vectors and do 
+all my working in column vectors since matlab is best suited for column
+vectors (a matrix is just a set of column vectors in many MATLAB commands)
+and pass back a row vector if a row vector was passed into the mfile.
+
+Error messages
+++++++++++++++
+It is best if a routine aborts with a message saying what routine has an
+error and a short description of the error.  See the change.m mfile
+for examples.
+
+Indenting
++++++++++
+Please indent all MATLAB language constructs (eg  if, while)
+
+Optimisation
+++++++++++++
+If you wish to optimise your MATLAB code see the MATLAB manual for hints.
+I don't bother trying to optimise everything but using MATLAB's vector
+notation is more efficient and easier to code than element by element
+operations in a for loop such as that done in FORTRAN.
+
+-Phil
+
+
+@

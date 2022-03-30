@@ -1,0 +1,54 @@
+<TITLE>coads_1d_2d.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>coads_1d_2d</H1>
+<H2>(./coads_1d_2d.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>[field_2d, lon, lat] = coads_1d_2d(field_1d, ...</pre>
+<HR><H3>Help text</H3>
+<pre>
+ coads_1d_2d converts a 1-d COADS field to a 2-d one.
+ The data stored on the COADS cd rom has only one dimension for the
+ horizontal.  (This is a space saving device since land points are not
+ recorded.)  Usually we want the data on a lon/lat grid and this
+ function does the conversion.  While the 1-d field (vector) has 42164
+ points the 2-d field is a 360*180 matrix.  The row <A HREF = "../1../elements.html">elements</A> are
+ longitude (0.5:359.5) and the column <A HREF = "../1../elements.html">elements</A> are latitude (-89.5:89.5).
+ All missing values have been converted to NaNs.
+
+ There must be either 1 or 5 input fields.  The 4 final input variables are
+ the integers specifying the minimumn and maximum indices of the longitude
+ and latitude vectors.  Hence they partially correspond to hyperslab access
+ which would have been available if there had been separate longitudinal
+ and latitudinal directions in the netCDF files.  When only 1 input
+ argument is given then the full, 180*360 matrix will be returned.
+    INPUT:
+ field_1d: a 1-d COADS field as would be returned by a call to getnc.
+ ind_lon_min: The minimum index in the longitudinal direction.
+ ind_lon_max: The maximum index in the longitudinal direction.
+ ind_lat_min: The minimum index in the latitudinal direction.
+ ind_lat_max: The maximum index in the latitudinal direction.
+
+    OUTPUT:
+ field_2d: The same data as in the 1d field but as a matrix where the
+           rows vary with longitude and the columns with latitude.
+           Note that this is corresponds to the order that the values are
+           stored in the original 1-d form and gives the quickest
+           retrieval.
+ lon: A vector giving the longitudes corresponding to different rows
+ lat: A vector giving the latitudes corresponding to different columns
+
+    EXAMPLE USAGE:
+
+ file = '/CDROM/data/anomaly/netheat'; % cd-rom 2
+ k = 10; % month 10
+ netheat_init = getnc(file, 'clm', [k -1], [k -1]);  % get a vector
+ [netheat, lon, lat] = coads_1d_2d(netheat_init);    % get the 2-d netheat
+ [netheat_sub, lon_sub, lat_sub] = coads_1d_2d(netheat_init, 100, 180, 40, 80);
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

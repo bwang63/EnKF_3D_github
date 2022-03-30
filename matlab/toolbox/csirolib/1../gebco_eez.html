@@ -1,0 +1,53 @@
+<TITLE>gebco_eez.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>gebco_eez</H1>
+<H2>(./gebco_eez.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>handle = gebco_eez(contour, symbol, linewidth);</pre>
+<HR><H3>Help text</H3>
+<pre>
+ GEBCO_EEZ      Draws <A HREF = "../1../coastlines.html">coastlines</A> in lat/lon coordinates.
+
+	GEBCO_EEZ plots bathymetric contours in the longitude range 100 to
+	200 and the latitude range -46.6666 to 0 (sort of Australian EEZ)
+       using the <A HREF = "../1../gebco.html">GEBCO</A> data.  Default is to draw over entire
+       latitude/longitude region.  Use AXIS to limit region.
+
+       GEBCO_EEZ(CONTOUR) uses the vector CONTOUR and plots the depth
+       contours <A HREF = "../1../closest.html">closest</A> to those given in the vector. Note that in some
+       regions some <A HREF = "../1../gebco.html">gebco</A> contours do not exist and so there is no
+       guarantee that a desired contour will be plotted.
+
+       GEBCO_EEZ('SYMBOL') uses linetype 'SYMBOL'.  Any linetype supported 
+       by PLOT is allowed.  The default is 'm-' (i.e., magenta). SYMBOL may
+       be a cell array of different symbols for each contour.
+
+       GEBCO_EEZ(LINEWIDTH) or GEBCO_EEZ('SYMBOL',LINEWIDTH) specifies
+       thickness of lines.  Default is 1. LINEWIDTH may be a vector of
+       different linewidths for each contour.
+
+       Optional output returns row vector of handle of coastline
+       segments.  This can be used to reset line properties such as
+       thickness or colour using the handle graphics command SET.
+       Note that there will be one handle for each contour level.
+ 
+	Examples:  &gt;&gt; contour(lon,lat,z,v); h=gebco_eez(0, 'r-');
+       Plots <A HREF = "../1../coastlines.html">coastlines</A> over a contour plot created with contour and
+       returns the handle of the plotted coastline.
+                  &gt;&gt; set(h,'LineWidth',2)
+       This resets the thickness of all portions of coastline.
+                  &gt;&gt; set(h,'Color','c')
+       This changes the coastline colour to cyan. A vector RGB triple
+       may be used to specify the colour.
+                  &gt;&gt; set(h) 
+       shows properties that can be reset.
+
+       contour(lon,lat,z,v); gebco_eez([0 200 1000], {'b:', 'r', 'g--'})
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

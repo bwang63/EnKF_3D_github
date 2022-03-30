@@ -1,0 +1,24 @@
+@(#)help.doc   1.3   93/06/30
+
+FURTHER INFORMATION
+=====================
+	1.  MATLAB manual
+	2.  Introduction to MATLAB  (User Notes 11) -  Phil Morgan
+	3.  MATLAB Primer - Kermit Sigmon (Univ. Florida)
+	4.  NetCDF/MATLAB Interface (User Notes 12) -  Jim Mansbridge
+
+BUGS AND IMPROVEMENT
+====================
+Bug and improvement reports are always welcome.  These should be emailed to
+the matgrp at the address "matgrp" and we shall fix the problem or
+forward the info to the author(s).  Please do not send such reports to the
+author(s) as only the matgrp has permission to replace routines in the matgrp 
+library with updated versions. 
+
+The authors have graciously provided all routines on a use "as is" basis and 
+are not responsible for making updates at users requests.  However, many 
+authors shall try to fix bugs etc as time permits.  If you fix a bug, please
+notify the matgrp.
+
+A note on reports.  Please record an actual session where you found the bug
+in a particular routine so we know exactly what the problem is.

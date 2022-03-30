@@ -1,0 +1,11 @@
+
+
+The original source code for the oceans toolbox can be found in
+../Matlab/oceans directory which was developed for Matlab version 4.2. 
+The files included here have been tested and modified for version 5.1.
+
+This directory may be incomplete since I haven't had time to test 
+them all yet.
+
+Arthur Newhall (anewhall@whoi.edu)		Sept. 1997
+ 

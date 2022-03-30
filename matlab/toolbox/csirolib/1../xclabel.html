@@ -1,0 +1,32 @@
+<TITLE>xclabel.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>xclabel</H1>
+<H2>(./xclabel.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>xclabel(cs, contours)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ XCLABEL    Add contour labels to a contour plot; do not redraw screen.
+	 XCLABEL(CS) adds height labels to the current contour plot
+	 using the contour structure CS output from the CONTOUR routine.
+	 The label positions are selected randomly.  For example:
+
+	   cs = contour(rand(10)); xclabel(cs)
+
+	 XCLABEL(CS,V) labels just those contour levels given in
+	 vector V.  The default action is to label all known contours.
+
+	 XCLABEL(CS,'manual') places contour labels at the locations
+	 clicked on with a mouse.  Pressing the return key terminates
+	 labeling.  Use the space bar to enter contours and the arrow
+	 keys to move the crosshair if no mouse is available.
+
+	 See also CONTOUR, GINPUT.
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

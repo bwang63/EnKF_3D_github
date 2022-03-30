@@ -1,0 +1,63 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	95.05.25.01.19.10;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Version of strtok.m put here so that it would be available from aqueous
+which has old version of matlab.
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function [token, remainder] = strtok(string, delimiters)
+%STRTOK	First token in the supplied string.
+%	STRTOK(S,D) returns the first token delimited by the specified
+%	delimiters D in the supplied string S.  It also optionally 
+%	returns the remainder of the original string.  D is an array
+%	of character delimiters. If no delimiters are supplied, 
+%	"white space" is assumed.
+%
+%	See also ISSPACE.
+
+%	Copyright (c) 1984-94 by The MathWorks, Inc.
+
+len = length(string);
+if len == 0
+	return
+end
+
+if (nargin == 1)
+	delimiters = [9:13 32]; % White space characters
+end
+
+i = 1;
+while (any(string(i) == delimiters))
+	i = i + 1;
+	if (i > len), return, end
+end
+start = i;
+while (~any(string(i) == delimiters))
+	i = i + 1;
+	if (i > len), break, end
+end
+finish = i - 1;
+
+token = string(start:finish);
+
+if (nargout == 2)
+	remainder = string(finish + 1:length(string));
+end
+@

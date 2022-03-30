@@ -1,0 +1,9 @@
+% How to add the browser to your Matlabpath.  This would be 
+% in a file 'startup.m' in your HOME DIRECTORY.  You can copy
+% this sample file, but be sure to replace the '/usr/local/DODS'
+% below with the location of where you installed DODS on your
+% system.
+% 
+% -- dbyrne 99/05/12
+
+path(path,'/usr/local/DODS/bin/matlab-GUI')

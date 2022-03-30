@@ -1,0 +1,47 @@
+<TITLE>quiver2.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>quiver2</H1>
+<H2>(./quiver2.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>quiver2(x,y,s,xcoord,ycoord)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ QUIVER2 Improved quiver to allow x,y specifications: superceded by <A HREF = "../1../quiver_ext.html">quiver_ext</A>
+ 
+QUIVER2   1.1   92/04/14
+	Modification to the standard QUIVER plot to allow specification
+	of the x and y coordinates -- this enables a quiver plot to
+	be drawn with meaningful axes, and in particluar to be overlaid
+	(using HOLD ON) upon a CONTOUR plot.
+
+	QUIVER2(Z) draws a graph that displays the angle and magnitude
+	of the complex <A HREF = "../1../elements.html">elements</A> of Z as arrows emanating from equally
+	spaced grid positions, one arrow per matrix element.
+
+	QUIVER2(X,Y) is equivalent to QUIVER2(X+i*Y).  It displays the
+	quiver plot for the angles and magnitudes of the <A HREF = "../1../elements.html">elements</A> of
+	matrices X and Y.
+
+	QUIVER2(Z,'S') and QUIVER2(X,Y,'S') use line style 'S' where
+	'S' is any legal linetype as described under the PLOT command.
+
+	QUIVER2(Z,'S',XCOORD,YCOORD) and QUIVER2(X,Y,'S',XCOORD,YCOORD) 
+	use XCOORD and YCOORD as the axis scales.  For example, vectors
+	giving the longitude and latitude coordinates respectively of
+	points at which the X,Y data are defined
+
+	See also QUIVER, GRADIENT, COMPASS, FEATHER, and ROSE.
+
+	BUGS: Doesn't seem to like plotting subsets, 
+	e.g. QUIVER2(U(Y,X),V(Y,X),XCOORD(X),YCOORD(Y))?
+
+	John Wilkin 24/3/92
+	adapted from the MATLAB QUIVER function
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

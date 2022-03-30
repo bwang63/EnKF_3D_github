@@ -1,0 +1,6 @@
+get_ncep            ./get_ncep.m
+inq_ncep            ./inq_ncep.m
+parse_grib_info     ./parse_grib_info.m
+lat_legendre        ./lat_legendre.m
+get_pos_ncep        ./get_pos_ncep.m
+get_wgrib_info      ./get_wgrib_info.m

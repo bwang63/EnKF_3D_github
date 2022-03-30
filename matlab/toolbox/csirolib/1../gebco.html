@@ -1,0 +1,47 @@
+<TITLE>gebco.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>gebco</H1>
+<H2>(./gebco.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>handle = gebco(symbol,linewidth);</pre>
+<HR><H3>Help text</H3>
+<pre>
+ GEBCO      Draws <A HREF = "../1../coastlines.html">coastlines</A> in lat/lon coordinates.
+
+	GEBCO plots <A HREF = "../1../coastlines.html">coastlines</A> in the longitude range -180 to 540 using
+       the GEBCO <A HREF = "../1../coastlines.html">coastlines</A> data.  Default is to draw over entire
+       latitude/longitude region.  Use AXIS to limit region.
+
+       GEBCO('SYMBOL') uses linetype 'SYMBOL'.  Any linetype supported 
+       by PLOT is allowed.  The default is 'm-' (i.e., magenta). 
+
+       GEBCO(LINEWIDTH) or GEBCO('SYMBOL',LINEWIDTH) specifies thickness 
+       of lines.  Default is 1.
+
+       Optional output returns row vector of handle of coastline
+       segments.  This can be used to reset line properties such as
+       thickness or colour using the handle graphics command SET.
+       Note that there will be one handle for each gebco sheet.
+ 
+	Examples:  &gt;&gt; contour(lon,lat,z,v); h=gebco('r-');
+       Plots <A HREF = "../1../coastlines.html">coastlines</A> over a contour plot created with contour and
+       returns the handle of the plotted coastline.
+                  &gt;&gt; set(h,'LineWidth',2)
+       This resets the thickness of all portions of coastline.
+                  &gt;&gt; set(h,'Color','c')
+       This changes the coastline colour to cyan. A vector RGB triple
+       may be used to specify the colour.
+                  &gt;&gt; set(h) 
+       shows properties that can be reset.
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function is called by
+<pre><UL>
+<LI><A HREF = "../1../get_map.html">get_map</A>        get_map.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

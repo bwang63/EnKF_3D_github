@@ -1,0 +1,55 @@
+<TITLE>contour_terrainbase.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>contour_terrainbase</H1>
+<H2>(./contour_terrainbase.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>[c, h, cont_h] = contour_terrainbase(cont);</pre>
+<HR><H3>Help text</H3>
+<pre>
+ CONTOUR_TERRAINBASE -- Plot isopleths based on the terrainbase height field.
+ function [c, h, cont_h] = contour_terrainbase(cont);
+
+     INPUT:
+   cont: a vector of bathymetric levels, i.e., -ve is underwater
+
+     OUTPUT
+   c: contour matrix C as described in CONTOURC
+   h: a column vector H of handles to LINE or PATCH objects, one handle per
+      line. 
+   cont_h: the contour level for each of the handles, i.e., cont_h(ii) will
+           be the contour level for the handle h(ii).
+
+ Both C and H can be used as input to CLABEL.
+
+   WARNING - this can be quite slow and terrainbase is often inaccurate
+
+   Example usages:
+ 1) to label and <A HREF = "../1../change.html">change</A> the properties of all of the contour lines
+
+ axis([142 150 -45 -37])
+ cont = [0 -100 -200];
+ [c, h, cont_h] = contour_terrainbase(cont);
+ set(h, 'LineWidth', 2)
+ set(h, 'LineStyle', '--')
+ clabel(c)
+
+ 2) to label and <A HREF = "../1../change.html">change</A> the properties of all of the 100 metre contour
+    lines. Note that you can <A HREF = "../1../change.html">change</A> the colours of the contours by using
+    the 'EdgeColor' property.
+
+ axis([142 150 -45 -37])
+ cont = [0 -100 -200];
+ [c, h, cont_h] = contour_terrainbase(cont);
+ ff = find(cont_h == -100);
+ set(h(ff), 'LineWidth', 2)
+ set(h(ff), 'LineStyle', ':')
+ set(h(ff), 'EdgeColor', 'b')
+ clabel(c, h)
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

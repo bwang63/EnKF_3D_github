@@ -1,0 +1,28 @@
+function files = rnt_getfilenames(direc,prefix)
+% function files = rnt_getfilenames(direc,prefix)
+% prefix = 'his' or 'roms_his'
+% direc = '.'
+% files = rnt_getfilenames( '.','his');
+
+% save working directory
+wd = pwd;
+
+eval (['cd ',direc]);
+
+[s,s1]=unix(['ls -1rt ',direc,'/*',prefix,'* > .tmp-rnt_getfilenames']);
+
+file = textread('.tmp-rnt_getfilenames','%s','delimiter','\n','whitespace','');
+
+for i=1:length(file)
+   files{i} = [direc,'/',file{i}];
+end
+
+files=file;
+
+unix('/bin/rm .tmp-rnt_getfilenames');
+
+disp(['ctl=rnt_timectl(files,''ocean_time'');'])
+
+% return to working directory
+cd(wd)
+

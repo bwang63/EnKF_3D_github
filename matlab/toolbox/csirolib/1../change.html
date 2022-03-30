@@ -1,0 +1,48 @@
+<TITLE>change.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>change</H1>
+<H2>(./change.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>new = change(old,relation,flag,value)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ CHANGE     Change values in a matrix
+--------------------------------------------------------------------
+ CHANGE   1.3   92/03/25
+
+ new = change(old,relation,flag,value)
+
+ DESCRIPTION:
+    Changes the 'flag' values in the matrix &quot;old&quot; to the new &quot;value&quot;
+    according to the &quot;relation&quot;.
+ 
+ INPUT:
+    old      = matrix containing values related to &quot;flag&quot;
+               are to be converted to &quot;value&quot;
+    flag     = values related to &quot;flag&quot; then replaced by &quot;value&quot;
+    value    = replacement value
+    relation = string relation e.g. '&lt;', '&gt;', '=='
+
+ OUTPUT:
+    new      = matrix &quot;old&quot; with all flagged values changed
+               to &quot;value&quot; (can be returned to same matrix &quot;old&quot;)
+
+ EXAMPLE:  A = change(A,'==',NaN,0  )
+           B = change(A,'&lt;', -99,Nan) 
+
+ CALLER:   general purpose
+ CALLEE:   none
+
+ AUTHOR:   Phil Morgan 3-02-92
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function is called by
+<pre><UL>
+<LI><A HREF = "../1../print_gif.html">print_gif</A>      print_gif.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

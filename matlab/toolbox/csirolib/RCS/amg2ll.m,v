@@ -1,0 +1,122 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	98.03.16.04.19.20;	author mansbrid;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.02.20.05.42.16;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Taken from Jason Waring's ~/matlab directory
+@
+
+
+1.2
+log
+@bug fixed.
+@
+text
+@% Converts a vector of AMG X/Y coordinates to latitude/longitudes.
+%
+% INPUT:  x	    - Vector of AMG X coordinates (metres).
+%         y         - Vector of AMG Y coordinates (metres).
+%         amgzone    - AMG zone (1-60).
+%
+% OUTPUT: lats 	    - Vector of latitude (degrees).
+%         lons 	    - Vector of longitude (degrees).
+%
+% Note: The latitudes/longitudes are on the AGD66 spheroid.
+%
+% Author:  Jason R. Waring
+%          CSIRO Division of Marine Research
+% Created: 20th February 1998
+%
+% USAGE: [lats,lons] = amg2ll(x, y, amgzone);
+%
+% $Id$
+
+function [lats,lons] = amg2ll(x,y,amgzone)
+
+% compute the constants.
+cm = (amgzone*6 - 183) * pi/180.0;
+k0 = 0.9996;
+radius = 6378160.0;
+flat=1/298.25;
+feastings = 500000.0;	 % False eastings.
+fnorthings = 10000000.0; % False northings.
+e2 = (2.0 * flat) - (flat * flat);
+edash2 = e2/(1.0 - e2);
+e4 = e2*e2;
+e6 = e2*e2*e2;
+
+M0 = 0.0;
+M = M0 + (y - fnorthings)/k0;
+
+% Compute the foot point latitude.
+mu = M/(radius * (1.0 - e2/4.0 - (3.0/64.0)*e4 - (5.0/256.0)*e6));
+e2sq = sqrt(1 - e2);
+e1 = (1 - e2sq)/(1 + e2sq);
+e1_2 = e1*e1;
+e1_3 = e1_2*e1;
+e1_4 = e1_3*e1;
+phi = mu;
+phi = phi + ((3.0/2.0)*e1 - (27.0/32.0)*e1_3) * sin(2.0*mu);
+phi = phi + ((21.0/16.0)*e1_2 - (55.0/32.0)*e1_4) * sin(4.0*mu);
+phi = phi + (151.0/96.0)*e1_3 * sin(6.0*mu);
+phi1 = phi + ((1097.0/512.0)*e1_4*sin(8.0*mu));
+
+
+% Compute the latitudes and longitudes using a transverse mercator
+% projections.
+coslat = cos(phi1);
+sinlat = sin(phi1);
+sinlat2 = sinlat.*sinlat;
+coslat2 = coslat.*coslat;
+tanlat = sinlat./coslat;
+N = radius ./ sqrt(1 - e2 * (sinlat .* sinlat));
+R = radius * (1 - e2) ./ power(1 - e2 * (sinlat .* sinlat), 3.0/2.0);
+T = tanlat .* tanlat;
+T2 = T.*T;
+C = edash2 * coslat2;
+C2 = C.*C;
+D = (x - feastings)./(N*k0);
+D2 = D.*D;
+D3 = D2.*D;
+D4 = D3.*D;
+D5 = D4.*D;
+D6 = D5.*D;
+
+lat = (N.*tanlat./R) .* ( ( D2/2.0 - (5.0 + 3*T + 10*C - 4*C2 -9*edash2).*D4/24.0 + (61 + 90*T + 298*C + 45*T2 -252*edash2 - 3*C2).*D6/720.0));
+lon = (D - (1. + 2*T + C).*D3/6.0 + (5 - 2*C +28*T -3*C2 +8*edash2 +24*T2).*D5/120.0) ./ coslat;
+
+lats = (phi1 - lat) * 180.0 / pi;
+lons = (cm + lon) * 180.0 / pi;
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 3
+function [lats,lons] = amg2ll(x,y,amgzone)
+
+% ll2amg: Converts a vector of AMG X/Y coordinates to latitude/longitudes.
+d20 2
+d71 1
+a71 1
+lat = (N.*tanlat./R) .* ( ( D2/2.0 - (5.0 + 3*T + 10*C - 4*C2 -9*edash2)*D4/24.0 + (61 + 90*T + 298*C + 45*T2 -252*edash2 - 3*C2).*D6/720.0));
+@

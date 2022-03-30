@@ -1,0 +1,83 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	94.09.12.06.42.45;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+function pden = sw_pden(S,T,P,PR)
+
+% SW_PDEN    Potential Density
+%===========================================================================
+% SW_PDEN  $Revision: 1.2 $  $Date: 1994/01/25 05:28:52 $
+%          Copyright (C) CSIRO, Phil Morgan  1992. 
+%
+% USAGE:  pden = sw_pden(S,T,P,PR) 
+%
+% DESCRIPTION:
+%    Calculates potential density of water mass relative to the specified
+%    reference pressure by pden = sw_dens(S,ptmp,PR).
+%   
+% INPUT:  (all must have same dimensions)
+%   S  = salinity    [psu      (PSS-78) ]
+%   T  = temperature [degree C (IPTS-68)]
+%   P  = pressure    [db]
+%   PR = Reference pressure  [db]
+%       (P may have dims 1x1, mx1, 1xn or mxn for S(mxn) )
+%
+% OUTPUT:
+%   pden = Potential denisty relative to the ref. pressure [kg/m^3] 
+%
+% AUTHOR:  Phil Morgan 1992/04/06  (morgan@@ml.csiro.au)
+%
+% DISCLAIMER:
+%   This software is provided "as is" without warranty of any kind.  
+%   See the file sw_copy.m for conditions of use and licence.
+%
+% REFERENCES:
+%   A.E. Gill 1982. p.54
+%   "Atmosphere-Ocean Dynamics"
+%   Academic Press: New York.  ISBN: 0-12-283522-0
+%=========================================================================
+
+% CALLER:  general purpose
+% CALLEE:  sw_ptmp.m sw_dens.m
+
+%$Id: sw_pden.M,v 1.2 1994/01/25 05:28:52 morgan Exp $
+
+%-------------
+% CHECK INPUTS
+%-------------
+if nargin ~= 4
+   error('sw_pden.m: Must pass 4 parameters ')
+end %if
+
+% LET sw_ptmp.m DO DIMENSION CHECKING
+
+%------
+% BEGIN
+%------
+ptmp = sw_ptmp(S,T,P,PR);
+pden = sw_dens(S,ptmp,PR);
+
+return      
+%=========================================================================
+
+@

@@ -1,0 +1,37 @@
+<TITLE>hdrload.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>hdrload</H1>
+<H2>(./hdrload.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>[header, data] = hdrload(file)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ HDRLOAD Load data from an ASCII file containing a text header.
+     [header, data] = HDRLOAD('filename.ext') reads a data file
+     called 'filename.ext', which contains a text header.  There
+     is no default extension; any extensions must be explicitly
+     supplied.
+
+     The first output, HEADER, is the header information, returned
+     as a text array.
+     The second output, DATA, is the data matrix.  This data matrix
+     has the same dimensions as the data in the file, one row per
+     line of ASCII data in the file.  If the data is not regularly
+     spaced (i.e., each line of ASCII data does not contain the
+     same number of points), the data is returned as a column
+     vector.
+
+     Limitations:  No line of the text header can begin with
+     a number.  Only one header and data set will be read,
+     and the header must come before the data.
+
+     See also LOAD, SAVE, SPCONVERT, FSCANF, FPRINTF, STR2MAT.
+     See also the IOFUN directory.
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

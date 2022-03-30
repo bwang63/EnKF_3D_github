@@ -1,0 +1,120 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	94.09.12.06.53.58;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@@@(#)contrib.doc   1.1   92/04/14
+
+SUBMITTING MFILES TO THE LIBRARY
+===============================
+Please write your mfiles according to the guide lines detailed below and
+email your submissions to the matgrp with appropriate data files or the 
+location of such files.  Your name will of course feature prominently in the
+submissions list.
+
+
+
+******************************************
+*  WRITING MFILES FOR THE MATGRP LIBARY  *
+******************************************
+
+
+COMMENTS
+========
+When writing mfiles comments are delineated by a "%" character.  Anything 
+following on such a line is treated as a comment.  The first block of
+comments will be displayed whenever a "help mfilename" command is given
+in MATLAB.  For example the mfile 'diff' (supplied with MATLAB) has an 
+initial comment block (help display) followed by other comments such as the
+authors name etc.  The comments concerning the author etc are not part of the 
+help display since there is a line separating the two blocks.
+
+
+-----------------------mfile diff.m-------------------------------------
+function x = diff(x,k)
+%DIFF   Difference function.  If X is a vector [x(1) x(2) ... x(n)],
+%       then DIFF(X) returns a vector of differences between adjacent
+%       elements [x(2)-x(1)  x(3)-x(2) ... x(n)-x(n-1)].  If X is a
+%       matrix, the differences are calculated down each column:
+%       DIFF(X) = X(2:n,:) - X(1:n-1,:).
+%       DIFF(X,n) is the n'th difference function.
+
+%       J.N. Little 8-30-85
+%       Copyright (c) 1985, 1986 by the MathWorks, Inc.
+
+if nargin == 1
+        k = 1;
+end
+for i=1:k
+        [m,n] = size(x);
+        if m == 1
+                x = x(2:n) - x(1:n-1);
+        else
+                x = x(2:m,:) - x(1:m-1,:);
+        end
+end
+-------------------end of mfile diff.m-------------------------------------
+
+
+REQUIRED INFO IN HELP DISPLAY
+=============================
+The help display of an mfile should include the following
+
+1.  Show name of mfile and current release.version number.
+       The notation used will be such that the first number indicates the
+       release number (a major modification) and the second number is the 
+       version number (a minor modification).  Thus MSDOS 3.2 and 3.3 are 
+       minor modications whereas MSDOS 4.1 is a major upgrade.
+
+2.  Description of mfile.
+
+3.  List and describe all input/output arguments for the mfile.
+
+4.  List of all routines that call each other.  I usually denote
+       CALLEE: file1 file2  - current file calls (tells) file1 & file2 to do
+                              some work for it (cf EMPLOYEE)
+       CALLER: file3        - current file is called by (ordered) file3to do
+                              some work for file3 (cf EMPLOYER)
+       Often a self contained mfile will have
+       CALLER: general purpose
+       CALLEE: none
+
+5.  Author and date of original version of mfile.
+
+6.  References if appropriate.
+
+7.  Examples of what to expect with some small demo data or how
+    to call it if there are complex options of calling.
+
+
+For very simple mfiles the comment style for 'diff' may be
+adequate but usually all the above points should be noted and a good
+example of style is shown in 'change.m' (a matgrp library mfile).
+This style is not rigid.  You can develop your own BUT it should include all
+the required info as listed above.
+
+
+INTERNAL DOCUMENTATION
+======================
+Should include references if possible.  Give variables meaningful names so
+future debugging/improvement is easier.  Please add generous comments.
+
+@

@@ -1,0 +1,17 @@
+This directory contains template files that are used by the matlab function
+createrunfile. These template files are used to create executable files by 
+replacing special marker strings "<<MARKERNAME>>" inside the template files 
+with with values specified by the user. 
+If you want to write your own template file, the following markers can be 
+(but do not need to be) used:
+
+<<NP>>: will be replaced by the number of processors used for the job.
+<<EXECUTABLE>>: will be replaced by the executable file.
+<<INFILE>>: will be replaced by the input file that provides input to the 
+    executable.
+<<OUTFILE>>: will be replaced by the output or log file. 
+<<QNAME>>: will be replaced by the name of the queue job.
+<<STDOUT>>: will be replaced by name of the ROMS standard output file
+<<STDERR>>: will be replaced by name of the ROMS standard error file
+
+See mpirun.template for an example template file.

@@ -1,0 +1,55 @@
+2002-08-30 James Gallagher  <jimg@dcz.dods.org>
+
+	* Exported code for a release based on DODS-3.2.2a3.
+
+2002-04-09  Peter Cornillon  <pcornillon@gso.uri.edu>
+
+	* Test suite tools now implemented in browse.m.  Also added many
+	new datasets to browser and rearranged bookmarks.  Fixed various
+	longitude wrapping/selection bugs.  May have introduced time axis
+	bug in gridcat.m.
+
+2002-01-10  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* Changed matrix index order in getmultiurls.m and in dispmenu.m
+	so that combining of matrices and plotting both work with the
+	new loaddods (3.2.7).  Fixed bug giving incorrect metadata when
+	"Get Data" is executed without prior "Get Details".  Tested in
+	Matlab 6.1.  Removed bug in browse.m preventing startup of variables
+	menu. Changed default font in listboxes to 'Lucida', as 'Helvetica'
+        was not supported in a bold-italicized mode on my systam.
+
+2001-01-17  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* Finished multi-dimensional mods and update to plotting
+	so that it is a proper function and not a script.
+
+2000-10-26  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* Finished testing bookmarks -- added drag and drop,
+	multiple selecting, and resizing to listbox as requested
+	by beta-testers.  These features are only turned on for
+	the listedit.  Broke handling of each figure in the GUI 
+	(8 of them) into an independent routine.  Added a color
+	chooser figure.
+
+2000-10-11  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* Finished integration of bookmarks into GUI.
+
+2000-07-24  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* Two major changes to update function: first, getfunctions
+	must now be EXPLICITLY included in the MANIFEST.  Second,
+	a list of downloaded functions is maintained, and each
+	function is downloaded only once even if listed multiple
+	times in the MANIFEST (for example, a if it is a
+	function used by several different datasets).
+
+2000-06-16  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* First edition of dods command-line interface
+
+2000-05-31  Deirdre Byrne  <dbyrne@umeoce.maine.edu>
+
+	* First edition of toolbox functions.

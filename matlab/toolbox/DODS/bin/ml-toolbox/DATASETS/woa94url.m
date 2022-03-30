@@ -1,0 +1,23 @@
+function [URL] = woa94url(archive, urlinfolist, columns, rows, ...
+    dset_stride, ranges, variablelist, server)
+    
+
+% This function builds URLs for both seasonal and monthly datasets.
+
+Constraint = '';
+
+for i = 1:size(variablelist,1)
+  TempName = deblank(variablelist(i,:));
+  if i > 1
+    Constraint = [Constraint ','];
+  end
+  Constraint = [Constraint sprintf('%s', TempName, '[', ...
+	num2str(urlinfolist(1)), ':', num2str(urlinfolist(1)), ']',...
+	'[', num2str(urlinfolist(2)), ':', ...
+      num2str(urlinfolist(3)), '][', num2str(rows(1)), ':', ...
+      num2str(dset_stride), ':', num2str(rows(2)),'][', ...
+      num2str(columns(1)), ':', num2str(dset_stride), ':',...
+      num2str(columns(2)), ']')];
+end
+URL = sprintf('%s', deblank(server), '?', Constraint);
+return

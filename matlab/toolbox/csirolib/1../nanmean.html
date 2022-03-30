@@ -1,0 +1,60 @@
+<TITLE>nanmean.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>nanmean</H1>
+<H2>(./nanmean.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>y = nanmean(x, dim)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ NANMEAN    Mean value, same as in matlab 5 but ignoring NaNs
+===================================================================
+ NANMEAN   2.1 30/5/97
+
+ function y = nanmean(x, dim)
+
+ DESCRIPTION:
+    Mean value, same as in matlab 5 but ignoring NaNs.
+    For vectors, NANMEAN(X) is the mean value of the <A HREF = "../1../elements.html">elements</A> in X. For
+    matrices, NANMEAN(X) is a row vector containing the mean value of
+    each column.  For N-D arrays, NANMEAN(X) is the mean value of the
+    <A HREF = "../1../elements.html">elements</A> along the first non-singleton dimension of X.
+ 
+    NANMEAN(X,DIM) takes the mean along the dimension DIM of X. 
+ 
+ INPUT:
+    x    = array of any dimension
+    dims = dimension along which to take the mean
+
+ OUTPUT:
+    y    =  a mean of actual data values, i.e., ignoring NaNs.
+
+ EXAMPLES:
+           x = [ 1  2  3; 5 NaN 7];
+           y = nanmean(x)
+           y = [3 2 5]
+
+           x = [ 1  NaN  3; 5 NaN 7];
+           y = nanmean(x)
+           y = [3 NaN 5]
+
+           x = [ 1  NaN  3; 5 NaN 7];
+           y = nanmean(x, 2)
+           y = [2; 6]
+
+ CALLER:   general purpose
+ CALLEE:   none
+
+ AUTHOR:   Jim Mansbridge
+==================================================================
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function is called by
+<pre><UL>
+<LI><A HREF = "../1../nanstd.html">nanstd</A>         nanstd.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

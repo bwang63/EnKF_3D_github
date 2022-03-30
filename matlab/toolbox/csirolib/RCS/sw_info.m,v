@@ -1,0 +1,96 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	94.09.12.06.42.45;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+% SW_INFO    On-line information on the SEAWATER library.
+%=========================================================================
+% SW_INFO  Created: 93-06-28  $Revision: 1.3 $  $Date: 1994/04/15 06:34:45 $
+%          Copyright (C) CSIRO, Phil Morgan 1993.
+%
+% DISCLAIMER:
+%   This software is provided "as is" without warranty of any kind.
+%   See the file sw_copy.m for conditions of use and licence.
+%
+% REFERENCE:
+%   The following document must be properly cited in any publication
+%   reporting results derived from this docement, or obtained from
+%   application and use of this software.
+%
+%   Phillip P. Morgan, 1993, 
+%   "SEAWATER Version 1.2 - A Library of MATLAB Computational Routines 
+%   for the Properties of Sea Water" 
+%   CSIRO Division Oceanography Technical Report, CSIRO-DO-??
+%
+%                  ****************************** 
+%                  *      SEAWATER Library      * 
+%                  *                            * 
+%                  *        Version 1.2         * 
+%                  *                            * 
+%                  *        Phil Morgan         * 
+%                  *           CSIRO            * 
+%                  *                            *
+%                  *     morgan@@ml.csiro.au     *
+%                  ****************************** 
+%  
+%ROUTINE    DESCRIPTION
+%-------    -----------
+% SW_ADTG    Adiabatic Temperature Gradient 
+% SW_ALPHA   Thermal expansion coefficient (alpha) 
+% SW_AONB    Calculate alpha/beta (a on b) 
+% SW_BETA    Saline contraction coefficient (beta) 
+% SW_BFRQ    Brunt-Vaisala Frequency Squared (N^2)
+% SW_C3515   Conductivity at (35,15,0) 
+% SW_CNDR    Conductivity ratio   R = C(S,T,P)/C(35,15,0) 
+% SW_COPY    Copyright and Licence file
+% SW_CP      Heat Capacity (Cp) of Sea Water 
+% SW_DENS    Density of Sea Water 
+% SW_DENS0   Denisty of Sea Water at atmospheric pressure 
+% SW_DIST    Distance between two lat, lon coordinates
+% SW_DPTH    Depth from pressure 
+% SW_F       Coriolis factor "f" 
+% SW_FP      Freezing Point of sea water 
+% SW_G       Gravitational acceleration 
+% SW_GPAN    GeoPotential ANomaly  
+% SW_GVEL    Geostrophic Velocity 
+% SW_INFO    Information on the SEAWATER library. 
+% SW_PDEN    Potential Density 
+% SW_PRES    PRESsure from depth 
+% SW_PTMP    Potential TeMPerature 
+% SW_SALDS   Differiential dS/d(sqrt(Rt)) at constant T. 
+% SW_SALRP   Conductivity ratio   Rp(S,T,P) = C(S,T,P)/C(S,T,0) 
+% SW_SALRT   Conductivity ratio   rt(T)     = C(35,T,0)/C(35,15,0) 
+% SW_SALS    Salinity of sea water 
+% SW_SALT    Salinity from cndr, T, P 
+% SW_SECK    Secant Bulk Modulus (K) of Sea Water 
+% SW_SVAN    Specific Volume Anomaly 
+% SW_SVEL    Sound VELocity of sea water 
+% SW_SMOW    Denisty of Standard Mean Ocean Water (SMOW = pure water) 
+% SW_TEMP    Temperature from potential temperature 
+%=========================================================================
+
+more on
+help sw_info
+more off
+return
+%--------------------------------------------------------------------
+@

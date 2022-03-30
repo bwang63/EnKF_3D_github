@@ -1,0 +1,39 @@
+<TITLE>gregorian.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>gregorian</H1>
+<H2>(./gregorian.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>[gtime]=gregorian(julian)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ GREGORIAN  Converts <A HREF = "../1../julian.html">Julian</A> day numbers to corresponding Gregorian calendar dates
+       Formally, <A HREF = "../1../julian.html">Julian</A> days start and end at noon.
+       In this convention, <A HREF = "../1../julian.html">Julian</A> day 2440000 begins at 
+       1200 hours, May 23, 1968.
+
+     Usage: [gtime]=gregorian(<A HREF = "../1../julian.html">julian</A>) 
+
+        <A HREF = "../1../julian.html">julian</A>... input decimal <A HREF = "../1../julian.html">Julian</A> day number
+
+        gtime is a six component Gregorian time vector
+          i.e.   gtime=[yyyy mo da hr mi sec]
+                 gtime=[1989 12  6  7 23 23.356]
+ 
+        yr........ year (e.g., 1979)
+        mo........ month (1-12)
+        d........ corresponding Gregorian day (1-31)
+        h........ decimal hours
+
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function calls
+<pre><UL>
+<LI><A HREF = "../1../julian.html">julian</A>         julian.m</LI>
+<LI><A HREF = "../1../s2hms.html">s2hms</A>          s2hms.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

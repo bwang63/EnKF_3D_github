@@ -1,0 +1,207 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	97.06.02.06.00.58;	author mansbrid;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	97.05.30.01.31.08;	author mansbrid;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	97.05.30.00.57.04;	author mansbrid;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	94.09.12.06.42.45;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.4
+log
+@changed order of operations to get rid og divide by zero error messges
+@
+text
+@function y = nanmean(x, dim)
+% NANMEAN    Mean value, same as in matlab 5 but ignoring NaNs
+%===================================================================
+% NANMEAN   2.1 30/5/97
+%
+% function y = nanmean(x, dim)
+%
+% DESCRIPTION:
+%    Mean value, same as in matlab 5 but ignoring NaNs.
+%    For vectors, NANMEAN(X) is the mean value of the elements in X. For
+%    matrices, NANMEAN(X) is a row vector containing the mean value of
+%    each column.  For N-D arrays, NANMEAN(X) is the mean value of the
+%    elements along the first non-singleton dimension of X.
+% 
+%    NANMEAN(X,DIM) takes the mean along the dimension DIM of X. 
+% 
+% INPUT:
+%    x    = array of any dimension
+%    dims = dimension along which to take the mean
+%
+% OUTPUT:
+%    y    =  a mean of actual data values, i.e., ignoring NaNs.
+%
+% EXAMPLES:
+%           x = [ 1  2  3; 5 NaN 7];
+%           y = nanmean(x)
+%           y = [3 2 5]
+%
+%           x = [ 1  NaN  3; 5 NaN 7];
+%           y = nanmean(x)
+%           y = [3 NaN 5]
+%
+%           x = [ 1  NaN  3; 5 NaN 7];
+%           y = nanmean(x, 2)
+%           y = [2; 6]
+%
+% CALLER:   general purpose
+% CALLEE:   none
+%
+% AUTHOR:   Jim Mansbridge
+%==================================================================
+
+% $Id: nanmean.m,v 1.3 1997/06/02 05:56:27 mansbrid Exp $
+% 
+%--------------------------------------------------------------------
+
+if nargin == 1
+  aa = ~isnan(x);
+  ff = find(aa == 0);
+  if (length(ff) ~= 0) % replace NaNs by zeros
+    x(ff) = zeros(size(ff));
+  end
+  ss = sum(aa);        % find the total number of non-nans in the column
+  ff = find(ss == 0);
+  if (length(ff) ~= 0) % put NaNs where the mean came from a column of NaNs
+    ss(ff) = NaN*zeros(size(ff));
+  end
+  y = sum(x)./ss;      % calculate the mean
+elseif nargin == 2
+  aa = ~isnan(x);
+  ff = find(aa == 0);
+  if (length(ff) ~= 0) % replace NaNs by zeros
+    x(ff) = zeros(size(ff));
+  end
+  ss = sum(aa, dim);   % find the total number of non-nans in the column
+  ff = find(ss == 0);
+  if (length(ff) ~= 0) % put NaNs where the mean came from a column of NaNs
+    ss(ff) = NaN*zeros(size(ff));
+  end
+  y = sum(x, dim)./ss; % calculate the mean
+end
+@
+
+
+1.3
+log
+@Slight comments change.
+@
+text
+@d43 1
+a43 1
+% $Id: nanmean.m,v 1.2 1997/05/30 01:28:46 mansbrid Exp $
+a53 1
+  y = sum(x)./ss;      % calculate the mean
+d56 1
+a56 1
+    y(ff) = NaN*zeros(size(ff));
+d58 1
+a65 1
+  y = sum(x, dim)./ss; % calculate the mean
+d68 1
+a68 1
+    y(ff) = NaN*zeros(size(ff));
+d70 1
+@
+
+
+1.2
+log
+@New matlab 5 version, i.e., allows for 2nd argument.
+@
+text
+@d4 1
+a4 1
+% NANMEAN   1.4  92/06/12
+d43 1
+a43 1
+% $Id: nanmean.m,v 1.1 1997/05/30 00:54:58 mansbrid Exp $
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 2
+a2 2
+function y = nanmean(x)
+% NANMEAN    Mean value of matrix columns, ignoring NaNs
+d6 1
+a6 1
+% function y = nanmean(x)
+d9 7
+a15 1
+%    Mean value of matrix columns, ignoring NaNs
+d18 2
+a19 1
+%    x    = vector or matrix 
+d22 1
+a22 2
+%    y    = column-wise mean of x.  If x a vector then y = mean(x)
+%           ignoring all NaNs.  Thus a mean of actual data values.
+d24 12
+a35 4
+% EXAMPLE:  A = [ 1  2  3;
+%                 3 NaN 5];
+%           y = mean(x)
+%           y = [2 2 4]
+d40 1
+a40 1
+% AUTHOR:   Phil Morgan 3-09-91
+d43 1
+a43 1
+% @@(#)nanmean.m   1.4   92/06/12
+d47 24
+a70 16
+[m,ncols]=size(x);
+
+% IF A ROW VECTOR THEN TRANSPOSE TO COLUMN VECTOR
+if m == 1
+  x = x';
+  ncols = 1;
+end
+
+% FOR EACH COLUMN FIND MEAN EXCLUDING NaNs
+for icol = 1:ncols
+   good    = find( ~isnan(x( :,icol)) );
+   if length(good)>0
+      y(icol) = sum( x(good,icol) ) /length(good);
+   else
+      y(icol) = NaN;
+   end
+a71 4
+
+
+   
+
+@

@@ -1,0 +1,42 @@
+netcdf bottle {
+// Program to define the netcdf structure of Phil Morgan's example
+// which uses the data in bottle.dat.
+
+dimensions:
+   depth = 24;
+
+variables:
+   float dis_oxy(depth);
+      dis_oxy:long_name       = "dissolved oxygen";
+      dis_oxy:units           = "micromoles/kg";
+      dis_oxy:_FillValue      = -9.99e+2f;
+      dis_oxy:missing_value   = -9.99e+2f;
+
+   float silicate(depth);
+      silicate:long_name       = "H4SiO4";
+      silicate:units           = "micromoles/kg";
+      silicate:_FillValue      = -9.99e+2f;
+      silicate:missing_value   = -9.99e+2f;
+
+   float nitrate(depth);
+      nitrate:long_name       = "NO3";
+      nitrate:units           = "micromoles/kg";
+      nitrate:_FillValue      = -9.99e+2f;
+      nitrate:missing_value   = -9.99e+2f;
+
+   float phosphate(depth);
+      phosphate:long_name       = "PO4";
+      phosphate:units           = "micromoles/kg";
+      phosphate:_FillValue      = -9.99e+2f;
+      phosphate:missing_value   = -9.99e+2f;
+
+   float depth(depth);
+      depth:long_name       = "depth for sample";
+      depth:units           = "meters";
+
+// global attributes
+
+:source = "Phil Morgan - example file in bottle.dat";
+:title = "Hydrology data from a ctd cast";
+:history = "netCDF file created by Jim Mansbridge";
+}

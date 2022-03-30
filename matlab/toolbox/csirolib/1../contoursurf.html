@@ -1,0 +1,45 @@
+<TITLE>contoursurf.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>contoursurf</H1>
+<H2>(./contoursurf.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>CS=contoursurf(arg1,arg2,arg3,arg4);</pre>
+<HR><H3>Help text</H3>
+<pre>
+  CONTOURSURF contouring over non-rectangular surface.
+        This is an extension of contourc.
+        CONTOURSURF calculates the contour matrix C for use by <A HREF = "../1../extcontour.html">EXTCONTOUR</A>
+        to draw the actual contour plot.
+        C = CONTOURSURF(Z) computes the contour matrix for a contour plot
+        of matrix Z treating the values in Z as heights above a plane.
+        C = CONTOURSURF(X,Y,Z), where X and Y are vectors, specifies the X- 
+        and Y-axes for the contour computation. X and Y can also be matrices of 
+        the same size as Z, in which case they specify a surface in an 
+        identical manner as SURFACE.
+        CONTOURSURF(Z,N) and CONTOURSURF(X,Y,Z,N) compute N contour lines, 
+        overriding the default automatic value.
+        CONTOURSURF(Z,V) and CONTOURSURF(X,Y,Z,V) compute LENGTH(V) contour 
+        lines at the values specified in vector V.
+  
+        The contour matrix C is a two row matrix of contour lines. Each
+        contiguous drawing segment contains the value of the contour, 
+        the number of (x,y) drawing pairs, and the pairs themselves.  
+        The segments are appended end-to-end as
+  
+            C = [level1 x1 x2 x3 ... level2 x2 x2 x3 ...;
+                 pairs1 y1 y2 y3 ... pairs2 y2 y2 y3 ...]
+  
+        See also <A HREF = "../1../extcontour.html">EXTCONTOUR</A>.
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function is called by
+<pre><UL>
+<LI><A HREF = "../1../contourfill.html">contourfill</A>    contourfill.m</LI>
+<LI><A HREF = "../1../extcontour.html">extcontour</A>     extcontour.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

@@ -1,0 +1,5 @@
+for file in *.m
+do 
+  sed 's/gmin/min/' $file > foo
+  mv foo $file
+done

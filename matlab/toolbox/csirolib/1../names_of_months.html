@@ -1,0 +1,31 @@
+<TITLE>names_of_months.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>names_of_months</H1>
+<H2>(./names_of_months.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>[names, num_days, middle_of_month] = names_of_months(month_no)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ Returns variables related to the months of the year.
+
+   INPUT
+
+ month_no: if this is an integer between 1 and 12 then the information
+           returned will be for that month only. If no argument is passed
+           then the returned information will be for all 12 months.
+
+   OUTPUT:
+ names: the names of the months as strings within cells if there is no
+        input argument or as a single string for the requested month if
+        there is an input argument
+ num_days: the number of days in each month as a vector (february == 28.25)
+ middle_of_month: the number of days into the year when the middle of the
+                  month occurs. 
+</pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

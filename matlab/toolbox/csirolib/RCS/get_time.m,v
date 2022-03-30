@@ -1,0 +1,335 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	95.05.21.01.58.40;	author mansbrid;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	95.05.19.06.50.06;	author mansbrid;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	95.05.09.02.57.09;	author mansbrid;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	95.05.09.01.53.24;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Original version.
+@
+
+
+1.4
+log
+@Version that does better error checking and allows user specification of
+the 'time' variable.
+@
+text
+@function [gregorian_time, julian_time, gregorian_base, julian_base] = ...
+ get_time(file, time_var);
+% GET_TIME   Returns time information for a file that meets COARDS standards
+%
+% function [gregorian_time, julian_time, gregorian_base, julian_base] = ...
+% get_time(file, time_var);
+%
+% DESCRIPTION:
+%
+% get_time finds the time vector and the corresponding base date for a
+% file that meets COARDS standards.
+%
+% INPUT:
+% file: the name of a netCDF file but without the .cdf or .nc extent.
+% time_var: the name of the 'time' variable in the netCDF file.  If this
+%           argument is missing then it is assumed that variable name is
+%           'time'.
+%
+% OUTPUT:
+% gregorian_time: an Mx6 matrix where the rows refer to the M times
+%    specified in the 'time' variable in the netCDF file.  The columns
+%    are the year, month, day, hour, minute, second in that order.
+% julian_time: an M vector giving the julian times specified in the
+%    'time' variable in the netCDF file.  Note that 'time' variable
+%    actually contains the julian time relative to a base time.
+% gregorian_base: a 6-vector giving the year, month, day, hour, minute,
+%    second of the base time as specified in the 'units' attribute of
+%    the 'time' variable.
+% julian_base: the julian time of the base time.
+
+%     Copyright J. V. Mansbridge, CSIRO, Tue May  9 11:36:06 EST 1995
+%$Id: get_time.m,v 1.2 1995/05/09 02:57:09 mansbrid Exp $
+
+% Process the input arguments
+
+if nargin == 1
+  time_var = 'time';
+elseif nargin == 0 | nargin > 2
+  disp('get_time takes either 1 or 2 input arguments')
+  help get_time
+  return
+end
+
+% Check that the file is accessible.  If it is then its full name will
+% be stored in the variable cdf.  The file may have the extent .cdf or
+% .nc and be in the current directory or the common data set (whose
+% path can be found by a call to pos_data_cdf.m.  If a compressed form
+% of the file is in the current directory then the procedure gives an
+% error message and exits.  If the netcdf file is not accessible then
+% the m file is exited with an error message.
+
+ilim = 2;
+for i = 1:ilim
+
+  if i == 1
+    cdf = [ file '.cdf' ];
+  elseif i == 2
+    cdf = [ file '.nc' ];
+  end
+
+  err = check_cdf(cdf);
+
+  if err == 0
+    break;
+  elseif err == 1
+    if i == ilim
+      error([ file ' could not be found' ]);
+    end
+  elseif err == 2
+    path_name = pos_data_cdf;
+    cdf = [ path_name cdf ];
+    break;
+  elseif err == 3
+    error([ 'exiting because ' cdf ' is in compressed form' ]);
+  end
+end
+
+%Open the netcdf file.
+
+[cdfid, rcode] = mexcdf('OPEN', cdf, 'NC_NOWRITE');
+if rcode == -1
+  error(['** ERROR ** ncopen: rcode = ' num2str(rcode)])
+end
+
+%Suppress all error messages from netCDF 
+
+[rcode] = mexcdf('setopts', 0);
+
+%Get the id number of the variable 'time' and find out the info. about
+%the variable 'time'.
+
+[varid, rcode] = mexcdf('varid', cdfid, time_var);
+if rcode == -1
+  error(['** ERROR ** ncvarid: time variable = ''' time_var ''' not found'])
+end
+
+[varnam, vartypv, nvdims, vdims, nvatts, rcode] = ...
+    mexcdf('ncvarinq', cdfid, varid);
+if rcode == -1
+  error(['** ERROR ** ncvarinq: rcode = ' num2str(rcode) ...
+          ', time variable = ''' time_var ''''])
+end
+  
+%Find out the size of the dimension 'time' which is the same as the
+%variable 'time'.
+
+[name, sizem, rcode] = mexcdf('ncdiminq', cdfid, vdims(1));
+if rcode == -1
+  error(['** ERROR ** ncdiminq: rcode = ' num2str(rcode)])
+end
+
+%Retrieve the elements of the variable 'time'.  These are the julian day
+%relative to the base date.
+
+[julian_rel, rcode] = mexcdf('ncvarget', cdfid, varid, 0, sizem);
+if rcode == -1
+  error(['** ERROR ** ncvarget: rcode = ' num2str(rcode)])
+end
+
+%Get the string describing the base date.
+
+[base_str, rcode] = mexcdf('attget', cdfid, varid, 'units');
+if rcode == -1
+  error(['** ERROR ** ncattget: rcode = ' num2str(rcode)])
+end
+
+%Close the netcdf file.
+
+[rcode] = mexcdf('ncclose', cdfid);
+if rcode == -1
+  error(['** ERROR ** ncclose: rcode = ' num2str(rcode)])
+end
+
+%Parse the string containing the base date to get its constituents and
+%then find its julian and gregorian dates.
+
+%Note 1) I had trouble using strtok with ':' and '-' and so I converted
+%        the first 2 instances of each of them to spaces.  This leaves
+%        the correction to Uniiversal time (if there is one) untouched.
+
+fm = find(base_str == '-');
+fc = find(base_str == ':');
+str = base_str;
+if length(fm) >= 2
+  str(fm(1:2)) = ' '*ones(size(fm(1:2)));
+else
+  error(['Wrong use of '-' in the time attribute ' base_str ])
+end
+if length(fc) >= 2
+str(fc(1:2)) = ' '*ones(size(fc(1:2)));
+else
+  error(['Wrong use of ':' in the time attribute ' base_str ])
+end
+str = setstr(str);
+
+%Convert the time vector to julian days since the base time.
+
+[str, remainder] = strtok(str);
+if ( strcmp('week', str) | strcmp('weeks', str) | ...
+      strcmp('Week', str) | strcmp('week', str) )
+  julian_rel = julian_rel*7;
+elseif ( strcmp('day', str) | strcmp('days', str) | ...
+      strcmp('Day', str) | strcmp('day', str) )
+elseif ( strcmp('hour', str) | strcmp('hours', str) | ...
+      strcmp('Hour', str) | strcmp('Hours', str) )
+  julian_rel = julian_rel/24;
+elseif ( strcmp('minute', str) | strcmp('minutes', str) | ...
+      strcmp('Minute', str) | strcmp('Minutes', str) )
+  julian_rel = julian_rel/(24*60);
+elseif ( strcmp('second', str) | strcmp('seconds', str) | ...
+      strcmp('Second', str) | strcmp('Seconds', str) )
+  julian_rel = julian_rel/(24*60*60);
+else
+  error(['bad time baseline string = ' base_str ])
+end
+
+%Find the julian base time (initially without paying attention to any
+%reference to Universal time).
+
+[str, remainder] = strtok(remainder);
+[str, remainder] = strtok(remainder);
+year_base = str2num(str);
+[str, remainder] = strtok(remainder);
+month_base = str2num(str);
+[str, remainder] = strtok(remainder);
+day_base = str2num(str);
+[str, remainder] = strtok(remainder);
+hour_base = str2num(str);
+[str, remainder] = strtok(remainder);
+minute_base = str2num(str);
+[str, remainder] = strtok(remainder);
+second_base = str2num(str);
+
+gregorian_base = [year_base month_base day_base hour_base ...
+        minute_base second_base];
+julian_base = julian(gregorian_base);
+
+%If the remainder of the string is not empty then we assume that there
+%is information about the conversion to Universal time.  This is parsed
+%and julian_base and gregorian_base are then modified appropriately. 
+
+if ~isempty(remainder)
+  fc = find(remainder == ':');
+  if length(fc) == 0
+    error(['Cannot handle the Universal time reference in the base date ' ...
+	    base_str ])    
+  else
+    [str, remainder] = strtok(remainder, ':');
+    hour_extra = str2num(str);
+    [str, remainder] = strtok(remainder, ':');
+    min_extra = str2num(str);
+  end
+  
+  if hour_extra > 0
+    time_extra = (hour_extra + min_extra/60)/24;
+  else
+    time_extra = (hour_extra - min_extra/60)/24;
+  end
+  
+  julian_base = julian_base - time_extra;
+  gregorian_base = gregorian(julian_base);
+end
+
+%Find the absolute julian date and resultant gregorian date of the time
+%vector.
+
+julian_time = julian_rel + julian_base;
+
+gregorian_time = gregorian(julian_time);
+
+@
+
+
+1.3
+log
+@Now handles the Universal time reference in the base date.
+It does need the hour and minute to be separated by a colon.
+@
+text
+@d1 2
+a2 1
+function [gregorian_time, julian_time, gregorian_base, julian_base] = get_time(file);
+d5 2
+a6 2
+% function [gregorian_time, julian_time, gregorian_base, julian_base] =
+% get_time(file);
+d15 3
+d34 10
+d92 1
+a92 1
+varid = mexcdf('varid', cdfid, 'time');
+d94 1
+a94 1
+  error(['** ERROR ** ncvarid: rcode = ' num2str(rcode)])
+d100 2
+a101 1
+  error(['** ERROR ** ncvarid: rcode = ' num2str(rcode)])
+@
+
+
+1.2
+log
+@Now handles 'hours since', 'Minute since', etc.  Not tested properly.
+@
+text
+@d28 1
+a28 1
+%$Id:$
+d120 5
+a124 4
+%then find its julian and gregorian dates.  Note that I had trouble
+%using strtok with ':' and '-' and so I converted them to spaces first.
+%Note also that the function disinguishes between weeks, days, hours,
+%minutes, and seconds as specified in the 'units' attribute.
+d129 10
+a138 2
+str(fm) = ' '*ones(size(fm));
+str(fc) = ' '*ones(size(fc));
+d141 2
+d162 3
+d176 2
+a177 1
+second_base = str2num(remainder);
+d182 26
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d28 1
+d122 2
+d133 18
+@

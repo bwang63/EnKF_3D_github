@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Project identification
+#
+#SBATCH --account=rrg-kfennel-ab    # no need, this is setup in ~/.bashrc
+#
+# MAX. JOB LENGTH
+#
+#SBATCH --time=00-02:00           # time (DD-HH:MM)
+#
+# NODES, CORES/NODE
+#
+#SBATCH --ntasks=<<NP>>
+#
+#SBATCH --mem-per-cpu=4700M      # memory; default unit is megabytes
+#
+# ENVIRONMENT VARIABLES
+#
+#SBATCH --export=ALL
+#
+# DO NOT RESTART AUTOMATICALLY
+#
+#SBATCH --no-requeue
+#
+# JOB NAME
+#
+#SBATCH --job-name=<<QNAME>>
+#
+# EMAIL JOB RESULTS
+#
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user="wangbin31415926@gmail.com"
+#
+# LOG FILE NAMES
+#
+#SBATCH --output=%x-%j.out
+#
+# LOAD NETCDF LIBRARY
+module load StdEnv/2016.4
+module load netcdf-fortran/4.4.4
+
+# MOVE TO PROJECT DIRECTORY
+cd <<DIR>>
+
+# SEND JOB
+#
+srun <<EXECUTABLE>> <<INFILE>> <<OUTFILE>>

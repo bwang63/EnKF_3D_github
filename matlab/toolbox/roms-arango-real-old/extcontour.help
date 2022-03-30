@@ -1,0 +1,59 @@
+
+         Extended Contouring Package v1.0 for Matlab (tm)
+         ------------------------------------------------
+         
+Have you ever wished:
+
+   - that contour accepted matrix X and Y arguments, in
+     the same way that pcolor/mesh/surface do?
+     
+   - that you could draw filled contours?
+   
+   - that you could get publication-quality labels onto your contour
+     map, either all at the same angle, or aligned with the contours? 
+     
+If the answer to any of these questions is "yes" (perhaps with an
+added "#(*&%$" for good measure), then you should try EXTCONTOUR!
+     
+This driver routine, along with associated primitive functions, allows you 
+to do all these things simply and easily. This example illustrates
+most of the features available:
+
+  % generate a distorted X/Y grid
+
+   Xx=[1:.05:2]'*[-10:10];
+   Yy=[-10:10]'*[1:.05:2];
+
+  % generate a surface of some kind, perhaps with NaNs in it.
+
+   Zz=sin(Xx/3).*cos(Yy/2).*exp(-Yy/10)+randn(21,21)/5+Yy/2;
+
+   Zz(15:21,12:15)=NaN+Zz(15:21,12:15);
+
+  % Draw filled labelled contours for the given levels. Make thick dashed
+  % contour lines coloured 'y', with 12-point labels. Labels will
+  % be aligned with contours.
+  
+   extcontour(Xx,Yy,Zz,[-5:1:5],'fill','label',72, ...
+              'fontsize',12,'linewidth',2,'--y');
+
+Note that EXTCONTOUR recognizes a number of line and text object 
+properties which can be specified on calling. Finally, keep in mind
+that the placement and orientation of labels is done so that printed
+output is correct. Screen output may be less beautiful. 
+
+The EXTCONTOUR package includes the following files:
+
+   readme       : this file
+   extcontour.m : a driver routine for all options (replaces CONTOUR)
+   contourfill.m: similar to CONTOUR but fills regions
+   contoursurf.m: a replacement for CONTOURC that accepts X/Y matrices
+   extclabel.m  : a replacement for CLABEL that gives nice looking results.
+   
+  
+----
+Author: Rich Pawlowicz (rich@ios.bc.ca),    Date: 20/12/1994
+        Institute of Ocean Sciences,
+        Sydney, British Columbia, 
+        V8L 4B2 Canada.
+

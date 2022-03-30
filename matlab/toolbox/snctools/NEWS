@@ -1,0 +1,37 @@
+SNCTOOLS 2.5.1 RELEASE
+=======================================================================
+This is the last stable release series before netcdf-4 functionality
+begins to be folded into SNCTOOLS, which will start with the 2.9.x.
+series.  Further 2.5.x releases will be bug-fixes only.
+
+The big thing with this release is that a reduced subset of SNCTOOLS
+can run (and tested) with java as the backend, instead of mexc.  If
+you use windows, just need to read netCDF files (conversely, you don't
+need to write netCDF files), and don't use the Netcdf Toolbox, then I
+strongly recommend that you just use SNCTOOLS and don't bother with 
+mexnc.  In this case, there is no longer any requirement for anything
+in mexnc, including any of the auxilliary m-files.
+
+The set of m-files that do not require mexnc are
+	NC_ATTGET
+	NC_VARGET
+	NC_DUMP
+	NC_INFO
+	NC_DATATYPE_STRING
+	NC_ISCOORDVAR
+	NC_ISUNLIMITEDVAR
+	NC_GETLAST
+	NC_ISVAR
+	NC_VARSIZE
+	NC_GETVARINFO
+	NC_GETBUFFER
+
+NC_GETDIMINFO has been changed into a private function.
+
+SNCTOOLS 2.4.0 RELEASE
+=======================================================================
+Check the ChangeLog for details on what's changed, but the user should 
+be aware that some user code will probably break with this release.
+If you get bitten by this, let me know and I'll try to work with you
+to resolve the issue.
+

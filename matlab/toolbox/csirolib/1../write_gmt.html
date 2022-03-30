@@ -1,0 +1,33 @@
+<TITLE>write_gmt.m</TITLE>
+<BODY bgcolor = "FFFFFF">
+<A HREF = "../index.html">[Master Index]</A>
+<A HREF = "index.html">[Index for .]</A>
+<H1>write_gmt</H1>
+<H2>(./write_gmt.m)</H2>
+<HR><H3>Function Synopsis</H3>
+<pre>write_gmt(x,y,z,cdf)</pre>
+<HR><H3>Help text</H3>
+<pre>
+ WRITE_GMT
+ writes Matlab array z into GMT .grd file
+ 
+ Usage:  write_gmt(x,y,z,cdf_file)
+ Example:  contour(x,y,z);
+           write_gmt(x,y,z,grdfile);
+           [x,y,z]=<A HREF = "../1../read_gmt.html">read_gmt</A>(grdfile);
+           contour(x,y,z);
+
+  PPM: data can have NaNs
+
+  see also <A HREF = "../1../read_gmt.html">READ_GMT</A>
+</pre>
+<HR><H3>Cross-Reference Information</H3>This function calls
+<pre><UL>
+<LI><A HREF = "../1../nanmax.html">nanmax</A>         nanmax.m</LI>
+<LI><A HREF = "../1../nanmin.html">nanmin</A>         nanmin.m</LI>
+</UL></pre>
+<HR>
+Produced by <A HREF = "http://www.nd.edu/Courses/kantor/matlab/mat2html">mat2html</A> on Thu Oct 15 10:15:34 1998
+<BR>
+Cross-Directory links are: OFF<BR>
+</BODY>

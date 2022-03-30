@@ -1,0 +1,20 @@
+#!/bin/sh
+#$ -S /bin/sh
+. /etc/profile
+#$ -o <<STDOUT>>
+#$ -e <<STDERR>>
+#$ -pe mpi <<NP>>
+#$ -N <<QNAME>>
+
+source /opt/2014/path.sh
+
+cd <<DIR>>
+starttime=`date +"%F %H:%M:%S"`
+starttimesec=`date "+%s"`
+mpirun -np <<NP>> <<EXECUTABLE>> <<INFILE>> >> <<OUTFILE>>
+stoptime=`date +"%F %H:%M:%S"`
+stoptimesec=`date "+%s"`
+
+echo "start time:   $starttime" >> <<OUTFILE>>
+echo "stop time:    $stoptime" >> <<OUTFILE>>
+echo "run duration: `expr $stoptimesec - $starttimesec`s" >> <<OUTFILE>>

@@ -1,0 +1,168 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	97.05.30.01.31.08;	author mansbrid;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	94.09.12.06.42.45;	author mansbrid;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial version for matlab4.2 (see matlab4.1 directory for earlier versions).
+@
+
+
+1.2
+log
+@matlab 5 version
+@
+text
+@function y = nansum(x, dim)
+% NANSUM    Sum of elements, same as in matlab 5 but ignoring NaNs
+%===================================================================
+% NANSUM   2.0 30/5/97
+%
+% function y = nansum(x, dim)
+%
+% DESCRIPTION:
+%    Sum of elements, same as in matlab 5 but ignoring NaNs.
+%    For vectors, NANSUM(X) is the sum of the elements in X. For
+%    matrices, NANSUM(X) is a row vector containing the sum along
+%    each column.  For N-D arrays, NANSUM(X) is the sum of the
+%    elements along the first non-singleton dimension of X.
+% 
+%    NANSUM(X,DIM) takes the sum along the dimension DIM of X. 
+%
+%    Note that if a whole column is filled with NaNs then when a
+%    sum is done along that column a NaN will be returned.
+%
+% INPUT:
+%    x    = array of any dimension
+%    dims = dimension along which to take the sum
+%
+% OUTPUT:
+%    y    =  a sum of actual data values, i.e., ignoring NaNs.
+%
+% EXAMPLES:
+%           x = [ 1  2  3; 5 NaN 7];
+%           y = nansum(x)
+%           y = [6 2 10]
+%
+%           x = [ 1  NaN  3; 5 NaN 7];
+%           y = nansum(x)
+%           y = [6 NaN 10]
+%
+%           x = [ 1  NaN  3; 5 NaN 7];
+%           y = nansum(x, 2)
+%           y = [4; 12]
+%
+% CALLER:   general purpose
+% CALLEE:   none
+%
+% AUTHOR:   Jim Mansbridge
+%==================================================================
+
+% $Id: nansum.m,v 1.2 1997/05/30 01:28:46 mansbrid Exp $
+% 
+%--------------------------------------------------------------------
+
+if nargin == 1
+  aa = ~isnan(x);
+  ff = find(aa == 0);
+  if (length(ff) ~= 0) % replace NaNs by zeros
+    x(ff) = zeros(size(ff));
+  end
+  ss = sum(aa);    % find the total number of non-nans in the column
+  y = sum(x);      % calculate the sum
+  ff = find(ss == 0);
+  if (length(ff) ~= 0) % put NaNs where the sum came from a column of NaNs
+    y(ff) = NaN*zeros(size(ff));
+  end
+elseif nargin == 2
+  aa = ~isnan(x);
+  ff = find(aa == 0);
+  if (length(ff) ~= 0) % replace NaNs by zeros
+    x(ff) = zeros(size(ff));
+  end
+  ss = sum(aa, dim);   % find the total number of non-nans in the column
+  y = sum(x, dim);     % calculate the sum
+  ff = find(ss == 0);
+  if (length(ff) ~= 0) % put NaNs where the sum came from a column of NaNs
+    y(ff) = NaN*zeros(size(ff));
+  end
+end
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 2
+a2 3
+function y = nanmean(x)
+
+% NANSUM     Sum of matrix columns, ignoring NaNs
+d4 1
+a4 1
+% NANSUM   1.2   92/04/14  Copyright (C) Phil Morgan 1991
+d6 1
+a6 1
+% function y = nansum(x)
+d9 5
+a13 1
+%    Sum of matrix columns, ignoring NaNs
+d15 5
+d21 2
+a22 1
+%    x    = vector or matrix 
+d25 1
+a25 2
+%    y    = column-wise sum of x.  If x a vector then y = sum(x)
+%           ignoring all NaNs.  Thus a sum of actual data values.
+d27 12
+a38 4
+% EXAMPLE:  A = [ 1  2  3;
+%                 3 NaN 5];
+%           y = sum(x)
+%           y = [4 2 8]
+d43 1
+a43 1
+% AUTHOR:   Phil Morgan 3-09-91
+d46 1
+a46 1
+% @@(#)nansum.m   1.2   92/04/14
+d50 24
+a73 6
+[m,ncols]=size(x);
+
+% IF A ROW VECTOR THEN TRANSPOSE TO COLUMN VECTOR
+if m == 1
+  x = x';
+  ncols = 1;
+a74 14
+
+% FOR EACH COLUMN FIND SUM EXCLUDING NaNs
+for icol = 1:ncols
+   good    = find( ~isnan(x( :,icol)) );
+   if length(good)>0
+      y(icol) = sum( x(good,icol) );
+   else
+      y(icol) = NaN;
+   end
+end
+
+
+   
+
+@
