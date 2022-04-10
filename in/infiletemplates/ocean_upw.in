@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo_upw.dat          ! (edit)
+     VARNAME = /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo_upw.dat           ! (edit)
 
 ! Number of nested grids.
 
@@ -834,7 +834,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc         ! (edit)
+     GRDNAME == /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc          ! (edit)
      ININAME == upw_ini.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
