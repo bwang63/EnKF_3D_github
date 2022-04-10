@@ -3,10 +3,6 @@
 % A ROMS assimilation manager that performs all steps for an sequential 
 % assimilation run: preparation, starting and stopping of the model etc.
 % 
-% For a tutorial on what steps are necessary to use romsassim, see the wiki
-% at
-% http://www.phys.ocean.dal.ca/~fennelk/wiki/pmwiki.php?n=Romsassim.Main
-%
 % Various options allow a high level of customization of romsassim. There
 % are two kind of options: The first kind is followed by an argument, e.g.
 %   romsassim(..., 'logfile', 'log.txt', ...)
@@ -37,8 +33,6 @@
 %     all necessary information (model simulations and data) and then
 %     performs the data assimilation and alters the model state before the
 %     model ensemble is restarted again.
-%     For more information type:
-%         help rassim_template
 % 'assimfunargs': followed by any variable that is passed on to the
 %     assimilation function. This option provides a way to pass on 
 %     parameters directly to the function specified by the 'assimfun' 
@@ -77,9 +71,6 @@
 %     (this option is added because the 'inicond' option with mask 
 %     espression is not able to start the ensemble with different initial 
 %     files)
-%
-%     For more info type
-%         help rassim_template 
 % 'inicond': followed by a 2 element cell-string containing the path and
 %     filename (mask) of ROMS restart files that are used as initial
 %     conditions for the assimilation run. romsassim makes sure to pick a
@@ -100,9 +91,7 @@
 % 'restart': followed by a string containing the prefix (ID) of a previous
 %     romassim data assimilation run that crashed somehow (e.g. due to a
 %     shutdown of the computer) this option will lead to an attempt to
-%     restart the romassim run that was terminated. For more information
-%     about restarts see the wiki:
-%     http://www.phys.ocean.dal.ca/~fennelk/wiki/pmwiki.php?n=Romsassim.Restart
+%     restart the romassim run that was terminated. 
 %     The 'restart' option assumes the romassim run was interrupted before
 %     the next assimilation step was performed. It will begin the restart
 %     with an assimilation step.
@@ -118,7 +107,7 @@
 % 'iniparams': followed by cell containing a cell-string of parameter names
 %     and a nens x numparameters vector of initial parameter values
 % 
-% Less commonly used or old options:
+% Less commonly used options:
 % 
 % 'romsparamchanges': followed by cell, this option allows the setting of
 %     some ROMS parameters prior to the assimilation run (as an alternative
@@ -230,8 +219,8 @@ else
     clear restart_prefix
     clear restart_prefix_alt
 end
+
 % prescribe initial values of perturbed parameters, not generated randomly
-% (Comments by Bin)
 if ~isempty(iniparams)
     userspecifiediniparams = true;
     if numel(iniparams) ~= 2
@@ -310,10 +299,10 @@ if useinifile && changeinifile
         inifiles{k} = fullfile([ipathstr,'/',ifilename,sprintf('_ens%04d.nc',k)]);
     end 
 end
+
 %
 % initialize logfile and write information to log
 %
-
 if ~isempty(logfile)
     keeplog = true;
     if performrestart
@@ -405,13 +394,11 @@ if mvncfiles
         mvncfiles = false;
     end
     clear mvncfilesmask;
-    %for file in his*.nc avg*.nc ; do echo `echo $file | sed 's/\(.*\)\.nc/\1_001.nc/'` ; done
-    %return
 end
 
-if ~isempty(romsparamchanges) % && ~performrestart  % LY: comment out ~performrestart to get the right mainfile
+if ~isempty(romsparamchanges) 
     fprintf(fid, 'performing initial parameter changes specified by ''romsparamchanges''\n');
-    filespecs = {'main', bioparam}; % LY: here bioparam is obtained via eval(settingsfile) on Line 244 (bioparam = 'bio')
+    filespecs = {'main', bioparam}; 
     r = RomsInfileManager(rundir, maininfile);
     for k = 1:3:numel(romsparamchanges)
         if ~ischar(romsparamchanges{k})
@@ -420,12 +407,10 @@ if ~isempty(romsparamchanges) % && ~performrestart  % LY: comment out ~performre
         filespecind = find(strcmp(filespecs, romsparamchanges{k}));
         if filespecind == 1  % make changes in maininfile (ocean.in) specified by 'romsparamchanges'
             [pathstr,filename,fileext] = fileparts(maininfile);
-            %oldfile = maininfile;
             maininfile = ['copy_',filename,fileext];
         elseif filespecind == 2  % make changes in bioparamfile (bio_fennel*.in) 
             r.addSubInfile(bioparam, bioparamfile, 'BPARNAM');
-            [pathstr,filename,fileext] = fileparts(bioparamfile); %#ok<*ASGLU>
-            %oldfile = bioparamfile;
+            [pathstr,filename,fileext] = fileparts(bioparamfile); 
             bioparamfile = ['copy_',filename,fileext];
         else
             error('Invalid format of ''romsparamchanges''.')
@@ -525,7 +510,7 @@ if iscell(assimfunargs)
 else
     datadates = assimfunargs.assimdates;
 end
-datadates(datadates>=stopdate) = []; % added by Bin
+datadates(datadates>=stopdate) = []; 
 datadates(datadates<=startdate) = [];
 datadates = [datadates(:)', stopdate]; % append stop date
 
@@ -561,8 +546,8 @@ if adjustnrst
 end
 
 if useinifile
-    [inifile, nrrec, octime, timediffdays,octime_unit] = findrestartfile(inicond{1}, inicond{2}, startdate, nrreczeropref); %LY: output ocean_time unit
-    if nrrec == 1 % by Bin
+    [inifile, nrrec, octime, timediffdays,octime_unit] = findrestartfile(inicond{1}, inicond{2}, startdate, nrreczeropref); % output ocean_time unit
+    if nrrec == 1 
         nrrec = 0;
         fprintf('Make the nrrec from 1 to 0 becuase initial file is used');
     end
@@ -732,7 +717,7 @@ if simulationmode
 end
 
 if useinifile
-%%%%%% LY: need to convert octime to seconds    
+%%%%%% convert octime to seconds    
     switch octime_unit(1:3)
       case 'day'
         fac = 86400;
@@ -1047,7 +1032,7 @@ while continuerunning
                     for k = 1:numel(paramnames)
                         fprintf(fid, '%15s:', paramnames{k});
                         for k2 = 1:nens
-                            fprintf(fid, ' %9.6f,', paramvalues(k2, k)); % LY: print out the parameter values used before the assimilation step
+                            fprintf(fid, ' %9.6f,', paramvalues(k2, k)); % print out the parameter values used before the assimilation step
                             if mod(k2, 10) == 0 && k2 < nens
                                 fprintf(fid, '\n%s', blanks(16));
                             end
@@ -1081,12 +1066,10 @@ while continuerunning
                         assimoutcontainer{jobrestarts+1} = assimout;
                     end
                     if saveoutput 
-                        save(fullfile(rundir,sprintf('/stats_out/romsassim_assimout%03d.mat', assimstepcounter)),'paramvalues','paramnames');%LY -save(fullfile(rundir,sprintf('romsassim_assimout%03d.mat', assimstepcounter)), 'assimout');
+                        save(fullfile(rundir,sprintf('/stats_out/romsassim_assimout%03d.mat', assimstepcounter)),'paramvalues','paramnames');
                     end
                 else
                     if iscell(assimfunargs)  % assimfunargs is a cell containing mutlpile assimfunction arguments for different assimfunctions
-                        % assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, sdi, paramnames, paramvalues, fid, assimfunargs{2});
-                        % assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, sdi, paramnames, paramvalues, fid, assimfunargs{4});
                         for iassimF = 1:numel(assimfunargs)/2
                             assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, paramnames, paramvalues, fid, assimfunargs{iassimF*2});                            
                         end
@@ -1227,7 +1210,7 @@ while continuerunning
                 if userspecifiediniparams
                     r.scheduleParameterChanges('auto', paramnames, paramvalues(k,:));
                 elseif isempty(betaid)
-                    paramvalues(k,:) = rpv.scheduleParameterChanges(r); % LY: draw new parameters (for jobrestarts==-1 only) 
+                    paramvalues(k,:) = rpv.scheduleParameterChanges(r); % draw new parameters (for jobrestarts==-1 only) 
                 else
                     paramvalues(k,:) = rautil_betaanneal(betaid, 1);
                     r.scheduleParameterChanges('auto', paramnames, paramvalues(k,:));
@@ -1250,12 +1233,12 @@ while continuerunning
             end
         else
             % draw new parameters
-            paramvalues(k,:) = rpv.scheduleParameterChanges(r); % LY: r ~ RomsInfileManager(rundir, maininfile);
+            paramvalues(k,:) = rpv.scheduleParameterChanges(r); 
         end
         restartfiles(k) = changeoutputparameters(r, outdir, subprefix{k}, 'rst'); % parameters relative to rundir
             
         if writefiles
-            newmaininfile = r.writeOut(subprefix{k}); % LY: write out the in-files with the scheduled parameter changes
+            newmaininfile = r.writeOut(subprefix{k}); % write out the in-files with the scheduled parameter changes
         end
         
         newrunfiles{k} = fullfile(rundir, sprintf('%srunfile.sh', subprefix{k}));      

@@ -4,13 +4,6 @@
 % "espresso": include wet points only (more efficient)
 % -------------------------------------------------------------------------
 %
-% by Jiatang Hu, Jan 2010
-%
-% incorporated within romsassim, Feb 2010
-% updated on Mar 08, 2010
-%
-% updated by Liuqian Yu, Mar 2016 
-%                  Bin Wang, Mar 2020
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % This function 
@@ -38,16 +31,12 @@ nx = kfparams.nx;
 ny = kfparams.ny;
 nlayer = kfparams.nz;
 
-%----------------- preparation for parameter estimation -------------------
-%
+% 
 % store parameter information in kfparams 
 %
 kfparams.paramnames = paramnames; % kfprams will be saved in stats_out
 kfparams.paramvalues_for(:,:) = paramvalues; % paramvalues before assimilation
 newparamvalues = paramvalues;
-
-%--------------------------------------------------------------------------
-
 
 %
 % active the data assimilation

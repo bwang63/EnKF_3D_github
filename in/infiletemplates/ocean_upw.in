@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo_upw.dat
+     VARNAME = /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo_upw.dat          ! (edit)
 
 ! Number of nested grids.
 
@@ -185,7 +185,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
   
-      NTIMES ==  51552
+      NTIMES == 51552
           DT == 180.0d0
      NDTFAST == 30
 
@@ -834,7 +834,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc
+     GRDNAME == /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc         ! (edit)
      ININAME == upw_ini.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
@@ -879,20 +879,20 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
      NFFILES == 1                          ! number of unique forcing files
 
-     FRCNAME == /misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/input/upw_suvstr_3hourly_180d_2Lm_070_0001.nc
+     FRCNAME == forcing.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 
      DAINAME == ocean_dai.nc
      GSTNAME == /dev/null
-     RSTNAME == /misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/rst_upwelling.nc
-     HISNAME == /misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/his_upwelling.nc
+     RSTNAME == ocean_rst.nc
+     HISNAME == ocean_his.nc
      QCKNAME == ocean_qck.nc
      TLMNAME == /dev/null
      TLFNAME == /dev/null
      ADJNAME == /dev/null
-     AVGNAME == /misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/avg_upwelling.nc
-     DIANAME == /misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/dia_upwelling.nc
+     AVGNAME == ocean_avg.nc
+     DIANAME == ocean_dia.nc
      STANAME == /dev/null
      FLTNAME == /dev/null
 

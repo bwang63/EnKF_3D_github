@@ -4,23 +4,14 @@
 %
 % generate a structure (kfparams) holding parameters for the Kalman Filter 
 % based algorithm;
-% type 'edit' to search for the parameters that might need some change for 
-% your application; 
 % reference: (Pavel Sakov,2008 - enkf-matlab toolbox)
-%
-% by Jiatang Hu, Jan 2010
-%
-% incorporated within romassim, Feb 2010
-%
-% updated later by Jann Paul Mattern, Liuqian Yu, Bin Wang
-%
 % ----------------------------------------------------------------------------------------
 %
 % path of the sub-directory matfile: matrixes created and used in data
 % assimilation will be saved under this directory, e.g. distance and
 % horizontal localization coefficient
 % 
-kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % edit
+kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; 
 if ~exist(kfparams.matfilesdir,'dir')
     mkdir(kfparams.matfilesdir)
 end
@@ -57,7 +48,7 @@ model = {'physical-biological coupled model: ROMS with Bio_Fennel'};
 kfparams.model = model{1};
 
 %
-% domain (edit)
+% domain
 %
 domain = {'upwelling'};
 kfparams.domain = domain{1};
@@ -65,7 +56,7 @@ kfparams.grd_file = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing
 kfparams.scoord = [3 0 25 16]; % parameters of ROMS vertical grid: [theta_s theta_b Tcline N] 
 
 %
-% grid number of model state variable (edit) 
+% grid number of model state variable
 %
 nx = 84;
 ny = 82;
@@ -138,7 +129,7 @@ nall = nx*ny*nz*kfparams.assimvar;
 kfparams.nall = nall;
 
 %
-% measurement provenance (edit) - that would be assimilated to update the model
+% measurement provenance - that would be assimilated to update the model
 % state variables listed in assimvarname. 
 %
 % whether or not to assimilate 
@@ -176,7 +167,7 @@ end
 kfparams.provtype = numel(kfparams.provenance);
 
 %
-% physical variables (edit) - when physical observations are assimilated to
+% physical variables - when physical observations are assimilated to
 % jointly update physical and biological variables (e.g. SSH -> temp&NO3),
 % and only biological variables are log-transformed or other-transformed 
 % (kfparams.transformfunc ~= {''} and kfparams.transformBonly = 1), this 
@@ -224,7 +215,7 @@ kfparams.rm_zeta_bias = 0;
 kfparams.asyncDA = 0;
 
 %
-% assimilation method (edit) - test
+% assimilation method
 % possible options: EnKF / DEnKF / EnKS / EnSRF / SEEK / SEIK
 % Only options DEnKF work (for now); others are not implemented
 % DEnKF is a determinstic EnKF following Sakov and Oke 2008 (used in 
@@ -235,11 +226,11 @@ method = {'EnKF','DEnKF','EnKS','EnSRF','SEEK','SEIK'};
 kfparams.method = method{2}; 
 
 %
-% solution options  (edit) - test
+% solution options
 % for global analysis 'OCEnKF' is recommended
 % for local analysis 'StandarEnKF' with covariance localization is 
 % recommended
-% LY: StandardEnKFopt is optmized from StandardEnKF; the other options are
+% StandardEnKFopt is optmized from StandardEnKF; the other options are
 % not up to date now
 solver = {'OCEnKF','StandardEnKF','StandardEnKFopt','originalEnKF'};
 kfparams.solver = solver{3}; 
@@ -263,12 +254,12 @@ kfparams.solver = solver{3};
 % obtain a least-squares solution
 
 %
-% efficient subspace pseudo inversion (use when solver = 'OCEnKF') (edit)
+% efficient subspace pseudo inversion (use when solver = 'OCEnKF')
 %
 kfparams.subspace_inv = 1;
 
 %
-% truncation of the SVD  (edit) 
+% truncation of the SVD 
 %
 kfparams.svd_truncation = 1;
 if strcmp(kfparams.solver, 'OCEnKF')
@@ -279,7 +270,7 @@ if strcmp(kfparams.solver, 'OCEnKF')
 end
 
 %
-% resample HA' when its rank < min(nen-1,nobs)  (edit)
+% resample HA' when its rank < min(nen-1,nobs)
 % use when kfparams.subspace_inv = 1 (recommended)
 % PM: I found that an inapropriate sampling of ensemble members, which has a 
 % rank less than min(nen-1,nobs), would lead to a loss of rank of X0 matrix
@@ -290,7 +281,7 @@ end
 kfparams.adjustHYP = 1;
 
 %
-% standard deviation for re-perturbing HA' (edit)
+% standard deviation for re-perturbing HA' 
 %
 kfparams.addrn = 1.e-6;
 
@@ -356,12 +347,12 @@ kfparams.inflate_obsR = 2;
 kfparams.rfactor = 1;
 
 %
-% the inflation factor (edit) 
+% the inflation factor
 % 
 kfparams.inflation = 1.05;  
 
 %
-% apply localization in data assimilation (edit)  - test
+% apply localization in data assimilation
 %
 kfparams.localize = 1;
 
@@ -394,15 +385,13 @@ end
 %
 % influence radius at which the correlation function used in the Schur
 % product vanishes (coefficients set to zero)
-% horizontal filter length / observation cut-off radius (edit) - test
+% horizontal filter length / observation cut-off radius
 % It could be a distance in km (for non-regular spacing model)
 % or number of grid points (for regular spacing model)
 %
 kfparams.local_radius = 10;
 
 % apply differnet localization radius for different observation source 
-% e.g., in Yu et al 2018, the localization radius of assimilating NO3 
-% profiles is two times of that of surface chlorophyll
 kfparams.multi_localradius = 0;
 
 if kfparams.multi_localradius
@@ -428,7 +417,7 @@ spacing = {'regular','non-regular'};
 kfparams.spacing = spacing{2};
 
 %
-% localisation functions (edit) - test
+% localisation functions
 %
 local_func = {'Gauss','Gaspari_Cohn','None'};
 kfparams.local_function = local_func{2};
@@ -542,13 +531,13 @@ kfparams.outdir = sprintf('%s/stats_out/',ncdir);
 
 
 %
-% run cases (edit) 
+% run cases 
 % - prefix for the output netcdf files storing ensemble of forecast and 
 %   analysis state variables at ecah assimilation step; if use multiple
 %   Kfilter_params* files, make sure the runcase names are different in 
 %   differnt files to avoid overwriting each other 
 %
-kfparams.runcase = 'EnKF_2steps_2';  % edit
+kfparams.runcase = 'EnKF_2steps_2';  
 
 %
 % save Kalman gain matrix  

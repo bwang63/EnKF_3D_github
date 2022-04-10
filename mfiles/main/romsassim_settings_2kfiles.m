@@ -70,13 +70,12 @@ numfailedrestartthresh = 4;
 % simulation
 adjustntsavg = false;
 
-% length of a pause in the main loop (after each pause, a qstat will be
-% performed)
+% length of a pause before checking the job status
 pauseint = 10; % in seconds
 
 if ~performrestart
     % prefix appended to filenames
-    prefix =  'EnKF_UPW_2kfilesV2';
+    prefix =  'EnKF_UPW_2kfiles';
 end
 
 % ROMS step size; should be consistent with that in ocean*.in file

@@ -15,25 +15,7 @@ function [YMEAN,YPERT,kfparams] = DEnKF_assim_LA(kfparams,ymean,ypert,yomean,yop
 % perturbation (doesn't need additional eta1) and uses half Kalan gain for
 % updating the anomalies.
 %
-% Also note that I modify the part of codes with localization. For the
-% case of no locaclization, more edits might be required.
-%
-% by Liuqian Yu, Dec 2015. 
-%
-% updated from 'DEnKF_assim_calcK' for local analysis.  - LY, Dec 2015
-%
-%
-% ------------- add following for GOM DA experiments ----------------------
-% updated to allow vertical localization and reducing cross-correlation
-% between different variables at different layers; incorporate with functions
-% calc_kalman_update and calc_kalman_K therein          
-% 
-% calculate tapper coefficient and K*Dinno and K*HA for each layer of each  
-% variable one by one. This is logically correct (and makes more sense) but
-% too slow! Have to compromise and only have individual calculation for K 
-% at a few upper layers for T fields.
-%
-% - LY, Nov 2017 
+% by Liuqian Yu, Nov 2017 
 
 
 if kfparams.verbose
@@ -43,8 +25,7 @@ end
 %
 % calculate R and eta
 %
-% When there is large number of observations (e.g., in GOM_i102 twin 
-% experiment, assimilating SST and SSH wil have nobs=86688), matlab is out 
+% When there is large number of observations matlab is out 
 % of memory to create R matrix (nobs*nobs)!! 
 % ==> need to divide R matrix into two.
 nobs = sum(kfparams.n_obs(:));
@@ -59,7 +40,6 @@ if nobs>maxnumR
 else
     R = generate_R(kfparams,D);
 end
-
 
 %
 % read information on model grid and observations etc in kfparams 
@@ -120,7 +100,6 @@ Dinno = D.value-HYMEAN;
 
 index_y = 1:length(YMEAN);
 index_yl = mod(index_y-1,nxy)+1; % map the index to a horizontal layer
-
 
 %
 % ----------- local analysis (cell by cell in a horizontal layer)----------

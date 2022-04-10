@@ -1,7 +1,5 @@
 clear; clc
 
-profile on
-
 % add path and toolbox that will be used 
 run('../local/startup.m')
 
@@ -29,17 +27,14 @@ stopdate = datenum(2006,06,25);
 refdate = datenum(2006,01,01);  
 
 % data assimilation case name
-prefix = 'EnKF_UPW_2kfilesV2';
+prefix = 'EnKF_UPW_2kfiles';
 logfile = ['log_',prefix,'.txt']; % The name of logfile, its full path will be provided in romsassim_settings_2kfiles.m (rundir)
 
 %
 % observations
 %
-% obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super_obs_satellite_shortversion.nc';
-% the date to perform data assimilate
-% assimdates = [datenum('7-Jan-2006'):2:datenum('20-Jan-2006')];
 obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super_obs_satellite_in-situTN.nc';
-% % the date to perform data assimilate
+% the date to perform data assimilate
 assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
 
 %
@@ -86,8 +81,14 @@ altsettings = 'romsassim_settings_2kfiles';
 assimfun = @rassim_KFilter;    % KFilter-based DA
 
 %
-% rassim function
+% prepare the 1st rassim function
 %
+% in this test case, we have two assimilation steps. In the first step, we
+% assimilate the physical observations, e.g. SSH and SST, to update both
+% physical and biological variables. In the second step, we assimilate only
+% biological observations, e.g. surface chlorophyll and in-situ NO3
+% profiles to update biological variables. Therefore, we have two rassim
+% functions.
 assimfunargs1.verifyinput = true;
 assimfunargs1.kfparamsfile = 'KFilter_2steps_1';
 assimfunargs1.obsfile = obsfile;
@@ -181,6 +182,4 @@ switch startmode
             'restart_noassim', prefix,...
             furtheroptions{:}); 
 end
-
-p=profile('info')
-save('profile_results.mat','p');
+disp('Jobs Done')
