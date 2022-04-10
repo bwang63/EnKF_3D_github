@@ -16,7 +16,8 @@ FileToRead_truth =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/out
 FileToRead_free =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_free/output/his_upwelling.nc';
 
 % specify the output files of data assimilation run
-FileToRead_DA = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/EnKF_UPW_2kfiles/nc_out/his_EnKF_UPW_2kfiles_*.nc';
+CaseName_DA = 'EnKF_UPW_2kfilesV2';
+FileToRead_DA = ['/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/' CaseName_DA '/nc_out/his_' CaseName_DA '_*.nc'];
 nens = 20; % number of ensemble members
 
 % specify the output files of forecast and analysis 
@@ -26,7 +27,7 @@ nens = 20; % number of ensemble members
 % the temperature, salinity, and NO3.
 % While in the second step, we assimilate surface chlorophyll to update
 % only biological variables, including chlorophyll and phytoplankton
-FileToRead_ana = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/EnKF_UPW_2kfiles/stats_out/EnKF_2steps_*_assimstep_*.nc';
+FileToRead_ana = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/' CaseName_DA '/stats_out/EnKF_2steps_*_assimstep_*.nc';
 ncycles = 26; % number of data assimilation cycles
 
 assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
@@ -36,10 +37,10 @@ varnames = {'temp','chlorophyll','NO3'};
 units = {'\circC','mg m^{-3}','mmol N m^{-3}'};
 
 % set the y-axis limits
-property.ylim = {[18.8 20.5],[0 1],[0 1.2]};
+property.ylim = {[18.8 20.5],[0 1],[0 1.5]};
 %% To plot the timeseries of domain averages in the surface layer
 % loop over the variables to be plot
-for ivar = 3%:numel(varnames)
+for ivar = 1:numel(varnames)
     % read model results from the truth run
     time_truth = ncread(FileToRead_truth,'ocean_time')/86400+reftime; 
     value_truth = domain_average(FileToRead_truth, varnames{ivar});
@@ -96,22 +97,23 @@ for ivar = 3%:numel(varnames)
     max_value_DA = max(value_DA,[],2); % minimum of ensemble members
     
     figure('position',[300 900 705 245]);
+    % reftime = datenum('2006-5-1');
     subplot(1,2,1); subplot(1,1,1)
     for icycle = 1:ncycles
-        plot(assimdates(icycle)*[1 1],property.ylim{ivar},'color',[1 1 1]*0.7); hold on
+        plot(assimdates(icycle)*[1 1]-reftime,property.ylim{ivar},'color',[1 1 1]*0.7); hold on
     end
-    p(1) = plot(time_truth,value_truth,'k','linewidth',2); hold on
-    p(2) = plot(time_free,value_free,'linewidth',2,'color',[0 0.45 0.74]); hold on
-    plotarea(time_DA,min_value_DA,max_value_DA,[0.85 0.33 0.1],'FaceAlpha',0.1,'LineStyle','none'); hold on
-    plotarea(time_DA,mean_value_DA-std_value_DA,mean_value_DA+std_value_DA,[0.85 0.33 0.1],'FaceAlpha',0.3,'LineStyle','none'); hold on
-    p(3) = plot(time_DA,mean_value_DA,'linewidth',2,'color',[0.85 0.33 0.1]); hold on
-    xlim([128 164]+reftime); set(gca,'xtick',time_free(1:4:end),'xticklabel',datestr(time_free(1:4:end),'dd-mmm')); 
-    ylabel([varnames{ivar} ': ' units{ivar}])
+    p(1) = plot(time_truth-reftime,value_truth,'k','linewidth',2); hold on
+    p(2) = plot(time_free-reftime,value_free,'linewidth',2,'color',[0 0.45 0.74]); hold on
+    plotarea(time_DA-reftime,min_value_DA,max_value_DA,[0.85 0.33 0.1],'FaceAlpha',0.1,'LineStyle','none'); hold on
+    plotarea(time_DA-reftime,mean_value_DA-std_value_DA,mean_value_DA+std_value_DA,[0.85 0.33 0.1],'FaceAlpha',0.3,'LineStyle','none'); hold on
+    p(3) = plot(time_DA-reftime,mean_value_DA,'linewidth',2,'color',[0.85 0.33 0.1]); hold on
+    xlim([128 164]); set(gca,'xtick',time_free(1:4:end)-reftime); xlabel('time (days)')
+    ylabel([varnames{ivar} ' (' units{ivar} ')'])
     ylim(property.ylim{ivar})
-    le = legend(p,'Truth','Free run','DA run'); set(le,'location','southeast')
+    le = legend(p,'Truth','Free run','DA run'); set(le,'location','northeast')
     set(gca,'fontsize',10,'position',[0.15 0.25 0.8 0.7]);
-    print('-dpng','-r400',['timeseries_' varnames{ivar}])
-    print('-deps','-r400',['timeseries_' varnames{ivar}])
+    print('-dpng','-r400',['timeseries_' varnames{ivar}  ])
+    print('-depsc','-r400',['timeseries_' varnames{ivar}  ])
     clearvars time_truth value_truth time_free value_free time_DA value_DA
 end
 
