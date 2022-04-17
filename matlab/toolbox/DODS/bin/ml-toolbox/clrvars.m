@@ -1,7 +1,0 @@
-% CLEAN UP VARIABLES IN USER WORKSPACE
-clear browse_acq_urls browse_getvariables browse_clear_button 
-clear browse_i browse_color_limits browse_j browse_count browse_k
-clear browse_data_list browse_palette browse_data_range browse_string
-clear browse_dataindex browse_string2 browse_depth_name browse_sz
-clear browse_empty browse_w browse_figure browse_whos browse_georange
-clear browse_metadata

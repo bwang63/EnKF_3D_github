@@ -27,7 +27,7 @@ stopdate = datenum(2006,06,25);
 refdate = datenum(2006,01,01);  
 
 % data assimilation case name
-prefix = 'EnKF_UPW_2kfiles';
+prefix = 'EnKF_UPW_2kfilesV2';
 logfile = ['log_',prefix,'.txt']; % The name of logfile, its full path will be provided in romsassim_settings_2kfiles.m (rundir)
 
 %

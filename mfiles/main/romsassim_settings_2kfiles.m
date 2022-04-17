@@ -75,7 +75,7 @@ pauseint = 10; % in seconds
 
 if ~performrestart
     % prefix appended to filenames
-    prefix =  'EnKF_UPW_2kfiles';
+    prefix =  'EnKF_UPW_2kfilesV2';
 end
 
 % ROMS step size; should be consistent with that in ocean*.in file

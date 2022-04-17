@@ -79,7 +79,7 @@ outdir = fullfile('nc_out'); % this directory is inside the rundir.
 basename = [prefix,'_'];   % prefix for the file names.
 ```
 
-2) to specify the path of matfiles directory in `./main/KFilter_2step_\*m` 
+2) to specify the path of matfiles directory in `./main/KFilter_2step_*m` 
 ```matlab
 % path of the sub-directory matfile: matrixes created and used in data
 % assimilation will be saved under this directory, e.g. distance and

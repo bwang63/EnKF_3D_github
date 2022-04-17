@@ -1,9 +1,0 @@
-
-$Id: README,v 1.1.6.2 2002/08/31 00:19:16 jimg Exp $
-
-The ml-toolbox uses the loaddods Matlab command line tool. This tool works
-with both Matlab 5 and 6, which means that the ml-toolbox should work with
-both those as well. However, when using the ml-toolbox with Matlab 6.x, you
-must start Matlab using the -nojvm option. Without this option Matlab won't
-be able to run the loaddods command line tool. We apologize for this
-inconvenience; a future version of the ml-toolbox will address this issue.
