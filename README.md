@@ -90,10 +90,14 @@ if ~exist(kfparams.matfilesdir,'dir')
     mkdir(kfparams.matfilesdir)
 end
 ```
-And the out and matfiles directories will be created by the code if they don't exist.
+And the `out` and `matfiles` directories will be created by the code if they don't exist.
 
-## Case 1. To start a new data assimilation run in the same cluster
-### Step 1: Prepare the model input files and save them in the `in` directory
+## To start a new data assimilation run 
+We have setup a twin experiment in an idealized channel that experiences the wind-driven upwelling. The twin experiment consists of a reference model run which is referred to as the **truth**, a **free** model run with the biased wind forcing and biological parameters, and an ensemble based **DA** model run which assimilates the synthetic observations from the **truth**. In our **DA** model run, we have two assimilation steps. In the first step, we assimilate the physical observations (i.e., sea surface height, sea surface temperature, and in-situ profiles of temperature) to update both physical and biological model state variables (i.e., temperature and NO3). In the second step, we assimilate the biological observations (i.e., surface chlorophyll and in-situ profiles of NO3) to update only biological model state variables (i.e., chlorophyll, phytoplankton, zooplankton, and NO3)
+
+### Step 1: Register at the ROMS website (www.myroms.org) and download the source code
+
+### Step 2: Prepare the model input files and save them in the `in` directory
 #### 1) The executable file of ROMS (e.g., oceanM or romsM in the latest version of ROMS)
 - Set options <MY_ROOT_DIR> <MY_ROMS_SRC> in the build script (`/in/executable/build.sh`). These options will tell the script where the ROMS source code is
 - Set options <FORT> to specify the compiler that will be used, e.g. ifort
@@ -107,23 +111,18 @@ And the out and matfiles directories will be created by the code if they don't e
 #### 2) The input script of ROMS (e.g., ocean_upw.in or roms_\*.in in the latest version of ROMS)
 - Type '(edit)' to search for the settings that might need some change for your applications
 
-#### 3) The input script of biological component (e.g., bio_Fennel_upw.in)
-#### 4) The metadata variable definition file (varinfo_upw.data)
-#### 5) The model grid file (e.g., upw_grd.nc)
-#### 6) The model forcings:
+#### 3) The input script of biological component (e.g., bio_Fennel_upw.in, no changes required for our testing case but users are encouraged to test different parameter values)
+#### 4) The metadata variable definition file (varinfo_upw.dat, available in the ~in~ directory or in the ROMS source code: ROMS/External/varinfo.dat)
+#### 5) The model grid file (e.g., upw_grd.nc, available in https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing)
+#### 6) The model forcings (available in https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing):
 - atmospheric forcing (e.g., the wind forcing, upw_suvstr_3hourly_180d_2Lm_06_\*.nc)
 - initial condition (e.g., upw_ini.nc)
 - open boundary condition (not applicable in this testing case)
 
-#### 7) The observation file (e.g., UPW_super_obs_satellite_in-situTN.nc)
+#### 7) The observation file (e.g., UPW_super_obs_satellite_in-situTN.nc, available in https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing)
 
-### Step 2: Set up the data assimilation experiment
-Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_2kfiles.m`, `KFilter_2steps_*.m`)
 
-### Step 3: Run the main driver `main.m` in matlab
-
-## Case 2. To run the data assimilation in a new cluster/supercomputer
-### Step 1: To extend the following 4 scripts based on the cluster’s system settings
+### Step 3: To extend the following 4 scripts based on the cluster’s system settings if run the data assimilation in a new cluster/supercomputer
 - `/mfiles/roms/autorun/qtools/qdel.m`  -- to delete jobs from cluster
 - `/mfiles/roms/autorun/qtools/qjobqueue.m`  -- to check job queue
 - `/mfiles/roms/autorun/qtools/qjobstatus.m` -- to check job status
@@ -155,7 +154,7 @@ end
 [status, message] = system(excestr);
 ```
 
-### Step 2: A template of jobs submission script has to be provided
+### Step 4: A template of jobs submission script has to be provided if run the data assimilation in a new cluster/supercomputer
 - `/mfiles/roms/autorun/filemanipulation/templatefiles/mpirun_clusterName.template`
 
 **_note_**: The clusterName should be in lower case.
@@ -211,3 +210,9 @@ cd <<DIR>>
 srun <<EXECUTABLE>> <<INFILE>> <<OUTFILE>>
 
 ```
+### Step 5: Set up the data assimilation experiment
+Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_2kfiles.m`, `KFilter_2steps_*.m`)
+
+### Step 6: Run the main driver `main.m` in matlab
+         
+         
