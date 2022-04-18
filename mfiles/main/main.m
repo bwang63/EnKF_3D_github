@@ -132,7 +132,7 @@ furtheroptions = {'saveoutput', 'logqerror','romsparamchanges',{'main', {'NtileI
 % startmode = 2; this option is similar to startmode = 1
 %     it will begin the restart with forecast step
 
-startmode = 0;
+startmode = 1;
 switch startmode
     case 0
         romsassim_multi_clusters('clusterName',clusterName,...

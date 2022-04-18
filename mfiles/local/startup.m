@@ -5,7 +5,7 @@ disp(['  Starting ' which(mfilename)])
 addpath ../../matlab/mexcdf
 addpath('../../matlab/mexcdf/mexnc','-end')
 addpath('../../matlab/mexcdf/snctools','-end')
-
+% 
 % add path to netcdf toolboxes
 disp(' Adding netcdf toolboxes')
 addpath ../../matlab/toolbox/seagrid
