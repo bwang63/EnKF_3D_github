@@ -22,14 +22,7 @@ in-situ profiles of NO3) to update only biological model state variables (i.e., 
               romsassim_settings_2kfiles.m -- settings about ROMS model
             
               KFilter_2steps_*.m -- settings about the data assimilation  
-                                    (in our testing case, we have two assimilation steps. 
-                                    In the first step, we assimilate physical observations, 
-                                    e.g. SSH and SST, to update both physical and biological 
-                                    variables, e.g. temperature and NO3. In the second step,
-                                    we assimilate only biological observations, e.g. surface 
-                                    chlorophyll and in-situ NO3 profiles, to update biological 
-                                    variables, e.g., chlorophyll, phytoplankton, and NO3. 
-                                    Therefore, we have to KFilter_2steps_*.m scripts)
+                                    (in this application, we have two KFilter_2steps_*.m scripts becuase we have two update steps)
        
          EnKF -- data assimilation functions
        
@@ -46,8 +39,7 @@ in-situ profiles of NO3) to update only biological model state variables (i.e., 
         infiletemplates -- input files of ROMS
         
         input_forcing -- input forcing files
-                         (forcings required to run our testing case are saved: 
-                         https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing)
+                         
        
 `out` -- output files directory
 
