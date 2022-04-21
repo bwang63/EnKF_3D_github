@@ -52,7 +52,7 @@ in-situ profiles of NO3) to update only biological model state variables (i.e., 
 1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
 ```matlab
 % main directory with the runfiles
-rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); 
+rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
 
 if writefiles
     % create rundir now
@@ -64,18 +64,16 @@ end
 % 
 
 % the executable file of ROMS (e.g. oceanM)
-executable = '../../in/executable/oceanM'; 
+executable = '../../in/executable/oceanM'; % (edit)
 
 % the main in-file (e.g. ocean.in)
-maininfile = '../../in/infiletemplates/ocean_upw.in'; 
+maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
 
 % the biological parameter file (bio_Fennel.in)
-bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; 
+bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)
 
 % directory for the netcdf output files
 outdir = fullfile('nc_out'); % this directory is inside the rundir.
-
-basename = [prefix,'_'];   % prefix for the file names.
 ```
 
 2) to specify the path of matfiles directory in `./main/KFilter_2step_*m` 
@@ -84,7 +82,7 @@ basename = [prefix,'_'];   % prefix for the file names.
 % assimilation will be saved under this directory, e.g. distance and
 % horizontal localization coefficient
 % 
-kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % edit
+kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % (edit)
 if ~exist(kfparams.matfilesdir,'dir')
     mkdir(kfparams.matfilesdir)
 end
@@ -94,7 +92,7 @@ And the `out` and `matfiles` directories will be created by the code if they don
 ## To start a new data assimilation run 
 ### Step 1: Register at the ROMS website (www.myroms.org) and download the source code
 
-### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified by users in step 5)
+### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified in step 5)
 #### 1) The executable file of ROMS (e.g., oceanM or romsM in the latest version of ROMS)
 - Set options <MY_ROOT_DIR> <MY_ROMS_SRC> in the build script (`/in/executable/build.sh`). These options will tell the script where the ROMS source code is
 - Set options <FORT> to specify the compiler that will be used, e.g. ifort
