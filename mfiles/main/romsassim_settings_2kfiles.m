@@ -146,7 +146,7 @@ end
 %
 
 % main directory with the runfiles
-rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); 
+rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
 
 if writefiles
     % create rundir now
@@ -158,13 +158,13 @@ end
 % 
 
 % the executable file of ROMS (e.g. oceanM)
-executable = '../../in/executable/oceanM'; 
+executable = '../../in/executable/oceanM'; % (edit)
 
 % the main in-file (e.g. ocean.in)
-maininfile = '../../in/infiletemplates/ocean_upw.in'; 
+maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
 
 % the biological parameter file (bio_Fennel.in)
-bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; 
+bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)
 
 % directory for the netcdf output files
 outdir = fullfile('nc_out'); % this directory is inside the rundir.

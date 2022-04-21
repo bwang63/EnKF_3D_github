@@ -4,10 +4,11 @@ clear; clc
 run('../local/startup.m')
 
 % the name of the supercomputer/cluster
-clusterName = 'Catz';
+clusterName = 'Catz'; % (edit)
 clusterStatus = {'r','qw','E'}; % the first status means that the job is running, 
                                           % the second status means that the job is waiting
                                           % the third status means that the job has errors
+                                          % (edit)
 
 % puts the settings of the random number generator used by RANDN etc to
 % their default values so that they produce the same random numbers as 
@@ -33,7 +34,7 @@ logfile = ['log_',prefix,'.txt']; % The name of logfile, its full path will be p
 %
 % observations
 %
-obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super_obs_satellite_in-situTN.nc';
+obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super_obs_satellite_in-situTN.nc'; % (edit)
 % the date to perform data assimilate
 assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
 
@@ -42,16 +43,16 @@ assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May
 %
 % - if use an ensemble of initial conditions, the option 'changeinifile'
 % has to be added in 'furtheroptions' for romsassim 
-inidir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/';
-inicond = {inidir 'upw_ini.nc'};
+inidir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/'; % (edit)
+inicond = {inidir 'upw_ini.nc'}; % (edit)
 
 %
 % atmospheric forcing file
 %
 % - if use an ensemble of forcing files, the option 'changefrcfile'
 % has to be added in 'furtheroptions' for romsassim 
-frcdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/wind_forcing/';
-frccond = {[frcdir,'upw_suvstr_3hourly_180d_2Lm_06.nc']};
+frcdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/wind_forcing/'; % (edit)
+frccond = {[frcdir,'upw_suvstr_3hourly_180d_2Lm_06.nc']}; % (edit)
 
 % indexes to atmospheric forcing files that will be changed, 
 % i.e., frccond{idxffiles}

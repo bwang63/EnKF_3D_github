@@ -11,7 +11,7 @@
 % assimilation will be saved under this directory, e.g. distance and
 % horizontal localization coefficient
 % 
-kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; 
+kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % (edit)
 if ~exist(kfparams.matfilesdir,'dir')
     mkdir(kfparams.matfilesdir)
 end
@@ -52,7 +52,7 @@ kfparams.model = model{1};
 %
 domain = {'upwelling'};
 kfparams.domain = domain{1};
-kfparams.grd_file = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc';  % grid file
+kfparams.grd_file = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc';  % grid file (edit)
 kfparams.scoord = [3 0 25 16]; % parameters of ROMS vertical grid: [theta_s theta_b Tcline N] 
 
 %

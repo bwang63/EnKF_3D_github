@@ -94,7 +94,7 @@ And the `out` and `matfiles` directories will be created by the code if they don
 ## To start a new data assimilation run 
 ### Step 1: Register at the ROMS website (www.myroms.org) and download the source code
 
-### Step 2: Prepare the model input files and save them in the `in` directory
+### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified by users in step 5)
 #### 1) The executable file of ROMS (e.g., oceanM or romsM in the latest version of ROMS)
 - Set options <MY_ROOT_DIR> <MY_ROMS_SRC> in the build script (`/in/executable/build.sh`). These options will tell the script where the ROMS source code is
 - Set options <FORT> to specify the compiler that will be used, e.g. ifort
@@ -106,7 +106,7 @@ And the `out` and `matfiles` directories will be created by the code if they don
 **_note_**: the CPP options used in the model are defined in the head file (e.g., upwelling.h). The head file is specified by the option <ROMS_APPLICATION> in the build script
 
 #### 2) The input script of ROMS (e.g., ocean_upw.in or roms_\*.in in the latest version of ROMS)
-- Type '(edit)' to search for the settings that might need some change for your applications
+- Type '(edit)' to search for the settings that need changes to run this application. Other settings might have been tested for other applications 
 
 #### 3) The input script of biological component (e.g., bio_Fennel_upw.in, no changes required for our testing case but users are encouraged to test different parameter values)
 #### 4) The metadata variable definition file (varinfo_upw.dat, available in the ~in~ directory or in the ROMS source code: ROMS/External/varinfo.dat)
@@ -209,6 +209,7 @@ srun <<EXECUTABLE>> <<INFILE>> <<OUTFILE>>
 ```
 ### Step 5: Set up the data assimilation experiment
 Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_2kfiles.m`, `KFilter_2steps_*.m`)
+Type '(edit)' to search for the settings that need changes to run this application. Other settings might have been tested for other applications 
 
 ### Step 6: Run the main driver `main.m` in matlab
          
