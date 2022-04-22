@@ -1,8 +1,8 @@
 !  Fennel et al (2006) Nitrogen-based Biological Model Parameters.
 !
-!svn $Id: bio_Fennel.in 810 2016-08-05 01:58:16Z arango $
+!svn $Id: bio_Fennel.in 1099 2022-01-06 21:01:01Z arango $
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2016 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2022 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -182,7 +182,7 @@
 ! River detritus remineralization rate N-fraction [1/day], {0.03d0}.
 
        RDeRRN == 0.03d0
-       
+
 ! River detritus remineralization rate N-fraction [1/day], {0.03d0}.
 ! Warning, River detritus carbon is not included yet
 
@@ -235,6 +235,66 @@ LtracerSponge == 15*F
 
        TNUDG == 15*1.0d0                        ! days
 
+! Set horizontal and vertical advection schemes for biological tracers.
+! A different advection scheme is allowed for each tracer. For example,
+! a positive-definite (monotonic) algorithm can be activated for
+! salinity and biological tracers, while a different one is set for
+! temperature. [1:NAT+NPT,Ngrids] values are expected.
+!
+!   Keyword    Advection Algorithm
+!
+!   A4         4th-order Akima (horizontal/vertical)
+!   C2         2nd-order centered differences (horizontal/vertical)
+!   C4         4th-order centered differences (horizontal/vertical)
+!   HSIMT      3th-order HSIMT-TVD (horizontal/vertical)
+!   MPDATA     recursive flux corrected MPDATA (horizontal/vertical)
+!   SPLINES    parabolic splines (only vertical)
+!   SU3        split third-order upstream (horizontal/vertical)
+!   U3         3rd-order upstream-biased (only horizontal)
+!
+! The user has the option of specifying the full Keyword or the first
+! two letters, regardless if using uppercase or lowercase. If nested
+! grids, specify values for each grid.
+
+   Hadvection == HSIMT    \                     ! idbio( 1), NO3
+                 HSIMT    \                     ! idbio( 2), NH4
+                 HSIMT    \                     ! idbio( 3), chlorophyll
+                 HSIMT    \                     ! idbio( 4), phytoplankton
+                 HSIMT    \                     ! idbio( 5), zooplankton
+                 HSIMT    \                     ! idbio( 6), LdetritusN
+                 HSIMT    \                     ! idbio( 7), SdetritusN
+                 HSIMT    \                     ! idbio( 8), LdetritusC
+                 HSIMT    \                     ! idbio( 9), SdetritusC
+                 HSIMT    \                     ! idbio(10), TIC
+                 HSIMT    \                     ! idbio(11), alkalinity
+                 HSIMT    \                     ! idbio(12), oxygen
+                 HSIMT    \                     ! idbio(13), PO4
+                 HSIMT    \                     ! idbio(14), RdetritusN
+                 HSIMT                          ! idbio(15), RdetritusC
+
+   Vadvection == HSIMT    \                     ! idbio( 1), NO3
+                 HSIMT    \                     ! idbio( 2), NH4
+                 HSIMT    \                     ! idbio( 3), chlorophyll
+                 HSIMT    \                     ! idbio( 4), phytoplankton
+                 HSIMT    \                     ! idbio( 5), zooplankton
+                 HSIMT    \                     ! idbio( 6), LdetritusN
+                 HSIMT    \                     ! idbio( 7), SdetritusN
+                 HSIMT    \                     ! idbio( 8), LdetritusC
+                 HSIMT    \                     ! idbio( 9), SdetritusC
+                 HSIMT    \                     ! idbio(10), TIC
+                 HSIMT    \                     ! idbio(11), alkalinity
+                 HSIMT    \                     ! idbio(12), oxygen
+                 HSIMT    \                     ! idbio(13), PO4
+                 HSIMT    \                     ! idbio(14), RdetritusN
+                 HSIMT                          ! idbio(15), RdetritusC
+
+! Adjoint-based algorithms can have different horizontal and schemes
+! for active and inert tracers.
+
+ad_Hadvection == U3                             ! idbio(:), compact
+
+ad_Vadvection == C4                             ! idbio(:), compact
+
 ! Set lateral boundary conditions keyword. Notice that a value is expected
 ! for each boundary segment per nested grid for each state variable.
 !
@@ -270,40 +330,40 @@ LtracerSponge == 15*F
 !
 !                   1       2       3       4
 
-   LBC(isTvar) ==   Per     Clo     Per  Clo \    ! idbio( 1), NO3
-                    Per     Clo     Per  Clo \    ! idbio( 2), NH4
-                    Per     Clo     Per  Clo \    ! idbio( 3), chlorophyll
-                    Per     Clo     Per  Clo \    ! idbio( 4), phytoplankton
-                    Per     Clo     Per  Clo \    ! idbio( 5), zooplankton
-                    Per     Clo     Per  Clo \    ! idbio( 6), LdetritusN
-                    Per     Clo     Per  Clo \    ! idbio( 7), SdetritusN
-                    Per     Clo     Per  Clo \    ! idbio( 8), LdetritusC
-                    Per     Clo     Per  Clo \    ! idbio( 9), SdetritusC
-                    Per     Clo     Per  Clo \    ! idbio(10), TIC
-                    Per     Clo     Per  Clo \    ! idbio(11), alkalinity
-                    Per     Clo     Per  Clo \    ! idbio(12), oxygen
-                    Per     Clo     Per  Clo \    ! idbio(13), PO4
-                    Per     Clo     Per  Clo \    ! idbio(14), RdetritusN
-                    Per     Clo     Per  Clo      ! idbio(15), RdetritusC
+   LBC(isTvar) ==   Per     Clo     Per     Clo \    ! idbio( 1), NO3
+                    Per     Clo     Per     Clo \    ! idbio( 2), NH4
+                    Per     Clo     Per     Clo \    ! idbio( 3), chlorophyll
+                    Per     Clo     Per     Clo \    ! idbio( 4), phytoplankton
+                    Per     Clo     Per     Clo \    ! idbio( 5), zooplankton
+                    Per     Clo     Per     Clo \    ! idbio( 6), LdetritusN
+                    Per     Clo     Per     Clo \    ! idbio( 7), SdetritusN
+                    Per     Clo     Per     Clo \    ! idbio( 8), LdetritusC
+                    Per     Clo     Per     Clo \    ! idbio( 9), SdetritusC
+                    Per     Clo     Per     Clo \    ! idbio(10), TIC
+                    Per     Clo     Per     Clo \    ! idbio(11), alkalinity
+                    Per     Clo     Per     Clo \    ! idbio(12), oxygen
+                    Per     Clo     Per     Clo \    ! idbio(13), PO4
+                    Per     Clo     Per     Clo \    ! idbio(14), RdetritusN
+                    Per     Clo     Per     Clo      ! idbio(15), RdetritusC
 
 ! Adjoint-based algorithms can have different lateral boundary
 ! conditions keywords.
 
-ad_LBC(isTvar) ==   Per     Clo     Per  Clo \    ! idbio( 1), NO3
-                    Per     Clo     Per  Clo \    ! idbio( 2), NH4
-                    Per     Clo     Per  Clo \    ! idbio( 3), chlorophyll
-                    Per     Clo     Per  Clo \    ! idbio( 4), phytoplankton
-                    Per     Clo     Per  Clo \    ! idbio( 5), zooplankton
-                    Per     Clo     Per  Clo \    ! idbio( 6), LdetritusN
-                    Per     Clo     Per  Clo \    ! idbio( 7), SdetritusN
-                    Per     Clo     Per  Clo \    ! idbio( 8), LdetritusC
-                    Per     Clo     Per  Clo \    ! idbio( 9), SdetritusC
-                    Per     Clo     Per  Clo \    ! idbio(10), TIC
-                    Per     Clo     Per  Clo \    ! idbio(11), alkalinity
-                    Per     Clo     Per  Clo \    ! idbio(12), oxygen
-                    Per     Clo     Per  Clo \    ! idbio(13), PO4
-                    Per     Clo     Per  Clo \    ! idbio(14), RdetritusN
-                    Per     Clo     Per  Clo      ! idbio(15), RdetritusC
+ad_LBC(isTvar) ==   Per     Clo     Per     Clo \    ! idbio( 1), NO3
+                    Per     Clo     Per     Clo \    ! idbio( 2), NH4
+                    Per     Clo     Per     Clo \    ! idbio( 3), chlorophyll
+                    Per     Clo     Per     Clo \    ! idbio( 4), phytoplankton
+                    Per     Clo     Per     Clo \    ! idbio( 5), zooplankton
+                    Per     Clo     Per     Clo \    ! idbio( 6), LdetritusN
+                    Per     Clo     Per     Clo \    ! idbio( 7), SdetritusN
+                    Per     Clo     Per     Clo \    ! idbio( 8), LdetritusC
+                    Per     Clo     Per     Clo \    ! idbio( 9), SdetritusC
+                    Per     Clo     Per     Clo \    ! idbio(10), TIC
+                    Per     Clo     Per     Clo \    ! idbio(11), alkalinity
+                    Per     Clo     Per     Clo \    ! idbio(12), oxygen
+                    Per     Clo     Per     Clo \    ! idbio(13), PO4
+                    Per     Clo     Per     Clo \    ! idbio(14), RdetritusN
+                    Per     Clo     Per     Clo      ! idbio(15), RdetritusC
 
 ! Logical switches (TRUE/FALSE) to activate biological tracers point
 ! Sources/Sinks (like river runoff) and to specify which tracer variables
@@ -397,8 +457,8 @@ Dout(iNifx) == T        ! Nitrification      Nitrification flux
 ! idbio(11)     alkalinity        Alkalinity                         if CARBON
 ! idbio(12)     oxygen            Oxygen concentration               if OXYGEN
 ! idbio(13)     PO4               Phosphate concentration            if PO4
-! idbio(14)     RdetritusN        River detritus N-concentration     if RIVER_PON
-! idbio(15)     RdetritusC        River detritus C-concentration     if RIVER_PON
+! idbio(14)     RdetritusN        River detritus N-concentration     if RIVER_DON
+! idbio(15)     RdetritusC        River detritus C-concentration     if RIVER_DON
 !
 !------------------------------------------------------------------------------
 !
@@ -491,7 +551,6 @@ Dout(iNifx) == T        ! Nitrification      Nitrification flux
 !
 !  SDeRRC         Small carbon detritus remineralization rate [day-1].
 !
-!
 !  RDeRRN         River nitrogen detritus remineralization rate [day-1].
 !
 !  wPhy           Vertical sinking velocity for phytoplankton [m/day].
@@ -568,6 +627,93 @@ Dout(iNifx) == T        ! Nitrification      Nitrification flux
 !
 !  TNUDG          Nudging time scale (days), [1:NBT,1:Ngrids].  Inverse scale
 !                   will be computed internally.
+!
+!------------------------------------------------------------------------------
+! Tracer advection scheme.
+!------------------------------------------------------------------------------
+!
+! It is more advantageous to set the horizontal and vertical advection schemes
+! for each tracer with switches instead of a single CPP flag for all of them.
+! Positive-definite and monotonic algorithms (i.e., MPDATA and HSIMT) are
+! appropriate and useful for positive fields like salinity, inert, biological,
+! and sediment tracers.  However, since the temperature has a dynamic range
+! with negative and positive values in the ocean, other advection schemes are
+! more appropriate.
+!
+! Currently, the following tracer advection schemes are available and are
+! activated using the associated Keyword:
+!
+!   Keyword    Advection Algorithm
+!
+!   A4         4th-order Akima (horizontal/vertical)
+!   C2         2nd-order centered differences (horizontal/vertical)
+!   C4         4th-order centered differences (horizontal/vertical)
+!   HSIMT      3th-order HSIMT with TVD limiter (horizontal/vertical)
+!   MPDATA     recursive flux corrected MPDATA (horizontal/vertical)
+!   SPLINES    parabolic splines reconstruction (only vertical)
+!   SU3        split third-order upstream (horizontal/vertical)
+!   U3         3rd-order upstresm-bias (only horizontal)
+!
+! The user has the option of specifying the full Keyword or the first
+! two letters, regardless if using uppercase or lowercase.
+!
+! If using either HSIMT (Wu and Zhu, 2010) or MPDATA (Margolin and
+! Smolarkiewicz, 1998) options, the user needs to set the same scheme
+! for both horizontal and vertical advection to preserve monotonicity.
+!
+! Hadvection     Horizontal advection for each active (temperature and
+!                  salinity) and inert tracers, [1:NAT+NPT,Ngrids]
+!                  values are expected.
+!
+! Vadvection     Vertical advection for each active (temperature and
+!                  salinity) and inert tracers, [1:NAT+NPT,Ngrids]
+!                  values are expected.
+!
+! ad_Hadvection  Horizontal advection for each active (temperature and
+!                  salinity) and inert tracers in the adjoint-based
+!                  algorithms, [1:NAT+NPT,Ngrids] values are expected.
+!
+! ad_Vadvection  Vertical advection for each active (temperature and
+!                  salinity) and inert tracers in the adjoint-based
+!                  algorithms, [1:NAT+NPT,Ngrids] values are expected.
+!
+! Examples:
+!
+!  Hadvection == A4       \                     ! temperature
+!                MPDATA   \                     ! salinity
+!                HSIMT    \                     ! dye_01, inert(1)
+!                HSIMT                          ! dy2_02, inert(2)
+!
+!  Vadvection == A4       \                     ! temperature
+!                MPDATA   \                     ! salinity
+!                HSIMT    \                     ! dye_01, inert(1)
+!                HSIMT                          ! dye_02, inert(2)
+!
+! or in nested applications
+!
+!  Hadvection == U3       \                     ! temperature, Grid 1
+!                HSIMT    \                     ! salinity,    Grid 1
+!                U3       \                     ! temperature, Grid 2
+!                HSIMT    \                     ! salinity,    Grid 2
+!                U3       \                     ! temperature, Grid 3
+!                HSIMT                          ! salinity,    Grid 3
+!
+!  Vadvection == C4       \                     ! temperature, Grid 1
+!                HSIMT    \                     ! salinity,    Grid 1
+!                C4       \                     ! temperature, Grid 2
+!                HSIMT    \                     ! salinity,    Grid 2
+!                C4       \                     ! temperature, Grid 3
+!                HSIMT                          ! salinity,    Grid 3
+!
+! It is convinient to use the compact specification format for biological and
+! sediment passive tracers as:
+!
+!  Hadvection == HSIMT                          ! idbio(:), compact
+!
+!  Vadvection == HSIMT                          ! idbio(:), compact
+!
+! when all the passive tracers have the same horizontal and vertical tracer
+! advection scheme.
 !
 !------------------------------------------------------------------------------
 ! Lateral boundary conditions parameters.
@@ -738,9 +884,9 @@ Dout(iNifx) == T        ! Nitrification      Nitrification flux
 !                     LnudgeTCLM(idbio(10),ng)    Total inorganic carbon
 !                     LnudgeTCLM(idbio(11),ng)    Alkalinity
 !                     LnudgeTCLM(idbio(12),ng)    Oxygen concentration
-!                     LnudgeCLM(idbio(13),ng)     Phosphate concentration
-!                     LnudgeCLM(idbio(14),ng)     River N-detritus
-!                     LnudgeCLM(idbio(15),ng)     River C-detritus
+!                     LnudgeTCLM(idbio(13),ng)    Phosphate concentration
+!                     LnudgeTCLM(idbio(14),ng)    River N-detritus
+!                     LnudgeTCLM(idbio(15),ng)    River C-detritus
 !
 !                   User also needs to TURN ON the respective logical switches
 !                   "LtracerCLM", described above, to process the required 3D
