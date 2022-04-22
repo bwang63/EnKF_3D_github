@@ -185,4 +185,6 @@ Type '(edit)' to search for the settings that need changes to run this applicati
 
 ### Step 5: Run the main driver `main.m` in matlab
 
+## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
