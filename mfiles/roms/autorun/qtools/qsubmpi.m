@@ -25,10 +25,10 @@ if status ~= 0
     error('Error submitting the job using "%s".', execstr)
 end
 
-tok = regexpi(output, format2, 'tokens');
+tok = regexpi(output, '.* job +(\d+)', 'tokens');
 
 if ~isempty(tok) 
-    jobid = str2double(tok{1}{jobid_position});
+    jobid = str2double(tok{1}{1});
 else
     error('Could not parse sbatch output "%s".', output)
 end
