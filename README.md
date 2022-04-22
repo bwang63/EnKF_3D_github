@@ -181,9 +181,13 @@ srun <<EXECUTABLE>> <<INFILE>> <<OUTFILE>>
 
 ### Step 4: Set up the data assimilation experiment
 Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_1kfiles.m`, `KFilter_2steps_*.m`)
-Type '(edit)' to search for the settings that need changes to run this application. Other settings might have been tested for other applications
+Search for '(edit)' to find settings that likely require changes to run this application. Other settings might have been tested for other applications.
 
-### Step 5: Run the main driver `main.m` in matlab
+### Step 5: Run the main driver `main.m` in `mfiles/main/`
+
+**_note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
+The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
+For testing purposes, the number of jobs submitted to the workload manager can be reduced by decreasing the number of ensemble members (set by the variable `nens` in `mfiles/main/main.m`).
 
 ## License
 
