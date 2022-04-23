@@ -1,31 +1,36 @@
 clear; clc
 
-% add path and toolbox that will be used 
+% add path and toolbox that will be used
 run('../local/startup.m')
+
+% check your configuration (edit)
+% If set to true, data assimilation will not be started, instead a series of tests is performed.
+% It is recommeded to perform a configuration check before running the first data assimilation experiment.
+perform_configuration_check = true;
 
 % the name of the supercomputer/cluster
 clusterName = 'Catz'; % (edit)
-clusterStatus = {'r','qw','E'}; % the first status means that the job is running, 
+clusterStatus = {'r','qw','E'}; % the first status means that the job is running,
                                           % the second status means that the job is waiting
                                           % the third status means that the job has errors
                                           % (edit)
 
 % puts the settings of the random number generator used by RANDN etc to
-% their default values so that they produce the same random numbers as 
+% their default values so that they produce the same random numbers as
 % if you restarted MATLAB.
-rng('default') 
+rng('default')
 
 % number of ensemble members
-nens = 20; 
+nens = 20;
 
 % startdate of the ensemble runs
 startdate = datenum(2006,01,01);
 
-% stopdate of the ensemble runs 
-stopdate = datenum(2006,06,25);  
+% stopdate of the ensemble runs
+stopdate = datenum(2006,06,25);
 
-% reference date of the ensemble runs 
-refdate = datenum(2006,01,01);  
+% reference date of the ensemble runs
+refdate = datenum(2006,01,01);
 
 % data assimilation case name
 prefix = 'EnKF_UPW_2kfilesV2';
@@ -39,10 +44,10 @@ obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super
 assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
 
 %
-% initial condition 
+% initial condition
 %
 % - if use an ensemble of initial conditions, the option 'changeinifile'
-% has to be added in 'furtheroptions' for romsassim 
+% has to be added in 'furtheroptions' for romsassim
 inidir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/'; % (edit)
 inicond = {inidir 'upw_ini.nc'}; % (edit)
 
@@ -50,15 +55,15 @@ inicond = {inidir 'upw_ini.nc'}; % (edit)
 % atmospheric forcing file
 %
 % - if use an ensemble of forcing files, the option 'changefrcfile'
-% has to be added in 'furtheroptions' for romsassim 
+% has to be added in 'furtheroptions' for romsassim
 frcdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/wind_forcing/'; % (edit)
 frccond = {[frcdir,'upw_suvstr_3hourly_180d_2Lm_06.nc']}; % (edit)
 
-% indexes to atmospheric forcing files that will be changed, 
+% indexes to atmospheric forcing files that will be changed,
 % i.e., frccond{idxffiles}
-idxffiles = [1]; 
+idxffiles = [1];
 
-% NOTE: should only leave one forcing file name in 
+% NOTE: should only leave one forcing file name in
 % /in/infiletemplates/ocean_*.in file, because the 'changefrcfile' is only
 % able to grab and overwrite the first line under 'FRCNAME'.
 
@@ -66,7 +71,7 @@ idxffiles = [1];
 % open boundary condition
 %
 % - if use an ensemble of open boundary files, the option 'changebryfile'
-% has to be added in 'furtheroptions' for romsassim 
+% has to be added in 'furtheroptions' for romsassim
 brydir = '';
 brycond = {''};
 
@@ -107,8 +112,8 @@ assimfunargs2.assimdates = assimdates;
 assimfunargs2.refdate = refdate;
 
 %
-% combine 
-%  
+% combine
+%
 assimfunargs = {@rassim_KFilter, assimfunargs1, @rassim_KFilter, assimfunargs2};
 
 
@@ -116,7 +121,7 @@ assimfunargs = {@rassim_KFilter, assimfunargs1, @rassim_KFilter, assimfunargs2};
 clear assimfunargs1 assimfunargs2
 
 
-% cell containing further options for romsassim 
+% cell containing further options for romsassim
 furtheroptions = {'saveoutput', 'logqerror','romsparamchanges',{'main', {'NtileI','NtileJ'}, {'2','4'}}, ...
     'changefrcfile'};
 
@@ -126,14 +131,25 @@ furtheroptions = {'saveoutput', 'logqerror','romsparamchanges',{'main', {'NtileI
 % startmode = 0; start a new DA application
 %
 % startmode = 1; restart a previous DA application that was determined
-%     It assumes the romassim run was interrupted before the next 
-%     assimilation step was performed. It will begin the restart with an 
+%     It assumes the romassim run was interrupted before the next
+%     assimilation step was performed. It will begin the restart with an
 %     assimilation step.
 %
 % startmode = 2; this option is similar to startmode = 1
 %     it will begin the restart with forecast step
 
 startmode = 0;
+
+
+if perform_configuration_check
+    % do not start assimilation
+    startmode = -1;
+
+    fprintf('\nchecking configuration\n\nTo turn off this check, set "perform_configuration_check = false" in "%s".\n\n', [mfilename('fullpath'), '.m'])
+    check_configuration(assimfunargs, inicond, frccond, brycond, altsettings)
+end
+
+
 switch startmode
     case 0
         romsassim_multi_clusters('clusterName',clusterName,...
@@ -165,7 +181,7 @@ switch startmode
             'logfile', logfile, ...
             'altsettings', altsettings, ...
             'restart', prefix,...
-            furtheroptions{:}); 
+            furtheroptions{:});
     case 2
         romsassim_multi_clusters('clusterName',clusterName,...
             'clusterStatus',clusterStatus,...
@@ -181,6 +197,8 @@ switch startmode
             'logfile', logfile, ...
             'altsettings', altsettings, ...
             'restart_noassim', prefix,...
-            furtheroptions{:}); 
+            furtheroptions{:});
 end
-disp('Jobs Done')
+if ~perform_configuration_check
+    disp('Jobs Done')
+end
