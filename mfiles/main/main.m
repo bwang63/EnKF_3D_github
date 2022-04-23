@@ -10,10 +10,13 @@ perform_configuration_check = true;
 
 % the name of the supercomputer/cluster
 clusterName = 'Catz'; % (edit)
-clusterStatus = {'r','qw','E'}; % the first status means that the job is running,
-                                          % the second status means that the job is waiting
-                                          % the third status means that the job has errors
-                                          % (edit)
+
+% Cell array of 3 status codes used by the workload manager.
+% the first status means that the job is running,
+% the second status means that the job is waiting
+% the third status means that the job has errors
+% may need (edit) if slurm is not used to submit jobs
+clusterStatus = {'R','PD','F'};
 
 % puts the settings of the random number generator used by RANDN etc to
 % their default values so that they produce the same random numbers as
