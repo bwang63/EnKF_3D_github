@@ -12,9 +12,6 @@
 % horizontal localization coefficient
 % 
 kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % (edit)
-if ~exist(kfparams.matfilesdir,'dir')
-    mkdir(kfparams.matfilesdir)
-end
 
 %
 % verbose
