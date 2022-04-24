@@ -97,6 +97,11 @@ then run `main.m` to perform a data assimilation run.
 The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
 For testing purposes, the number of jobs submitted to the workload manager can be reduced by decreasing the number of ensemble members (set by the variable `nens` in `mfiles/main/main.m`).
 
+### Step 7: Customize the data assimilation
+
+After completing the first data assimilation run, feel free to modify the configuration or data assimilation settings or even change the ROMS configuration to perform data assimilation in a differnet model domain.
+
+
 ## Guide to the subdirectories
 `matlab` -- toolbox directory, e.g. netcdf
 
