@@ -1,5 +1,5 @@
 # Ensemble Kalman filter application for an ocean biogeochemical model in an idealized 3-dimensional channel
-The `MATLAB` code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
+The `Matlab` code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
 
 This set of code was developed by the MEMG group (http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada
 
@@ -47,7 +47,7 @@ in-situ profiles of NO3) to update only biological model state variables (i.e., 
 
 `figures` -- reading output directory
 
-**_note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the setting up scripts:
+**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the setting up scripts:
 
 1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
 ```matlab
@@ -100,7 +100,7 @@ Register at the [ROMS website](https://www.myroms.org) and download the source c
 ```
 ./build.sh
 ```
-**_note_**: the CPP options used in the model are defined in the header file (e.g., `upwelling.h`). The head file is specified by the option `<ROMS_APPLICATION>` in the build script.
+**_Note_**: the CPP options used in the model are defined in the header file (e.g., `upwelling.h`). The head file is specified by the option `<ROMS_APPLICATION>` in the build script.
 
 #### 2.2) The ROMS input file
 - Open `in/infiletemplates/ocean_upw.in` in a text editor.
@@ -139,9 +139,9 @@ cd <<DIR>>
 # run executable
 mpirun <<EXECUTABLE>> <<INFILE>>
 ```
-Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`, etc.) will be replaced with appropriate paths when running the data assimilation. The "`cd <<DIR>>`" statement is currently required, and so is a statement that is starting the ROMS executable ("`mpirun <<EXECUTABLE>> <<INFILE>>`") in the example above.
+Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`, etc.) will be replaced with appropriate paths when running the data assimilation. The "`cd <<DIR>>`" statement is currently required to be in the job submission script template, and so is a statement that is starting the ROMS executable ("`mpirun <<EXECUTABLE>> <<INFILE>>`" in the example above).
 
-**_note_**: If the cluster is not using [slurm](https://slurm.schedmd.com/) as a workload manager, four Matlab scripts need to be adapted for other workload managers:
+**_Note_**: If the cluster is not using slurm as a workload manager, four Matlab scripts need to be adapted for other workload managers:
 - `mfiles/roms/autorun/qtools/qdel.m`  -- to delete jobs from cluster
 - `mfiles/roms/autorun/qtools/qjobqueue.m`  -- to check job host
 - `mfiles/roms/autorun/qtools/qjobstatus.m` -- to check job status
@@ -158,7 +158,7 @@ In `mfiles/main/main.m`, set
 ```
 perform_configuration_check = true;
 ```
-and then run `main.m` in MATLAB to perform an optional configuration check, testing is some of the paths and file names are set correctly.
+and then run `main.m` in Matlab to perform an optional configuration check, testing is some of the paths and file names are set correctly.
 When this test produces no warnings, move to step 6 to start a data assimilation run.
 
 ### Step 6: Run the main driver `main.m` in `mfiles/main/`
@@ -169,7 +169,7 @@ perform_configuration_check = false;
 ```
 then run `main.m` to perform a data assimilation run.
 
-**_note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
+**_Note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
 The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
 For testing purposes, the number of jobs submitted to the workload manager can be reduced by decreasing the number of ensemble members (set by the variable `nens` in `mfiles/main/main.m`).
 
