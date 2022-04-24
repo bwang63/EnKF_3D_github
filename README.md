@@ -1,5 +1,5 @@
 # Ensemble Kalman filter application for an ocean biogeochemical model in an idealized 3-dimensional channel
-The `Matlab` code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
+The Matlab code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
 
 This set of code was developed by the MEMG group (http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada
 
@@ -9,82 +9,6 @@ state variables, and restart the ensemble runs from the updated initial state. I
 assimilate the physical observations (i.e., sea surface height, sea surface temperature, and in-situ profiles of temperature) to update both physical and
 biological model state variables (i.e., temperature and NO3). In the second step, we assimilate the biological observations (i.e., surface chlorophyll and
 in-situ profiles of NO3) to update only biological model state variables (i.e., chlorophyll, phytoplankton, zooplankton, and NO3)
-
-## Subdirectories
-`matlab` -- toolbox directory, e.g. netcdf
-
-`mfiles` -- data assimilation code directory
-
-         main -- data assimilation setting up scripts
-
-              main.m -- the main driver
-
-              romsassim_settings_2kfiles.m -- settings about ROMS model
-
-              KFilter_2steps_*.m -- settings about the data assimilation
-                                    (in this application, we have two KFilter_2steps_*.m scripts becuase we have two update steps)
-
-         EnKF -- data assimilation functions
-
-         roms -- ROMS interface scripts
-
-         local -- scripts to add toolbox
-
-         helper -- helper routines
-
-`in` -- input files directory
-
-        executable -- executable file of ROMS
-
-        infiletemplates -- input files of ROMS
-
-        input_forcing -- input forcing files
-
-
-`out` -- output files directory
-
-`matfiles` -- temporary matrixes saved and used in data assimilation
-
-`figures` -- reading output directory
-
-**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the setting up scripts:
-
-1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
-```matlab
-% main directory with the runfiles
-rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
-
-if writefiles
-    % create rundir now
-    mkdir(rundir);
-end
-
-%
-% all paths are relative to rundir
-%
-
-% the executable file of ROMS (e.g. oceanM)
-executable = '../../in/executable/oceanM'; % (edit)
-
-% the main in-file (e.g. ocean.in)
-maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
-
-% the biological parameter file (bio_Fennel.in)
-bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)
-
-% directory for the netcdf output files
-outdir = fullfile('nc_out'); % this directory is inside the rundir.
-```
-
-2) to specify the path of matfiles directory in `./main/KFilter_2step_*m`
-```matlab
-% path of the sub-directory matfile: matrixes created and used in data
-% assimilation will be saved under this directory, e.g. distance and
-% horizontal localization coefficient
-%
-kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % (edit)
-```
-And the `out` directory will be created by the code if it does not exist (and its parent directory exists).
 
 ## To start a new data assimilation run
 ### Step 1: Download the ROMS code
@@ -172,6 +96,82 @@ then run `main.m` to perform a data assimilation run.
 **_Note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
 The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
 For testing purposes, the number of jobs submitted to the workload manager can be reduced by decreasing the number of ensemble members (set by the variable `nens` in `mfiles/main/main.m`).
+
+## Guide to the subdirectories
+`matlab` -- toolbox directory, e.g. netcdf
+
+`mfiles` -- data assimilation code directory
+
+         main -- data assimilation setting up scripts
+
+              main.m -- the main driver
+
+              romsassim_settings_2kfiles.m -- settings about ROMS model
+
+              KFilter_2steps_*.m -- settings about the data assimilation
+                                    (in this application, we have two KFilter_2steps_*.m scripts becuase we have two update steps)
+
+         EnKF -- data assimilation functions
+
+         roms -- ROMS interface scripts
+
+         local -- scripts to add toolbox
+
+         helper -- helper routines
+
+`in` -- input files directory
+
+        executable -- executable file of ROMS
+
+        infiletemplates -- input files of ROMS
+
+        input_forcing -- input forcing files
+
+
+`out` -- output files directory
+
+`matfiles` -- temporary matrixes saved and used in data assimilation
+
+`figures` -- reading output directory
+
+**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the setting up scripts:
+
+1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
+```matlab
+% main directory with the runfiles
+rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
+
+if writefiles
+    % create rundir now
+    mkdir(rundir);
+end
+
+%
+% all paths are relative to rundir
+%
+
+% the executable file of ROMS (e.g. oceanM)
+executable = '../../in/executable/oceanM'; % (edit)
+
+% the main in-file (e.g. ocean.in)
+maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
+
+% the biological parameter file (bio_Fennel.in)
+bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)
+
+% directory for the netcdf output files
+outdir = fullfile('nc_out'); % this directory is inside the rundir.
+```
+
+2) to specify the path of matfiles directory in `./main/KFilter_2step_*m`
+```matlab
+% path of the sub-directory matfile: matrixes created and used in data
+% assimilation will be saved under this directory, e.g. distance and
+% horizontal localization coefficient
+%
+kfparams.matfilesdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/matfiles'; % (edit)
+```
+And the `out` directory will be created by the code if it does not exist (and its parent directory exists).
 
 ## License
 
