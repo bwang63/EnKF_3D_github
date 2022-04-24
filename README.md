@@ -1,4 +1,4 @@
-# EnKF_3D_github
+# Ensemble Kalman filter application for an ocean biogeochemical model in an idealized 3-dimensional channel
 The `MATLAB` code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
 
 This set of code was developed by the MEMG group (http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada
@@ -180,10 +180,26 @@ srun <<EXECUTABLE>> <<INFILE>> <<OUTFILE>>
 - `mfiles/roms/autorun/qtools/qsubmpi.m` -- to submit jobs
 
 ### Step 4: Set up the data assimilation experiment
+
 Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_1kfiles.m`, `KFilter_2steps_*.m`)
 Search for '(edit)' to find settings that likely require changes to run this application. Other settings might have been tested for other applications.
 
-### Step 5: Run the main driver `main.m` in `mfiles/main/`
+### Step 5: Run a configuration check (optional)
+
+In `mfiles/main/main.m`, set
+```
+perform_configuration_check = true;
+```
+and then run `main.m` in MATLAB to perform an optional configuration check, testing is some of the paths and file names are set correctly.
+When this test produces no warnings, move to step 6 to start a data assimilation run.
+
+### Step 6: Run the main driver `main.m` in `mfiles/main/`
+
+In `mfiles/main/main.m`, turn off the configuration check by setting
+```
+perform_configuration_check = false;
+```
+then run `main.m` to perform a data assimilation run.
 
 **_note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
 The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
