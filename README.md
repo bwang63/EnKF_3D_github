@@ -1,16 +1,19 @@
 # Ensemble Kalman filter application for an ocean biogeochemical model in an idealized 3-dimensional channel
-The Matlab code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System (ROMS; https://www.myroms.org/wiki/Documentation_Portal).
+The Matlab code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System [ROMS](https://www.myroms.org/wiki/Documentation_Portal).
 
-This set of code was developed by the MEMG group (http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada
+This set of code was developed by the [MEMG group](http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada.
 
 The code in this repository is configured for a 3-dimensional ocean biogeochemical model (using ROMS) in an idealized channel that experiences the wind-driven
 upwelling as in Yu et al. (2018). This code will initiate the ensemble runs with the perturbed wind forcing and biological parameters, then assimilate observations to update the model
 state variables, and restart the ensemble runs from the updated initial state. In this application, we have two assimilation steps. In the first step, we
 assimilate the physical observations (i.e., sea surface height, sea surface temperature, and in-situ profiles of temperature) to update both physical and
-biological model state variables (i.e., temperature and NO3). In the second step, we assimilate the biological observations (i.e., surface chlorophyll and
-in-situ profiles of NO3) to update only biological model state variables (i.e., chlorophyll, phytoplankton, zooplankton, and NO3)
+biological model state variables (i.e., temperature and NO₃). In the second step, we assimilate the biological observations (i.e., surface chlorophyll and
+in-situ profiles of NO₃) to update only biological model state variables (i.e., chlorophyll, phytoplankton, zooplankton, and NO₃)
 
 ## To start a new data assimilation run
+
+Before you start, be aware that is application is build for a cluster computer, requires [Matlab](https://www.mathworks.com/products/matlab.html), a FORTRAN compiler (to compile ROMS), and MPI or OpenMP to [run ROMS on multiple nodes](https://www.myroms.org/wiki/Parallelization).
+
 ### Step 1: Download the ROMS code
 
 Register at the [ROMS website](https://www.myroms.org) and download the source code.
