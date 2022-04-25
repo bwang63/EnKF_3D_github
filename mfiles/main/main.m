@@ -149,7 +149,7 @@ if perform_configuration_check
     startmode = -1;
 
     fprintf('\nchecking configuration\n\nTo turn off this check, set "perform_configuration_check = false" in "%s".\n\n', [mfilename('fullpath'), '.m'])
-    check_configuration(assimfunargs, inicond, frccond, brycond, altsettings)
+    check_configuration(assimfunargs, nens, inicond, frccond, brycond, altsettings, furtheroptions);
 end
 
 

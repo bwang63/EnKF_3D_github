@@ -1,4 +1,4 @@
-function status = check_configuration(assimfunargs, inicond, frccond, brycond, altsettings)
+function status = check_configuration(assimfunargs, nens, inicond, frccond, brycond, altsettings, romsassimoptions)
 
 if numel(assimfunargs) >= 4
     fprintf('Checking both "%s" and "%s", there may be duplicate issues.\n', assimfunargs{2}.kfparamsfile, assimfunargs{4}.kfparamsfile)
@@ -28,9 +28,25 @@ end
 
 % check frccond
 
-if ~isempty(frccond)
+% check if romsassimoptions contains changefrcfile
+if any(cellfun(@(x) isequal(x, 'changefrcfile'), romsassimoptions))
+    if isempty(frccond)
+        warning('No forcing file specified, yet furtheroptions contains ''changefrcfile'' (check "%s").', main_fullpath)
+    else
+        % see mfiles/roms/autorun/romsassim_multi_clusters.m
+        [wpathstr,wfilename,wfileext] = fileparts(frccond{1});
+        for iens = 1:nens
+            fname = fullfile(wpathstr, sprintf('%s_%04d%s', wfilename, iens, wfileext));
+            if ~isfile(fname)
+                status = status + 1;
+                warning('Forcing file "%s" does not exist and ''changefrcfile'' is set (check "frccond" in "%s").', fname, main_fullpath)
+                break
+            end
+        end
+    end
+elseif ~isempty(frccond)
     for ifrc = 1:length(frccond)
-        if ~isfile(frccond{ifrc})
+        if ~isfile(frccond{ifrc}) && length(frccond{ifrc}) > 0
             warning('Forcing file "%s" does not exist (check "frccond" in "%s").', frccond{ifrc}, main_fullpath)
             status = status + 1;
             break
@@ -40,10 +56,26 @@ end
 
 % check brycond
 
-if ~isempty(brycond)
+% check if romsassimoptions contains changebryfile
+if any(cellfun(@(x) isequal(x, 'changebryfile'), romsassimoptions))
+    if isempty(brycond)
+        warning('No boundary file specified, yet furtheroptions contains ''changebryfile'' (check "%s").', main_fullpath)
+    else
+        % see mfiles/roms/autorun/romsassim_multi_clusters.m
+        [wpathstr,wfilename,wfileext] = fileparts(brycond{1});
+        for iens = 1:nens
+            fname = fullfile(wpathstr, sprintf('%s_%04d%s', wfilename, iens, wfileext));
+            if ~isfile(fname)
+                status = status + 1;
+                warning('Boundary file "%s" does not exist and ''changebryfile'' is set (check "brycond" in "%s").', fname, main_fullpath)
+                break
+            end
+        end
+    end
+elseif ~isempty(brycond)
     for ibry = 1:length(brycond)
         if ~isfile(brycond{ibry}) && length(brycond{ibry}) > 0
-            warning('Boundary file "%s" does not exist (check "brycond" in "%s")', brycond{ibry}, main_fullpath)
+            warning('Boundary file "%s" does not exist (check "brycond" in "%s").', brycond{ibry}, main_fullpath)
             status = status + 1;
             break
         end
