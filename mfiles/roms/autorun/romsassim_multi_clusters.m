@@ -263,6 +263,9 @@ else
     end
 end
 
+% the number of processors for each job
+np = NtileI*NtileJ;
+
 %
 logfile = fullfile(rundir,logfile); % create full path of logfile
 
