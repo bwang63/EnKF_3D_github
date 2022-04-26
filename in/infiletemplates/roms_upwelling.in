@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo_upw.dat           ! (edit)
+     VARNAME = /scratch/wangb63/EnKF_3D_Nature_Primer/in/infiletemplates/varinfo.yaml           ! (edit)
 
 ! Number of nested grids.
 
@@ -106,8 +106,8 @@ GridsInLayer =  1
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
-      NtileI == 2                               ! I-direction partition (edit)
-      NtileJ == 4                               ! J-direction partition (edit)
+      NtileI == 2                               ! I-direction partition 
+      NtileJ == 4                               ! J-direction partition 
 
 ! Set horizontal and vertical advection schemes for active and inert
 ! tracers. A different advection scheme is allowed for each tracer.
@@ -960,7 +960,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc          ! (edit)
+     GRDNAME == /scratch/wangb63/EnKF_3D_Nature_Primer/in/roms_input/upw_grd.nc          ! (edit)
      ININAME == upw_ini.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
@@ -1071,7 +1071,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
      APARNAM =  /dev/null
      SPOSNAM =  /dev/null
      FPOSNAM =  /dev/null
-     BPARNAM =  ./bio_Fennel_upw.in
+     BPARNAM =  ./bio_Fennel.in  
      SPARNAM =  /dev/null
      USRNAME =  /dev/null
 

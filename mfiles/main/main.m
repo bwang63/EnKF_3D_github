@@ -6,10 +6,10 @@ run('../local/startup.m')
 % check your configuration (edit)
 % If set to true, data assimilation will not be started, instead a series of tests is performed.
 % It is recommeded to perform a configuration check before running the first data assimilation experiment.
-perform_configuration_check = true;
+perform_configuration_check = false;
 
 % the name of the supercomputer/cluster
-clusterName = 'Catz'; % (edit)
+clusterName = 'graham'; % (edit)
 
 % Cell array of 3 status codes used by the workload manager.
 % the first status means that the job is running,
@@ -36,13 +36,13 @@ stopdate = datenum(2006,06,25);
 refdate = datenum(2006,01,01);
 
 % data assimilation case name
-prefix = 'EnKF_UPW_2kfilesV2';
+prefix = 'EnKF_UPW_2kfiles'; % (edit)
 logfile = ['log_',prefix,'.txt']; % The name of logfile, its full path will be provided in romsassim_settings_2kfiles.m (rundir)
 
 %
 % observations
 %
-obsfile = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/UPW_super_obs_satellite_in-situTN.nc'; % (edit)
+obsfile = '/home/wangb63/scratch/EnKF_3D_Nature_Primer/in/roms_input/UPW_super_obs_satellite_in-situTN.nc'; % (edit)
 % the date to perform data assimilate
 assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
 
@@ -51,7 +51,7 @@ assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May
 %
 % - if use an ensemble of initial conditions, the option 'changeinifile'
 % has to be added in 'furtheroptions' for romsassim
-inidir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/'; % (edit)
+inidir = '/home/wangb63/scratch/EnKF_3D_Nature_Primer/in/roms_input'; % (edit)
 inicond = {inidir 'upw_ini.nc'}; % (edit)
 
 %
@@ -59,7 +59,7 @@ inicond = {inidir 'upw_ini.nc'}; % (edit)
 %
 % - if use an ensemble of forcing files, the option 'changefrcfile'
 % has to be added in 'furtheroptions' for romsassim
-frcdir = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/wind_forcing/'; % (edit)
+frcdir = '/home/wangb63/scratch/EnKF_3D_Nature_Primer/in/roms_input/wind_forcing/'; % (edit)
 frccond = {[frcdir,'upw_suvstr_3hourly_180d_2Lm_06.nc']}; % (edit)
 
 % indexes to atmospheric forcing files that will be changed,
@@ -125,8 +125,9 @@ clear assimfunargs1 assimfunargs2
 
 
 % cell containing further options for romsassim
+% users can change the value of NtileI and NtileJ
 furtheroptions = {'saveoutput', 'logqerror','romsparamchanges',{'main', {'NtileI','NtileJ'}, {'2','4'}}, ...
-    'changefrcfile'};
+    'changefrcfile'}; % (edit) 
 
 %
 % call romsassim
@@ -202,6 +203,7 @@ switch startmode
             'restart_noassim', prefix,...
             furtheroptions{:});
 end
+
 if ~perform_configuration_check
     disp('Jobs Done')
 end

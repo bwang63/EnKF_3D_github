@@ -251,6 +251,14 @@ if performrestart
     prefix = restart_prefix;
 end
 eval(settingsfile)  % evaluate romsassim_settings_prep_*
+
+% number of processors used for each job (NtileI*NtileJ)
+for k = 1:numel(romsparamchanges)
+    if ~isempty(find(strcmp('NtileI', romsparamchanges{k}))) & ~isempty(find(strcmp('NtileJ', romsparamchanges{k})))
+        np = str2num(romsparamchanges{k+1}{1})*str2num(romsparamchanges{k+1}{2}); 
+    end
+end
+
 %
 logfile = fullfile(rundir,logfile); % create full path of logfile
 

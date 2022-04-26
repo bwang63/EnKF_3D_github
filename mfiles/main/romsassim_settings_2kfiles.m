@@ -75,7 +75,7 @@ pauseint = 10; % in seconds
 
 if ~performrestart
     % prefix appended to filenames
-    prefix =  'EnKF_UPW_2kfilesV2';
+    prefix =  'EnKF_UPW_2kfiles';  % (edit)
 end
 
 % ROMS step size; should be consistent with that in ocean*.in file
@@ -100,9 +100,6 @@ lastfilechangethresh = 15*60; % in seconds
 % inactivity 
 % (only active when checklastfilechange = true)
 logfchangeerror = true;
-
-% number of processors used for each job (NtileI*NtileJ)
-np = 8;
 
 % use the RomsParameterVariation to manage parameters in different in-files
 % - refer to RomsParameterVariation for descriptions of functions under rpv
@@ -146,7 +143,7 @@ end
 %
 
 % main directory with the runfiles
-rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
+rundir = fullfile('/home/wangb63/scratch/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
 
 if writefiles
     % create rundir now
@@ -158,10 +155,10 @@ end
 % 
 
 % the executable file of ROMS (e.g. oceanM)
-executable = '../../in/executable/oceanM'; % (edit)
+executable = '../../in/executable/romsM'; % (edit)
 
 % the main in-file (e.g. ocean.in)
-maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
+maininfile = '../../in/infiletemplates/roms_upwelling.in'; % (edit)
 
 % the biological parameter file (bio_Fennel.in)
 bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)

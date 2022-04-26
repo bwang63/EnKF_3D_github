@@ -1,7 +1,8 @@
 /*
-** svn $Id: upwelling.h 709 2014-01-23 20:09:38Z arango $
+** git $Id$
+** svn $Id: upwelling.h 1099 2022-01-06 21:01:01Z arango $
 *******************************************************************************
-** Copyright (c) 2002-2014 The ROMS/TOMS Group                               **
+** Copyright (c) 2002-2022 The ROMS/TOMS Group                               **
 **   Licensed under a MIT/X style license                                    **
 **   See License_ROMS.txt                                                    **
 *******************************************************************************
@@ -9,7 +10,7 @@
 ** Options for Upwelling Test.
 **
 ** Application flag:   UPWELLING
-** Input script:       ocean_upwelling.in
+** Input script:       roms_upwelling.in
 */
 
 #define UV_ADV

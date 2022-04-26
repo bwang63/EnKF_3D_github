@@ -21,28 +21,34 @@ Register at the [ROMS website](https://www.myroms.org) and download the source c
 ### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified in step 5)
 
 #### 2.1) The ROMS executable (typically `oceanM` or `romsM`)
-- Set options `<MY_ROOT_DIR>` `<MY_ROMS_SRC>` in the build script (`in/executable/build.sh`). These options will tell the script where the ROMS source code is.
+- Set options `<MY_ROOT_DIR>` `<MY_ROMS_SRC>` in the build script (typically `in/executable/build.sh` or `in/executable/build_roms.sh`). These options will tell the script where the ROMS source code is.
 - Set options `<FORT>` to specify the FORTRAN compiler that will be used, e.g. `ifort`.
 - Compile ROMS by running the following command in terminal:
 ```
 ./build.sh
 ```
+or
+
+```
+./build_roms.sh
+```
+
 **_Note_**: the CPP options used in the model are defined in the header file (e.g., `upwelling.h`). The head file is specified by the option `<ROMS_APPLICATION>` in the build script.
 
 #### 2.2) The ROMS input file
-- Open `in/infiletemplates/ocean_upw.in` in a text editor.
+- Open `in/infiletemplates/roms_upwelling.in` in a text editor.
 - Search for '(edit)' to find settings that need changes to run this application.
 
 #### 2.3) The model grid file
-- Download the model grid file `upw_grd.nc` (available [here](https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing)) and place it into the `in/input_forcing/` directory.
+- Download the model grid file `upw_grd.nc` (available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing)) and place it into the `in/roms_input/` directory.
 
 #### 2.4) The model forcings
-- Download the wind forcing files `upw_suvstr_3hourly_180d_2Lm_06_\*.nc`, available [here](https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing), and place them into the `in/input_forcing/wind_forcing/` directory (alternatively, adjust the `frccond` variable in `mfiles/main/main.m` to point to the files).
-- Download the initial condition `upw_ini.nc` file, available [here](https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing), and place it into the `in/input_forcing/` directory (alternatively, adjust the `inicond` variable in `mfiles/main/main.m` to point to the file).
+- Download the wind forcing files `upw_suvstr_3hourly_180d_2Lm_06_\*.nc`, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place them into the `in/roms_input/wind_forcing/` directory (alternatively, adjust the `frccond` variable in `mfiles/main/main.m` to point to the files).
+- Download the initial condition `upw_ini.nc` file, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place it into the `in/roms_forcing/` directory (alternatively, adjust the `inicond` variable in `mfiles/main/main.m` to point to the file).
 - Note, that open boundary condition are not required in this test case, but can be used (and modified by data assimilation) by changing the configuration.
 
 #### 2.5) The observation file
-- Download the observation file `UPW_super_obs_satellite_in-situTN.nc`, available [here](https://drive.google.com/drive/folders/1shdtK2iL6aRak70kQOvcS460DafGkrq9?usp=sharing), and place it into the `in/input_forcing/` directory (alternatively, adjust the `obsfile` variable in `mfiles/main/main.m` to point to the file).
+- Download the observation file `UPW_super_obs_satellite_in-situTN.nc`, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place it into the `in/roms_input/` directory (alternatively, adjust the `obsfile` variable in `mfiles/main/main.m` to point to the file).
 
 #### 2.6) The input file of ocean biogeochemical model
 - No changes to the input file of ocean biogeochemical model (`in/infiletemplates/bio_Fennel_upw.in`) are required in this test case, but users are encouraged to test different parameter values.
@@ -133,7 +139,7 @@ After completing the first data assimilation run, feel free to modify the config
 
         infiletemplates -- input files of ROMS
 
-        input_forcing -- input forcing files
+        roms_input -- input forcing files
 
 
 `out` -- output files directory
@@ -159,10 +165,10 @@ end
 %
 
 % the executable file of ROMS (e.g. oceanM)
-executable = '../../in/executable/oceanM'; % (edit)
+executable = '../../in/executable/romsM'; % (edit)
 
 % the main in-file (e.g. ocean.in)
-maininfile = '../../in/infiletemplates/ocean_upw.in'; % (edit)
+maininfile = '../../in/infiletemplates/roms_upwelling.in'; % (edit)
 
 % the biological parameter file (bio_Fennel.in)
 bioparamfile = '../../in/infiletemplates/bio_Fennel_upw.in'; % (edit)
