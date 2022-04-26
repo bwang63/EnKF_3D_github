@@ -125,9 +125,7 @@ clear assimfunargs1 assimfunargs2
 
 
 % cell containing further options for romsassim
-% users can change the value of NtileI and NtileJ
-furtheroptions = {'saveoutput', 'logqerror','romsparamchanges',{'main', {'NtileI','NtileJ'}, {'2','4'}}, ...
-    'changefrcfile'}; % (edit) 
+furtheroptions = {'saveoutput', 'logqerror', 'changefrcfile'};
 
 %
 % call romsassim
