@@ -49,8 +49,8 @@ Register at the [ROMS website](https://www.myroms.org) and download the source c
 
 ### Step 3: Template of a job submission script
 
-This application uses [slurm](https://slurm.schedmd.com/) as the default workload manager with which model simulations are run on a cluster computer (see note below, if another workload manager is used).
-The slurm `sbatch` command requires job submission scripts which are typically cluster computer-specific, and this application requires a template job submission script, which should be named `mfiles/roms/filemanipulation/templatefiles/mpirun_<clusternamelowercase>.template`, where `<clusternamelowercase>` is the name of the cluster computer in lower case letters.
+This application uses [Slurm](https://slurm.schedmd.com/) as the default workload manager with which model simulations are run on a cluster computer (see note below, if another workload manager is used).
+The Slurm `sbatch` command requires job submission scripts which are typically cluster computer-specific, and this application requires a template job submission script, which should be named `mfiles/roms/filemanipulation/templatefiles/mpirun_<clusternamelowercase>.template`, where `<clusternamelowercase>` is the name of the cluster computer in lower case letters.
 Example job submission scripts are located in `mfiles/roms/filemanipulation/templatefiles/`, a simple template may look like this:
 ```
 #!/bin/bash
@@ -68,7 +68,7 @@ mpirun <<EXECUTABLE>> <<INFILE>>
 ```
 Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`, etc.) will be replaced with appropriate paths when running the data assimilation. The "`cd <<DIR>>`" statement is currently required to be in the job submission script template, and so is a statement that is starting the ROMS executable ("`mpirun <<EXECUTABLE>> <<INFILE>>`" in the example above).
 
-**_Note_**: If the cluster is not using slurm as a workload manager, four Matlab scripts need to be adapted for other workload managers:
+**_Note_**: If the cluster is not using Slurm as a workload manager, four Matlab scripts need to be adapted for other workload managers:
 - `mfiles/roms/autorun/qtools/qdel.m`  -- to delete jobs from cluster
 - `mfiles/roms/autorun/qtools/qjobqueue.m`  -- to check job host
 - `mfiles/roms/autorun/qtools/qjobstatus.m` -- to check job status
