@@ -1,8 +1,8 @@
  function [datadates, assimoutcontainer] = romsassim_multi_clusters(varargin)
 % romsassim(options)
-% A ROMS assimilation manager that performs all steps for an sequential 
+% A ROMS assimilation manager that performs all steps for an sequential
 % assimilation run: preparation, starting and stopping of the model etc.
-% 
+%
 % Various options allow a high level of customization of romsassim. There
 % are two kind of options: The first kind is followed by an argument, e.g.
 %   romsassim(..., 'logfile', 'log.txt', ...)
@@ -12,19 +12,19 @@
 %   romsassim(..., 'constparams', ...)
 %
 % The option description is ordered based on importance.
-% 
+%
 % Essential options:
 %
 % 'startdate': followed by a date number to specify the beginning of the
 %     assimilation run. For example, use:
 %         romsassim('startdate', datenum([2012,09,05]), ...)
 %     to use 5 September 2012 as the start date. This date should
-%     correspond to the date of the initial conditions used in ROMS. (The 
+%     correspond to the date of the initial conditions used in ROMS. (The
 %     initial conditions can be specified using the 'inicond' option, see
 %     below.)
 % 'stopdate': followed by a date number to specify the end date of the
 %     assimilation run. The difference stopdate - startdate will determine
-%     the length of the assimilation run. 
+%     the length of the assimilation run.
 % 'nens': followed by a numeric value to specify the number of ensemble
 %     members used for the assimilation run. Each ensemble member will
 %     require its own model simulations.
@@ -34,24 +34,24 @@
 %     performs the data assimilation and alters the model state before the
 %     model ensemble is restarted again.
 % 'assimfunargs': followed by any variable that is passed on to the
-%     assimilation function. This option provides a way to pass on 
-%     parameters directly to the function specified by the 'assimfun' 
+%     assimilation function. This option provides a way to pass on
+%     parameters directly to the function specified by the 'assimfun'
 %     option. For more information type:
 %         help rassim_template
 % 'logfile': followed by a filename to specify a log-file. If no log file
 %     name is provided, no log file will be written.
 %
 % Commonly used options:
-% 
+%
 % 'altsettings': followed by a function handle of an alternative settings
 %     file. The standard setting file is romsassim_settings.m. The
 %     alternative setting file needs to provide all the variables that
 %     romsassim_settings.m provides.
-% 'constparams': argument to switch off parameter variation. With the 
-%     constparams option, only the first parameter set will be picked 
+% 'constparams': argument to switch off parameter variation. With the
+%     constparams option, only the first parameter set will be picked
 %     randomly, the parameters will then stay constant throughout the run.
 % 'collectoutput': argument that starts the collection of output from the
-%     rassim_* function (specified via the 'assimfun' option). 
+%     rassim_* function (specified via the 'assimfun' option).
 %     The output of the assimilation function will be collected in a
 %     cell-array and returned via the second output argument of romsassim.
 %     If there is lots of output taking up much memory, it is recommended
@@ -61,29 +61,29 @@
 %     active 'saveoutput' will lead to the creation of
 %     romsassim_assimout*.mat files after each assimilation step in the
 %     ROMS run directory (containing the ROMS *.in files).
-% 'changefrcfile': argument to change forcing file (e.g., use an ensemble 
-%     of wind forcing files for ensemble runs). 
+% 'changefrcfile': argument to change forcing file (e.g., use an ensemble
+%     of wind forcing files for ensemble runs).
 %     For upwelling test case, wind file is the only forcing
 %     file while for a realistic case, there could be multiple files under
 %     the 'FRCNAME' in ROMS main in-file.
-% 'changeinifile': argument to change initial condition file (e.g., use an 
-%     ensemble of initial files for ensemble runs). 
-%     (this option is added because the 'inicond' option with mask 
-%     espression is not able to start the ensemble with different initial 
+% 'changeinifile': argument to change initial condition file (e.g., use an
+%     ensemble of initial files for ensemble runs).
+%     (this option is added because the 'inicond' option with mask
+%     espression is not able to start the ensemble with different initial
 %     files)
 % 'inicond': followed by a 2 element cell-string containing the path and
 %     filename (mask) of ROMS restart files that are used as initial
 %     conditions for the assimilation run. romsassim makes sure to pick a
-%     date that is close to the start date of the assimilation run, one of 
-%     the dates in the initial. For example, use 
+%     date that is close to the start date of the assimilation run, one of
+%     the dates in the initial. For example, use
 %         romsassim(...,'inicond',{'/path/to/inicond','inifile.*nc'}, ...)
 %     to select all the files that match the 'inifile.*nc' regular
-%     expression mask in the specified directory 
+%     expression mask in the specified directory
 %     (/path/to/inicond/inifile1.nc, /path/to/inicond/inifile2.nc, etc).
 %     To specify a specific file, use the file name instead of a mask. The
 %     name of the file that is used for the initial conditions is written
 %     to the log file.
-% 'adjustdstart': argument that activates adjustment of the DSTART variable 
+% 'adjustdstart': argument that activates adjustment of the DSTART variable
 %     in the ROMS main in file (ocean.in) and set it to the ocean time of the
 %     initial conditions. 'adjustdstart' should be used when the file supplied
 %     the 'inicond' argument is a restart file and a fresh restart (NRREC=0)
@@ -91,7 +91,7 @@
 % 'restart': followed by a string containing the prefix (ID) of a previous
 %     romassim data assimilation run that crashed somehow (e.g. due to a
 %     shutdown of the computer) this option will lead to an attempt to
-%     restart the romassim run that was terminated. 
+%     restart the romassim run that was terminated.
 %     The 'restart' option assumes the romassim run was interrupted before
 %     the next assimilation step was performed. It will begin the restart
 %     with an assimilation step.
@@ -106,9 +106,9 @@
 %     address (see settings in romassim_settings_htmlstatus.m).
 % 'iniparams': followed by cell containing a cell-string of parameter names
 %     and a nens x numparameters vector of initial parameter values
-% 
+%
 % Less commonly used options:
-% 
+%
 % 'romsparamchanges': followed by cell, this option allows the setting of
 %     some ROMS parameters prior to the assimilation run (as an alternative
 %     to editing the ocean.in or bio.in file manually). The cell has the
@@ -116,7 +116,7 @@
 %       {infilename1, paramnames1, paramvalues1,
 %        infilename2, paramnames2, paramvalues2, ...}
 %     containing one or multiple infilenames, each followed by two cells.
-%     infilename: a string identifying an in-file in the rpv (use 'main' 
+%     infilename: a string identifying an in-file in the rpv (use 'main'
 %       for the ocean.in file; the name of the bio.in file is typically
 %       specified in in the romsassim settings file).
 %     paramnames: a cell string of parameter names
@@ -135,7 +135,7 @@
 %     assimilation steps.)
 % 'rethrowerrors': rethrow errors that occur during the assimilation. This
 %     option ensures that romsassim terminates with an error if an error
-%     occurs internally. The standard behavior of romsassim is to display 
+%     occurs internally. The standard behavior of romsassim is to display
 %     the error message and terminate gracefully after cleanup. The
 %     'rethrowerrors' can be used so that other functions calling romsassim
 %     can tell if an error occured while romsassim was running.
@@ -252,10 +252,14 @@ if performrestart
 end
 eval(settingsfile)  % evaluate romsassim_settings_prep_*
 
-% number of processors used for each job (NtileI*NtileJ)
-for k = 1:numel(romsparamchanges)
-    if ~isempty(find(strcmp('NtileI', romsparamchanges{k}))) & ~isempty(find(strcmp('NtileJ', romsparamchanges{k})))
-        np = str2num(romsparamchanges{k+1}{1})*str2num(romsparamchanges{k+1}{2}); 
+if isempty(romsparamchanges)
+    romsparamchanges = {'main', {'NtileI', 'NtileJ'}, {int2str(NtileI), int2str(NtileJ)}};
+else
+    for k = 1:3:numel(romsparamchanges)
+        if strcmp(romsparamchanges{k}, 'main')
+            romsparamchanges{k+1} = [romsparamchanges{k+1}, {'NtileI', 'NtileJ'}];
+            romsparamchanges{k+2} = [romsparamchanges{k+2}, {int2str(NtileI), int2str(NtileJ)}];
+        end
     end
 end
 
@@ -274,19 +278,19 @@ if htmlstatus
     romsassim_settings_htmlstatus;
 end
 if ~exist('romstimemode', 'var')
-    romstimemode = 0; 
+    romstimemode = 0;
 end
 if ~exist('adjustntsavg', 'var')
-    adjustntsavg = false; 
+    adjustntsavg = false;
 end
-if ~exist('adjustldefout', 'var') 
-    adjustldefout = adjustdstart; 
+if ~exist('adjustldefout', 'var')
+    adjustldefout = adjustdstart;
 end
 if ~exist('saveerrors', 'var')
-    saveerrors = true; 
+    saveerrors = true;
 end
 if ~exist('nrreczeropref', 'var')
-    nrreczeropref = true; 
+    nrreczeropref = true;
 end
 
 % overwrite certain options if in simulation mode
@@ -301,11 +305,11 @@ end
 useinifile = ~isempty(inicond{1});
 if useinifile && changeinifile
     inifilename = fullfile(inicond{1},inicond{2});
-    [ipathstr,ifilename,ifileext] = fileparts(inifilename);           
+    [ipathstr,ifilename,ifileext] = fileparts(inifilename);
     inifiles = cell(1,nens);
     for k = 1:nens
         inifiles{k} = fullfile([ipathstr,'/',ifilename,sprintf('_ens%04d.nc',k)]);
-    end 
+    end
 end
 
 %
@@ -404,9 +408,9 @@ if mvncfiles
     clear mvncfilesmask;
 end
 
-if ~isempty(romsparamchanges) 
+if ~isempty(romsparamchanges)
     fprintf(fid, 'performing initial parameter changes specified by ''romsparamchanges''\n');
-    filespecs = {'main', bioparam}; 
+    filespecs = {'main', bioparam};
     r = RomsInfileManager(rundir, maininfile);
     for k = 1:3:numel(romsparamchanges)
         if ~ischar(romsparamchanges{k})
@@ -416,9 +420,9 @@ if ~isempty(romsparamchanges)
         if filespecind == 1  % make changes in maininfile (ocean.in) specified by 'romsparamchanges'
             [pathstr,filename,fileext] = fileparts(maininfile);
             maininfile = ['copy_',filename,fileext];
-        elseif filespecind == 2  % make changes in bioparamfile (bio_fennel*.in) 
+        elseif filespecind == 2  % make changes in bioparamfile (bio_fennel*.in)
             r.addSubInfile(bioparam, bioparamfile, 'BPARNAM');
-            [pathstr,filename,fileext] = fileparts(bioparamfile); 
+            [pathstr,filename,fileext] = fileparts(bioparamfile);
             bioparamfile = ['copy_',filename,fileext];
         else
             error('Invalid format of ''romsparamchanges''.')
@@ -440,7 +444,7 @@ if userspecifiediniparams
     paramnames = iniparams{1};
     paramvalues = iniparams{2};
     if ~(constparams)
-        % check if rpv parameters are the same 
+        % check if rpv parameters are the same
         if ~isequal(paramnames, rpv.activeParametersFrom(bioparam))
             error('Parameter names supplied do not match active parameter names of RomsParameterVariation object.')
         end
@@ -518,7 +522,7 @@ if iscell(assimfunargs)
 else
     datadates = assimfunargs.assimdates;
 end
-datadates(datadates>=stopdate) = []; 
+datadates(datadates>=stopdate) = [];
 datadates(datadates<=startdate) = [];
 datadates = [datadates(:)', stopdate]; % append stop date
 
@@ -537,7 +541,7 @@ if usebreakfun
 end
 
 if ~exist('adjustnrst', 'var')
-    adjustnrst = false; 
+    adjustnrst = false;
 end
 if adjustnrst
     dstart = str2double(strrep(rif_getvar(fullfile(rundir,maininfile), 'DSTART'), 'd', 'e'));
@@ -555,7 +559,7 @@ end
 
 if useinifile
     [inifile, nrrec, octime, timediffdays,octime_unit] = findrestartfile(inicond{1}, inicond{2}, startdate, nrreczeropref); % output ocean_time unit
-    if nrrec == 1 
+    if nrrec == 1
         nrrec = 0;
         fprintf('Make the nrrec from 1 to 0 becuase initial file is used');
     end
@@ -568,8 +572,8 @@ if useinifile
         fprintf(fid, ' %s = %s\n','inifile',inifile);
         fprintf(fid, ' %s = %d\n','nrrec',nrrec);
         fprintf(fid, ' %s = %d\n','octime',octime);
-        fprintf(fid, ' %s = %s\n','octime_unit',octime_unit); 
-        fprintf(fid, ' if octime_unit is not in seconds, it will be converted to seconds for calculation below'); 
+        fprintf(fid, ' %s = %s\n','octime_unit',octime_unit);
+        fprintf(fid, ' if octime_unit is not in seconds, it will be converted to seconds for calculation below');
         fprintf(fid, '\n');
     end
     if timediffdays ~= 0
@@ -607,7 +611,7 @@ if usebreakfun
     for k = 1:numel(stopsteps)-2
         if stopsteps(k+1) - stopsteps(k) < timestepthresh
             if isbfundate(k) && isbfundate(k+1) % should never happen
-                error('Two break function dates are too close to each other.') 
+                error('Two break function dates are too close to each other.')
             end
             if isdatadate(k) && isdatadate(k+1)
                 if ~isbfundate(k)
@@ -620,13 +624,13 @@ if usebreakfun
                     if keeplog
                         fprintf(fid,'scheduler: stop date %s (timestep: %d) is removed as a regular stop date because it is too close to next date %s (timestep: %d; it still remains a stop date for the break function)\n', datestr(datadates(k)), stopsteps(k), datestr(datadates(k+1)), stopsteps(k+1));
                     end
-                end 
+                end
             elseif stopsteps(k) == stopsteps(k+1) && ind(k)
                 isbfundate(k) = false;
                 isbfundate(k+1) = true;
                 isdatadate(k) = false;
                 isdatadate(k+1) = true;
-                
+
                 ind(k) = false;
                 if keeplog
                     fprintf(fid,'scheduler: stop date %s and %s (both timestep: %d) are merged\n', datestr(datadates(k)), datestr(datadates(k+1)), stopsteps(k+1));
@@ -655,7 +659,7 @@ else
                 fprintf(fid,'scheduler: stop date %s (timestep: %d) is removed because it is too close to start date.\n', datestr(datadates(k)), stopsteps(k));
             end
         else
-            break; 
+            break;
         end
     end
     if numel(stopsteps)>=2
@@ -725,7 +729,7 @@ if simulationmode
 end
 
 if useinifile
-%%%%%% convert octime to seconds    
+%%%%%% convert octime to seconds
     switch octime_unit(1:3)
       case 'day'
         fac = 86400;
@@ -741,7 +745,7 @@ if useinifile
     end
 %%%%%%%
     octime=octime*fac;
-    stopstepsoctime = octime + stopsteps*dt; 
+    stopstepsoctime = octime + stopsteps*dt;
     if adjustdstart
         dstart = octime/86400;
         %stopstepsoctime = stopsteps*dt;
@@ -750,7 +754,7 @@ if useinifile
             fprintf(fid, 'option adjustdstart is active, setting DSTART = %d\n', dstart);
         end
         if adjustnrst
-            refdateplusdstart = refdate + dstart; 
+            refdateplusdstart = refdate + dstart;
         end
     elseif romstimemode == 0
         stopsteps = stopsteps + octime / dt;
@@ -771,23 +775,23 @@ end
 if changefrcfile % change the forcing file (i.e., wind forcing file) before the assimilation starts
     nffiles = numel(frccond);  % number of unique forcing files
     if nffiles==1  % e.g., for upwelling test case, wind forcing is the only forcing file
-        [wpathstr,wfilename,wfileext] = fileparts(frccond{1});           
+        [wpathstr,wfilename,wfileext] = fileparts(frccond{1});
         frcfiles = cell(1,nens);
         for k = 1:nens
             frcfiles{k} = fullfile([wpathstr,'/',wfilename,sprintf('_%04d',k),wfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');
         end
     else
-        frcfile = frccond;      
+        frcfile = frccond;
         frcfiles = cell(1,nens);
         for k = 1:nens
             for iidx = 1:numel(idxffiles)
                 [wpathstr,wfilename,wfileext] = fileparts(frccond{idxffiles(iidx)});
-                frcfile{idxffiles(iidx)} = fullfile([wpathstr,'/',wfilename,sprintf('_%04d',k),wfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');                
-            end  
-        
+                frcfile{idxffiles(iidx)} = fullfile([wpathstr,'/',wfilename,sprintf('_%04d',k),wfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');
+            end
+
             ffile = frcfile{1};
-            for inf = 2:nffiles               
-                ffile = [ffile,' \\\',sprintf('\n %s',frcfile{inf})]; % the sed editor used in rif_setvar requires 3 backslashes for a regular backslash. 
+            for inf = 2:nffiles
+                ffile = [ffile,' \\\',sprintf('\n %s',frcfile{inf})]; % the sed editor used in rif_setvar requires 3 backslashes for a regular backslash.
                 % when using only 1 backslash, the backslash is escaped in system operator; while 2 backslashes produce error 'sed: -e expression #1, char 100: unterminated `s' command'
             end
             frcfiles{k} = ffile;
@@ -798,23 +802,23 @@ end
 if changebryfile % change the bry file before the assimilation starts
     nffiles = numel(brycond);  % number of unique bry files
     if nffiles==1  % e.g., if there is only 1 boundary file
-        [bpathstr,bfilename,bfileext] = fileparts(brycond{1});           
+        [bpathstr,bfilename,bfileext] = fileparts(brycond{1});
         bryfiles = cell(1,nens);
         for k = 1:nens
             bryfiles{k} = fullfile([bpathstr,'/',bfilename,sprintf('_ens%04d',k),bfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');
         end
-    else      
-        bryfile = brycond; 
+    else
+        bryfile = brycond;
         bryfiles = cell(1,nens);
         for k = 1:nens
             for iidx = 1:nffiles
                 [bpathstr,bfilename,bfileext] = fileparts(brycond{iidx});
-                bryfile{iidx} = fullfile([bpathstr,'/',bfilename,sprintf('_ens%04d',k),bfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');                
-            end  
-        
+                bryfile{iidx} = fullfile([bpathstr,'/',bfilename,sprintf('_ens%04d',k),bfileext]);%changeoutputparameters(r, outdir, subprefix{k}, 'rst');
+            end
+
             bfile = bryfile{1};
-            for inf = 2:nffiles               
-                bfile = [bfile,' \|\',sprintf('\n %s',bryfile{inf})]; % the sed editor used in rif_setvar requires 3 backslashes for a regular backslash. 
+            for inf = 2:nffiles
+                bfile = [bfile,' \|\',sprintf('\n %s',bryfile{inf})]; % the sed editor used in rif_setvar requires 3 backslashes for a regular backslash.
                 % when using only 1 backslash, the backslash is escaped in system operator; while 2 backslashes produce error 'sed: -e expression #1, char 100: unterminated `s' command'
             end
             bryfiles{k} = bfile;
@@ -851,16 +855,16 @@ end
 if checklastfilechange
     jobstarttime = nan(1,nens);
 end
-if usebreakfun 
+if usebreakfun
     stopcounter = 0;
-end 
+end
 
 if performrestart
     % initializing restart files and updating r
     for k = 1:nens
         restartfiles(k) = changeoutputparameters(r, outdir, subprefix{k}, 'rst');
     end
-    
+
     % check if directories exist
     if keeplog
         fprintf(fid, 'romsassim: preparing for restart now\n   performing checks:\n');
@@ -916,9 +920,9 @@ if performrestart
         end
         warning('Initial parameters are specified, ensure that these are suitable for restarting.')
     end
-    
-    
-    % find current time step 
+
+
+    % find current time step
     tmp = find(stopstepsoctime == restart_octime);
     if isempty(tmp)
         if keeplog
@@ -928,14 +932,14 @@ if performrestart
         disp(stopstepsoctime)
         error('Cannot restart - invalid ocean_time in restart files (does not match time in data; restart_octime == %d).', restart_octime)
     end
-    
+
     if keeplog
         fprintf(fid, '   done performing checks\n');
     end
-    
+
     jobrestarts = tmp-1;
     performrunrestart = false;
-    
+
     if usebreakfun
         stopcounter = tmp;
         assimstepcounter = sum(stopstepsoctime(isdatadate) <= restart_octime);
@@ -945,7 +949,7 @@ if performrestart
     if restart_performassimstep
         assimstepcounter = assimstepcounter - 1;
     end
-    
+
     if keeplog
         fprintf(fid, 'romsassim: restarting now\n');
     end
@@ -1054,7 +1058,7 @@ while continuerunning
         end
         if ~simulationmode
             try
-                if collectoutput || constparamsif  
+                if collectoutput || constparamsif
                     if iscell(assimfunargs)  % assimfunargs is a cell containing mutlpile assimfunction arguments for different assimfunctions
                         for iassimF = 1:numel(assimfunargs)/2
                             if iassimF == 1
@@ -1066,20 +1070,20 @@ while continuerunning
                     else
                         [out1, assimout] = assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1), rundir, restartfiles, paramnames, paramvalues, fid, assimfunargs);
                     end
-                    
+
                     if constparamsif
                         constparamsif_renewparameters = ~(isempty(out1) || isequalwithequalnans(paramvalues,out1));
                     end
                     if collectoutput
                         assimoutcontainer{jobrestarts+1} = assimout;
                     end
-                    if saveoutput 
+                    if saveoutput
                         save(fullfile(rundir,sprintf('/stats_out/romsassim_assimout%03d.mat', assimstepcounter)),'paramvalues','paramnames');
                     end
                 else
                     if iscell(assimfunargs)  % assimfunargs is a cell containing mutlpile assimfunction arguments for different assimfunctions
                         for iassimF = 1:numel(assimfunargs)/2
-                            assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, paramnames, paramvalues, fid, assimfunargs{iassimF*2});                            
+                            assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, paramnames, paramvalues, fid, assimfunargs{iassimF*2});
                         end
                     else
                         assimfun(assimstepcounter, stopstepsoctime(jobrestarts+1), datadates(jobrestarts+1) ,rundir, restartfiles, paramnames, paramvalues, fid, assimfunargs);
@@ -1113,7 +1117,7 @@ while continuerunning
         stepsize = stopsteps(jobrestarts+2) - stopsteps(jobrestarts+1);
     else
         if useinifile && romstimemode == 0 && ~adjustdstart
-            stepsize = stopsteps(1) - octime / dt; 
+            stepsize = stopsteps(1) - octime / dt;
         else
             stepsize = stopsteps(1);
         end
@@ -1141,7 +1145,7 @@ while continuerunning
         end
         fprintf('adjustnrst: date in initial file: %s.\n', datestr(prevdatenum));
         nrst = (prevdatenum-refdateplusdstart)*86400/dt;
-        fprintf('adjustnrst: number of steps between date of DSTART and date in initial file: %d.\n', nrst); 
+        fprintf('adjustnrst: number of steps between date of DSTART and date in initial file: %d.\n', nrst);
         if keeplog
             fprintf(fid, 'adjustnrst: date in initial file: %s.\n', datestr(prevdatenum));
             fprintf(fid, 'adjustnrst: number of steps between date of DSTART and date in initial file: %d.\n', nrst);
@@ -1156,7 +1160,7 @@ while continuerunning
 
     nextoctime = stopstepsoctime(jobrestarts+2);
     %if adjustdstart
-    %    nextoctime = nextoctime + dstart*dt; 
+    %    nextoctime = nextoctime + dstart*dt;
     %end
     if keeplog
         if romstimemode == 0
@@ -1169,7 +1173,7 @@ while continuerunning
         fprintf(fid, '%s: starting runs 1 - %d\n', datestr(now), nens);
     end
 
-    
+
     % begin loop
 
     for k = 1:nens
@@ -1193,15 +1197,15 @@ while continuerunning
             if k==1
                 fprintf(fid, 'modify forcing files');
             end
-        end 
-        
+        end
+
         if changebryfile
             r.scheduleParameterChanges('main', {'BRYNAME'}, {bryfiles{k}});
             if k==1
                 fprintf(fid, 'modify boundary files');
             end
-        end         
-                    
+        end
+
         if adjustdstart
             r.scheduleParameterChanges('main', {'DSTART'}, {dstart})
         end
@@ -1212,13 +1216,13 @@ while continuerunning
                 r.scheduleParameterChanges('main', {'LDEFOUT'}, {'T'})
             end
         end
-        if constparams 
+        if constparams
             if jobrestarts == -1
                 % draw and write initial parameters
                 if userspecifiediniparams
                     r.scheduleParameterChanges('auto', paramnames, paramvalues(k,:));
                 elseif isempty(betaid)
-                    paramvalues(k,:) = rpv.scheduleParameterChanges(r); % draw new parameters (for jobrestarts==-1 only) 
+                    paramvalues(k,:) = rpv.scheduleParameterChanges(r); % draw new parameters (for jobrestarts==-1 only)
                 else
                     paramvalues(k,:) = rautil_betaanneal(betaid, 1);
                     r.scheduleParameterChanges('auto', paramnames, paramvalues(k,:));
@@ -1231,7 +1235,7 @@ while continuerunning
                 % reuse 'old' parameter values
                 r.scheduleParameterChanges('auto', paramnames, paramvalues(k,:));
             end
-        elseif constparamsif 
+        elseif constparamsif
             if constparamsif_renewparameters
                 if keeplog && k == 1
                     fprintf(fid, 'constparamsif: redrawing parameters now\n');
@@ -1241,32 +1245,32 @@ while continuerunning
             end
         else
             % draw new parameters
-            paramvalues(k,:) = rpv.scheduleParameterChanges(r); 
+            paramvalues(k,:) = rpv.scheduleParameterChanges(r);
         end
         restartfiles(k) = changeoutputparameters(r, outdir, subprefix{k}, 'rst'); % parameters relative to rundir
-            
+
         if writefiles
             newmaininfile = r.writeOut(subprefix{k}); % write out the in-files with the scheduled parameter changes
         end
-        
-        newrunfiles{k} = fullfile(rundir, sprintf('%srunfile.sh', subprefix{k}));      
-        templatefile=['../roms/filemanipulation/templatefiles/mpirun_' lower(clusterName) '.template']; 
-        
+
+        newrunfiles{k} = fullfile(rundir, sprintf('%srunfile.sh', subprefix{k}));
+        templatefile=['../roms/filemanipulation/templatefiles/mpirun_' lower(clusterName) '.template'];
+
         if jobrestarts == -1 && writefiles
             createrunfiledir(newrunfiles{k}, rundir, executable, newmaininfile, sprintf('%s.out', subprefix{k}), np, subprefix{k}, templatefile, true, ...
-                fullfile(rundir, sprintf('stdout%04d.txt', k)), fullfile(rundir, sprintf('stderr%04d.txt', k)));  
+                fullfile(rundir, sprintf('stdout%04d.txt', k)), fullfile(rundir, sprintf('stderr%04d.txt', k)));
         end
-        
+
         fprintf('%s: starting run %d', datestr(now), k)
         if simulationmode
             status = (rand < errorprob)*1;
             jobid = jobidcounter;
             jobidcounter = jobidcounter + 1;
         else
-             pause(6)  % When there are a lot of jobs submitted simultaneously by other users, the batch job submission might fail. 
+             pause(6)  % When there are a lot of jobs submitted simultaneously by other users, the batch job submission might fail.
                             % To be safe, we add a pause of a few seconds between submitting the jobs
              [status, jobid] = qsubmpi(newrunfiles{k}, rundir, clusterName);
-            
+
             if checklastfilechange
                 jobstarttime(k) = now;
             end
@@ -1279,7 +1283,7 @@ while continuerunning
             fprintf('\n')
             errormemory.erroroccured = true;
             errormemory.message = 'Error submitting job to queue (status ~= 0).';
-            errormemory.newerror = true; 
+            errormemory.newerror = true;
             warning('Error submitting job to queue.')
             if keeplog
                 fprintf(fid, 'Warning: Error submitting for run %d to queue.\n', k);
@@ -1296,7 +1300,7 @@ while continuerunning
         break
     end
     % /start jobs
-    
+
     % wait for jobs
     if logjobqueue
         for k = 1:nens
@@ -1308,7 +1312,7 @@ while continuerunning
         romsassim_logjobdesc(fid, jobids);
     end
     jobrestarts = jobrestarts + 1;
-    
+
     % start waiting loop
     while ~all(jobready)
         statuschange = false;
@@ -1351,7 +1355,7 @@ while continuerunning
                     if verifynetcdftime
                         allok = romsassim_verifynetcdftime(rundir, restartfiles(k), nextoctime, -1, false, fid);
                         if allok
-                            numfailedrestarts(k) = 0;    
+                            numfailedrestarts(k) = 0;
                         else
                             numfailedrestarts(k) = numfailedrestarts(k) + 1;
                             if numfailedrestarts(k) > numfailedrestartthresh
@@ -1420,7 +1424,7 @@ while continuerunning
                         fprintf(fid,'%s: restarting run %d', datestr(now), k);
                     end
                     [status, jobid] = qsubmpi(newrunfiles{k}, rundir, clusterName);
-                    
+
                     if checklastfilechange
                         jobstarttime(k) = now;
                     end
@@ -1455,11 +1459,11 @@ while continuerunning
             pause(pauseint)
         end
         counter = counter + 1;
-        
+
         % status message
         if mod(counter, 5) == 0
             romsassim_printstatus(1, jobrestarts+1, numstartsall+1, jobids, jobstatus, clusterStatus);
-            
+
             if htmlstatus
                 romsassim_printhtmlstatus(htmlstatustmpfile, prefix, jobrestarts+1, numstarts+1, jobids, jobstatus);
                 [stat, mesg] = unix_scp(htmlstatustmpfile, htmlstatustdest, htmlstatusscpport);
@@ -1469,7 +1473,7 @@ while continuerunning
                 end
             end
         end
-        
+
     end
     if logjobqueue
         if ~all(jobqueuerecorded) && keeplog
@@ -1502,7 +1506,7 @@ if logfchangeerror
     end
 end
 
-if errormemory.erroroccured 
+if errormemory.erroroccured
     if htmlstatus && htmlstatuswritehis
         histpostfun(1, datestr(now,31), prefix, 'terminated with error');
     end
@@ -1514,7 +1518,7 @@ if errormemory.erroroccured
             romsassim_erasetrace({fullfile(rundir, outdir), rundir, logfile});
         end
     end
-    
+
     if saveerrors
         % new feature: saving error information
         errorinfo = rmfield(errormemory, 'erroroccured');
@@ -1531,7 +1535,7 @@ if errormemory.erroroccured
         if errormemory.newerror
             error(errormemory.message);
         else
-            rethrow(errormemory.error); 
+            rethrow(errormemory.error);
         end
     end
 else
@@ -1547,7 +1551,7 @@ else
         end
     end
     if rmallbutlog
-        try        
+        try
             romsassim_erasetrace({fullfile(rundir, outdir), rundir, logfile}, true, true); % perform time analysis
         catch anerror
             fprintf('error removing files\n')
