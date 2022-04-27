@@ -18,7 +18,7 @@ Before you start, be aware that is application is build for a cluster computer, 
 
 Register at the [ROMS website](https://www.myroms.org) and download the source code.
 
-### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified in step 5)
+### Step 2: Prepare the model input files and save them in the `in` directory (the path of these files will be specified in step 4)
 
 #### 2.1) The ROMS executable (typically `oceanM` or `romsM`)
 - Set options `<MY_ROOT_DIR>` `<MY_ROMS_SRC>` in the build script (typically `in/executable/build.sh` or `in/executable/build_roms.sh`). These options will tell the script where the ROMS source code is.
