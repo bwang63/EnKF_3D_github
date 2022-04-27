@@ -1,36 +1,50 @@
-% this script is to plot the data assimilation result versus deterministic
-% model runs (free run)
+%
+% This script is to compare the timeseries of the domain averaged results
+% from the truth, the free run, and the data assimilation run
+%
+% Modelled results of the truth and free runs are available at:
+% https://drive.google.com/drive/folders/1yp6HJzKfdrFtK4HTAKSbWA7o9CDKp_0r?usp=sharing
+% and
+% https://drive.google.com/drive/folders/1AKonErsFlrAFF1ZJlEa8UT1Kcde73DGx?usp=sharing
+% 
+% Please search for '(edit)' to find settings that require changes to run
+% this script
+%
+%
+% by Bin Wang at Dalhousie University
+% April 2022
+%
+
 clear; clc
 
 %% settings
-% model grid file
-GridName = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/in/input_forcing/upw_grd.nc';
 
 % model reference day
 reftime = datenum('2006-1-1');
 
-% specify the output files of truth
-FileToRead_truth =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/his_upwelling.nc';
+% specify the output files of truth 
+FileToRead_truth =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_truth/output/his_upwelling.nc'; % (edit)
 
 % specify the output files of free run (no data assimilation)
-FileToRead_free =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_free/output/his_upwelling.nc';
+FileToRead_free =  '/misc/7/output/bwang/ROMS_Nature_Primer_paper/UPW_free/output/his_upwelling.nc'; % (edit)
 
 % specify the output files of data assimilation run
-CaseName_DA = 'EnKF_UPW_2kfilesV2';
+CaseName_DA = 'EnKF_UPW_2kfilesV2'; % (edit)
 FileToRead_DA = ['/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/' CaseName_DA '/nc_out/his_' CaseName_DA '_*.nc'];
 nens = 20; % number of ensemble members
 
 % specify the output files of forecast and analysis 
 % In this testing case, we have 2 update steps. 
-% In the first step, we assimilate SSH and SST to update the 3D
-% distributions of both physical and biological variables, which include
-% the temperature, salinity, and NO3.
-% While in the second step, we assimilate surface chlorophyll to update
-% only biological variables, including chlorophyll and phytoplankton
-FileToRead_ana = '/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/' CaseName_DA '/stats_out/EnKF_2steps_*_assimstep_*.nc';
-ncycles = 26; % number of data assimilation cycles
+% In the first step, we assimilate physical observations (incl. sea surface
+% temperature, sea surface height, and in-situ profiles of temperature) to
+% update the 3D distributions of both physical and biological variables. 
+% While in the second step, we only assimilate biological observations
+% (incl. surface chlorophyll and in-situ NO3 profiles) to update biological
+% variables
+FileToRead_ana = ['/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/' CaseName_DA '/stats_out/EnKF_2steps_*_assimstep_*.nc']; % (edit)
+ncycles = 26; % number of data assimilation cycles 
 
-assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]];
+assimdates = [[datenum('16-Mar-2006'):2:datenum('09-Apr-2006')] [datenum('15-May-2006'):2:datenum('08-Jun-2006')]]; 
 
 % variables to be plot
 varnames = {'temp','chlorophyll','NO3'};
@@ -38,6 +52,7 @@ units = {'\circC','mg m^{-3}','mmol N m^{-3}'};
 
 % set the y-axis limits
 property.ylim = {[18.8 20.5],[0 1],[0 1.5]};
+
 %% To plot the timeseries of domain averages in the surface layer
 % loop over the variables to be plot
 for ivar = 1:numel(varnames)
@@ -97,8 +112,6 @@ for ivar = 1:numel(varnames)
     max_value_DA = max(value_DA,[],2); % minimum of ensemble members
     
     figure('position',[300 900 705 245]);
-    % reftime = datenum('2006-5-1');
-    subplot(1,2,1); subplot(1,1,1)
     for icycle = 1:ncycles
         plot(assimdates(icycle)*[1 1]-reftime,property.ylim{ivar},'color',[1 1 1]*0.7); hold on
     end
@@ -114,6 +127,7 @@ for ivar = 1:numel(varnames)
     set(gca,'fontsize',10,'position',[0.15 0.25 0.8 0.7]);
     print('-dpng','-r400',['timeseries_' varnames{ivar}  ])
     print('-depsc','-r400',['timeseries_' varnames{ivar}  ])
+    close
     clearvars time_truth value_truth time_free value_free time_DA value_DA
 end
 
