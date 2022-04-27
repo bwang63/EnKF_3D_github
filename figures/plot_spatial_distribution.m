@@ -207,8 +207,8 @@ for ivar = 1:numel(varnames)
     han2.Label.FontSize = 11;
     set(gca,'position',[0.62 0.10 0.23 0.35])
 
-    print('-dpng','-r400',['surface_' varnames{ivar} '2_' datestr(assimdates(icycle))])
-    print('-depsc','-r400',['surface_' varnames{ivar} '2_' datestr(assimdates(icycle))])
+    print('-dpng','-r400',['surface_' varnames{ivar} '_' datestr(assimdates(icycle))])
+    print('-depsc','-r400',['surface_' varnames{ivar} '_' datestr(assimdates(icycle))])
     close
 end
 
