@@ -44,7 +44,7 @@ or
 
 #### 2.4) The model forcings
 - Download the wind forcing files `upw_suvstr_3hourly_180d_2Lm_06_\*.nc`, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place them into the `in/roms_input/wind_forcing/` directory (alternatively, adjust the `frccond` variable in `mfiles/main/main.m` to point to the files).
-- Download the initial condition `upw_ini.nc` file, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place it into the `in/roms_forcing/` directory (alternatively, adjust the `inicond` variable in `mfiles/main/main.m` to point to the file).
+- Download the initial condition `upw_ini.nc` file, available [here](https://drive.google.com/drive/folders/1VAH-YpFQ8ujcLahLpeTLHV2PD33YHYZc?usp=sharing), and place it into the `in/roms_input/` directory (alternatively, adjust the `inicond` variable in `mfiles/main/main.m` to point to the file).
 - Note, that open boundary condition are not required in this test case, but can be used (and modified by data assimilation) by changing the configuration.
 
 #### 2.5) The observation file
