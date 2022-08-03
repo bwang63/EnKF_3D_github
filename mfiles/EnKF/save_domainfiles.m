@@ -2,6 +2,10 @@ function save_domainfiles(matfilesdir, gridname, grdm)
 % save the grid information temporally in order to be used later 
 N=grdm.N;
 
+if ~exist(matfilesdir,'dir')
+    mkdir(matfilesdir)
+end
+
 mask = grdm.mask_rho;
 mask(mask == 0) = nan;
 save(fullfile(matfilesdir, sprintf('data_domain_mask_%s.mat',gridname) ), 'mask') % mask of one layer
