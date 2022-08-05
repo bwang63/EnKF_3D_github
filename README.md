@@ -82,7 +82,7 @@ Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`
 
 ### Step 4: Set up the data assimilation experiment
 
-Go to the `main` directory and change settings in the setting up scripts (i.e. `main.m`,`romsassim_settings_1kfiles.m`, `KFilter_2steps_*.m`)
+Go to the `main` directory and change settings in the scripts `main.m`,`romsassim_settings_1kfiles.m`, and `KFilter_2steps_*.m`.
 Search for '(edit)' to find settings that likely require changes to run this application. Other settings might have been tested for other applications.
 
 ### Step 5: Run a configuration check (optional)
