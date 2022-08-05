@@ -120,9 +120,9 @@ After completing the first data assimilation run, feel free to modify the config
 
               main.m -- the main driver
 
-              romsassim_settings_2kfiles.m -- settings about ROMS model
+              romsassim_settings_2kfiles.m -- settings for the ROMS model
 
-              KFilter_2steps_*.m -- settings about the data assimilation
+              KFilter_2steps_*.m -- settings for the data assimilation
                                     (in this application, we have two KFilter_2steps_*.m scripts becuase we have two update steps)
 
          EnKF -- data assimilation functions
@@ -148,7 +148,7 @@ After completing the first data assimilation run, feel free to modify the config
 
 `figures` -- reading output directory
 
-**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the setting up scripts:
+**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the set-up scripts:
 
 1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
 ```matlab
