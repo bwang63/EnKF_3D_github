@@ -1,5 +1,5 @@
 # Ensemble Kalman filter application for an ocean biogeochemical model in an idealized 3-dimensional channel
-The Matlab code included in this repository is used to perform the deterministic formulation of Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System [ROMS](https://www.myroms.org/wiki/Documentation_Portal).
+The Matlab code included in this repository is used to perform the deterministic formulation of the Ensemble Kalman Filter (DEnKF) in the Regional Ocean Modelling System [ROMS](https://www.myroms.org/wiki/Documentation_Portal).
 
 This set of code was developed by the [MEMG group](http://memg.ocean.dal.ca/index.html) in Dalhousie University, Canada.
 
