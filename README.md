@@ -91,7 +91,7 @@ In `mfiles/main/main.m`, set
 ```
 perform_configuration_check = true;
 ```
-and then run `main.m` in Matlab to perform an optional configuration check, testing is some of the paths and file names are set correctly.
+and then run `main.m` in Matlab to perform an optional configuration check, testing that the paths and file names are set correctly.
 When this test produces no warnings, move to step 6 to start a data assimilation run.
 
 ### Step 6: Run the main driver `main.m` in `mfiles/main/`
