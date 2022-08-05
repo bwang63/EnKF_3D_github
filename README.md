@@ -103,7 +103,7 @@ perform_configuration_check = false;
 then run `main.m` to perform a data assimilation run.
 
 **_Note_**: Running `main.m` will submit jobs to the workload manager, create a new directory, and create, modify and delete files in the newly created directory.
-The name an location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
+The name and location of the newly created directory is set by the `rundir` variable in `mfiles/main/KFilter_2steps_1.m`.
 For testing purposes, the number of jobs submitted to the workload manager can be reduced by decreasing the number of ensemble members (set by the variable `nens` in `mfiles/main/main.m`).
 
 ### Step 7: Customize the data assimilation
