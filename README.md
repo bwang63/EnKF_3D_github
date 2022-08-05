@@ -33,7 +33,7 @@ or
 ./build_roms.sh
 ```
 
-**_Note_**: the CPP options used in the model are defined in the header file (e.g., `upwelling.h`). The head file is specified by the option `<ROMS_APPLICATION>` in the build script.
+**_Note_**: the CPP options used in the model are defined in the header file (e.g., `upwelling.h`). The header file is specified by the option `<ROMS_APPLICATION>` in the build script.
 
 #### 2.2) The ROMS input file
 - Open `in/infiletemplates/roms_upwelling.in` in a text editor.
