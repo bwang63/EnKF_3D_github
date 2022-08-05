@@ -132,7 +132,7 @@ After completing the first data assimilation run, feel free to modify the config
 
 `mfiles` -- data assimilation code directory
 
-         main -- data assimilation setting up scripts
+         main -- data assimilation set up scripts
 
               main.m -- the main driver
 
