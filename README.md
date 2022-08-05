@@ -72,7 +72,21 @@ cd <<DIR>>
 # run executable
 mpirun <<EXECUTABLE>> <<INFILE>>
 ```
-Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`, etc.) will be replaced with appropriate paths when running the data assimilation. The "`cd <<DIR>>`" statement is currently required to be in the job submission script template, and so is a statement that is starting the ROMS executable ("`mpirun <<EXECUTABLE>> <<INFILE>>`" in the example above).
+Note here, that expressions in `<<>>` (`<<DIR>>`, `<<EXECUTABLE>>`, `<<INFILE>>`, etc.) will be replaced with appropriate paths when running the data assimilation. The "`cd <<DIR>>`" statement is currently required to be in the job submission script template, and so is a statement that is starting the ROMS executable ("`mpirun <<EXECUTABLE>> <<INFILE>>`" in the example above). 
+
+Also note that the users have to specify their account name and commands to load necessary modules. In our case, they are:
+```
+# Project identification
+#
+#SBATCH --account=rrg-kfennel-ab
+```
+and 
+
+```
+# LOAD NETCDF LIBRARY
+module load StdEnv/2016.4
+module load netcdf-fortran/4.4.4
+```
 
 **_Note_**: If the cluster is not using Slurm as a workload manager, four Matlab scripts need to be adapted for other workload managers:
 - `mfiles/roms/autorun/qtools/qdel.m`  -- to delete jobs from cluster
