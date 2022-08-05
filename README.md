@@ -144,13 +144,13 @@ After completing the first data assimilation run, feel free to modify the config
 
 `out` -- output files directory
 
-`matfiles` -- temporary matrixes saved and used in data assimilation
+`matfiles` -- temporary matrices saved and used in data assimilation
 
 `figures` -- reading output directory
 
-**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typical large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the set-up scripts:
+**_Note_**: The first 2 directories (i.e., `matlab` and `mfiles`) contain codes for data assimilation and are suggested being saved under the home directory on the clusters. The last 4 directories contain data and are typically large in size. Therefore they are suggested being saved under a different directory, e.g. the scratch directory. The path of `in`, `out`, and `matfiles` directories will be specified by users in the set-up scripts:
 
-1). to specify the path of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
+1). to specify the paths of in and out directories in the script `./main/romsassim_settings_2kfiles.m`
 ```matlab
 % main directory with the runfiles
 rundir = fullfile('/misc/7/output/bwang/EnKF_3D_Nature_Primer/out/', prefix); % (edit)
