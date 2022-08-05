@@ -12,7 +12,7 @@ in-situ profiles of NO₃) to update only biological model state variables (i.e.
 
 ## To start a new data assimilation run
 
-Before you start, be aware that is application is build for a cluster computer, requires [Matlab](https://www.mathworks.com/products/matlab.html), a FORTRAN compiler (to compile ROMS), and MPI or OpenMP to [run ROMS on multiple nodes](https://www.myroms.org/wiki/Parallelization).
+Before you start, be aware that is application is build for a cluster, requires [Matlab](https://www.mathworks.com/products/matlab.html), a FORTRAN compiler (to compile ROMS), and MPI or OpenMP to [run ROMS on multiple nodes](https://www.myroms.org/wiki/Parallelization).
 
 ### Step 1: Download the ROMS code
 
@@ -55,8 +55,8 @@ or
 
 ### Step 3: Template of a job submission script
 
-This application uses [Slurm](https://slurm.schedmd.com/) as the default workload manager with which model simulations are run on a cluster computer (see note below, if another workload manager is used).
-The Slurm `sbatch` command requires job submission scripts which are typically cluster computer-specific, and this application requires a template job submission script, which should be named `mfiles/roms/filemanipulation/templatefiles/mpirun_<clusternamelowercase>.template`, where `<clusternamelowercase>` is the name of the cluster computer in lower case letters.
+This application uses [Slurm](https://slurm.schedmd.com/) as the default workload manager with which model simulations are run on a cluster (see note below, if another workload manager is used).
+The Slurm `sbatch` command requires job submission scripts which are typically cluster-specific, and this application requires a template job submission script, which should be named `mfiles/roms/filemanipulation/templatefiles/mpirun_<clusternamelowercase>.template`, where `<clusternamelowercase>` is the name of the cluster in lower case letters.
 Example job submission scripts are located in `mfiles/roms/filemanipulation/templatefiles/`, a simple template may look like this:
 ```
 #!/bin/bash
