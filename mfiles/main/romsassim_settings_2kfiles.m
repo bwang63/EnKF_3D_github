@@ -16,11 +16,7 @@
 % mixed mode; do not accumulate time for the first (starting) step then DO
 % accumulate time for the following restarts
 % (this is only useful under special circumstances)
-% romstimemode = 0; % LY: use this option for upwelling case which starts
-% from DSTART=0; but it failed for GOM where ocean_time is not 0,
-% ntimes=ocean_time/86400+stepsize_we_want becomes too large that exceeds
-% the boundary time limit.
-romstimemode = 2; % LY: use mode 1 first then mode 0.
+romstimemode = 1; 
 
 % tiling of the model domain
 % determines the horizontal decomposition of the domain in i- and j-direction
