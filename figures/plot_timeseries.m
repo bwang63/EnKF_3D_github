@@ -3,9 +3,7 @@
 % from the truth, the free run, and the data assimilation run
 %
 % Modelled results of the truth and free runs are available at:
-% https://drive.google.com/drive/folders/1yp6HJzKfdrFtK4HTAKSbWA7o9CDKp_0r?usp=sharing
-% and
-% https://drive.google.com/drive/folders/1AKonErsFlrAFF1ZJlEa8UT1Kcde73DGx?usp=sharing
+% https://zenodo.org/record/6974184#.YxN5fuzMLJ8
 % 
 % Please search for '(edit)' to find settings that require changes to run
 % this script
